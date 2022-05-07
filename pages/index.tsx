@@ -1,14 +1,27 @@
+// Types
 import type { ReactElement } from "react";
 
+// Routing
+
+// SEO
+
+// Design
+import { Heading, Stack, Text } from "@chakra-ui/react";
+
+// First-party components
+
+// Layouts
 import Layout from "components/layouts/Layout";
 
-import { Text } from "@chakra-ui/react";
-import Link from "next/link";
-
+// Start page
 export default function Page() {
-  return <Text>This is the new Osopcloud <Link href="/test">Test</Link></Text>;
+  return (
+    <Stack direction="column" spacing={5}>
+      <Heading>Home</Heading>
+      <Text>This is the new Osopcloud, opening in September.</Text>
+    </Stack>
+  );
 }
-
 Page.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return <Layout showToTopButton={true}>{page}</Layout>;
 };

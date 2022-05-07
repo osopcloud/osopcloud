@@ -1,7 +1,21 @@
-import type { ReactElement, ReactNode } from "react";
+// Types
+import type { ReactElement } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+
+// Application-scope providers
+import { ChakraProvider, Spinner } from "@chakra-ui/react";
+import theme from "lib/ThemeProvider";
+
+// Routing
+import { useRouter } from "next/router";
+
+// Design
+import "@fontsource/public-sans/400.css";
+import "@fontsource/public-sans/600.css";
+import "@fontsource/atkinson-hyperlegible";
+
+import { Suspense, useEffect } from "react";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -11,20 +25,56 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+// Start application
 export default function Application({
   Component,
   pageProps,
 }: AppPropsWithLayout) {
+  const router = useRouter();
+
+  // Set up keyboard shortcuts
+  useEffect(() => {
+    // Add an event listener that listens for the keydown Command+/ key combination, preventing the default behavior and opening Home.
+    const listener = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === "/") {
+        event.preventDefault();
+        router.push("/");
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => window.removeEventListener("keydown", listener);
+  }, [router]);
+  useEffect(() => {
+    // Add an event listener that listens for the keydown Command+Shift+, key combination, preventing the default behavior and opening settings.
+    const listener = (event: KeyboardEvent) => {
+      if (event.metaKey && event.shiftKey && event.key === ",") {
+        event.preventDefault();
+        router.push("/settings");
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => window.removeEventListener("keydown", listener);
+  }, [router]);
+  useEffect(() => {
+    // Add an event listener that listens for the keydown Command+UpArrow key combination, preventing the default behavior and scrolling up.
+    const listener = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === "ArrowUp") {
+        event.preventDefault();
+        window.scrollTo(0, 0);
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => window.removeEventListener("keydown", listener);
+  }, []);
+
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  function ApplicationCore(): ReactElement {
-    return getLayout(<Component {...pageProps} />);
-  }
-
   return (
-    <ChakraProvider>
-      <ApplicationCore />
+    <ChakraProvider theme={theme}>
+      <Suspense fallback={<Spinner />}>
+        {getLayout(<Component {...pageProps} />)}
+      </Suspense>
     </ChakraProvider>
   );
 }

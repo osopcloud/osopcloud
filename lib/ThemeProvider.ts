@@ -6,19 +6,58 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
+// Components
+const Button = {
+  baseStyle: {
+    fontWeight: 600,
+    borderRadius: "xl",
+    shadow: "inner",
+    userSelect: "none",
+    textDecoration: "none",
+  },
+  defaultProps: {
+    size: "md",
+    variant: "outline",
+  },
+  variants: {
+    ghost: {
+      shadow: "none",
+    },
+  },
+};
+const Tooltip = {
+  baseStyle: {
+    rounded: "md",
+  },
+};
+const Heading = {
+  baseStyle: ({ colorMode }: { colorMode: string }) => ({
+    fontWeight: 600,
+    fontSize: "xl",
+    color: colorMode === "dark" ? "sandstone" : "almond",
+  }),
+};
+
 export const accessibleFont =
   typeof window !== "undefined"
-    ? localStorage.getItem("P3PrefAccessibleFonts")
+    ? localStorage.getItem("settingsFontOverride")
     : "";
 
 export const systemFont =
   typeof window !== "undefined"
-    ? localStorage.getItem("P3PrefAccessibleFonts") === "system"
+    ? localStorage.getItem("settingsFontOverride") === "system"
     : "";
 
 const theme = extendTheme({
   accessibleFont,
   config,
+  colors: {
+    hazelnut: "#57300A",
+    sandstone: "#EFE7DF",
+    honeycomb: "#D67718",
+    almond: "#573D24",
+    peanut: "#A35B12",
+  },
   styles: {
     global: {
       b: {
@@ -26,6 +65,7 @@ const theme = extendTheme({
       },
       a: {
         textDecoration: "underline",
+        cursor: "pointer",
       },
     },
   },
@@ -40,6 +80,11 @@ const theme = extendTheme({
         ? "system-ui"
         : "Atkinson Hyperlegible"
       : "Public Sans",
+  },
+  components: {
+    Button,
+    Tooltip,
+    Heading,
   },
 });
 

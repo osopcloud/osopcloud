@@ -22,6 +22,7 @@ import { Logo } from "components/brand/Logo";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";
+import { isMacOs } from "react-device-detect";
 
 // Start component
 export default function Header() {
@@ -51,7 +52,7 @@ export default function Header() {
             </Center>
           )}
           <Tooltip
-            label="Go Home (&#8984;/)"
+            label={`Go Home (${isMacOs ? "⌘" : "⌃"}/)`}
             placement={backButtonLargeWindows ? "right" : "left"}
           >
             <Box>
@@ -73,7 +74,10 @@ export default function Header() {
               />
             </Center>
           )}
-          <Tooltip label="Open Settings (&#8679;&#8984;,)" placement="right">
+          <Tooltip
+            label={`Open Settings (⇧${isMacOs ? "⌘" : "⌃"},)`}
+            placement="right"
+          >
             <Center>
               <Link href="/settings" passHref>
                 <IconButton

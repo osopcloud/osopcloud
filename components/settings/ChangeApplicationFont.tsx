@@ -1,17 +1,12 @@
 // Design
 import {
   Button,
-  Center,
-  Flex,
   Heading,
-  Icon,
   Modal,
   ModalBody,
   ModalContent,
   ModalOverlay,
-  Spacer,
   Stack,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 
@@ -47,7 +42,11 @@ export default function ChangeApplicationFont() {
 
   return (
     <>
-      <Button onClick={onOpen}>Change the Application Font</Button>
+      {isOpen ? (
+        <Button isActive>Change the Application Font</Button>
+      ) : (
+        <Button onClick={onOpen}>Change the Application Font</Button>
+      )}
 
       <Modal
         isOpen={isOpen}
@@ -63,7 +62,7 @@ export default function ChangeApplicationFont() {
               <Stack direction="column" spacing={2}>
                 {accessibleFonts! && (
                   <Button fontFamily="Public Sans" onClick={ApplyDefault}>
-                    Switch to Public Sans
+                    Restore Public Sans
                   </Button>
                 )}
                 {accessibleFonts !== "true" && (

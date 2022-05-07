@@ -4,6 +4,7 @@ import {
   Container,
   Flex,
   IconButton,
+  Skeleton,
   Spacer,
   Tooltip,
   useColorModeValue,
@@ -19,8 +20,9 @@ import DevelopmentWarning from "components/layout-dependencies/DevelopmentWarnin
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
+import { isLegacyEdge, isIE, isMacOs } from "react-device-detect";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -42,7 +44,7 @@ export default function Layout({
 
   // Layout keyboard shortcuts
   useEffect(() => {
-    // Add an event listener that listens for the keydown Option+Command+LeftArrow key combination, preventing the default behavior and writing settingsAlwaysShowBackButton to true.
+    // Add an event listener that listens for the keydown Option+Command+LeftArrow key combination on Mac and the Alt+Control+LeftArrow key on others, preventing the default behavior and writing settingsAlwaysShowBackButton to true.
     const listener = (event: KeyboardEvent) => {
       if (event.metaKey && event.altKey && event.key === "ArrowLeft") {
         event.preventDefault();
@@ -84,10 +86,13 @@ export default function Layout({
       <noscript>
         <JSWarning />
       </noscript>
-      <BrowserWarning />
+      {/* If the browser isLegacyEdge or isIE, show <BrowserWarning /> */}
+      {isLegacyEdge || isIE ? <BrowserWarning /> : null}
       {hideNotifications ? "" : <DevelopmentWarning />}
       {/* Header */}
-      <Header />
+      <Suspense fallback={<Skeleton />}>
+        <Header />
+      </Suspense>
       {/* Page content */}
       <Container maxWidth="container.md" flex={1} my={10}>
         {children}
@@ -106,7 +111,10 @@ export default function Layout({
           )}
           <Spacer />
           {showToTopButton && (
-            <Tooltip label="Go to Top (&#8984;&#8593;)" placement="right">
+            <Tooltip
+              label={`Go to Top (${isMacOs ? "⌘" : "⌃"}↑)`}
+              placement="right"
+            >
               <IconButton
                 icon={<FiArrowUp />}
                 aria-label="Go to top"
@@ -117,7 +125,9 @@ export default function Layout({
         </Flex>
       </Container>
       {/* Footer */}
-      <Footer />
+      <Suspense fallback={<Skeleton />}>
+        <Footer />
+      </Suspense>
     </Flex>
   );
 }

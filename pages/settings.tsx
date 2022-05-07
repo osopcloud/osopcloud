@@ -18,6 +18,7 @@ import Layout from "components/layouts/Layout";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
+import { isMacOs } from "react-device-detect";
 
 // Start page
 export default function Settings() {
@@ -44,9 +45,9 @@ export default function Settings() {
             );
           }}
         >
-          {hideNotifications ? "Allow All" : "Hide Most"} Notifications
+          {hideNotifications ? "Disable" : "Enable"} Focus Mode
         </Button>
-        <Tooltip label="&#8997;&#8984;&#8592;" placement="right">
+        <Tooltip label={`⌥${isMacOs ? "⌘" : "⌃"}←`} placement="right">
           <Button
             onClick={(_) => {
               writeStorage(

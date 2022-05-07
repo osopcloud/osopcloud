@@ -1,7 +1,6 @@
 // Design
 import {
   Button,
-  Center,
   Code,
   Flex,
   Icon,
@@ -18,7 +17,21 @@ import {
 import { deleteFromStorage, useLocalStorage } from "@rehooks/local-storage";
 import { Logo } from "components/brand/Logo";
 
+// Settings
+import { browserName, browserVersion, osName } from "react-device-detect";
+
 import { useRef } from "react";
+import { FiTrash2 } from "react-icons/fi";
+
+export function DeleteSettings() {
+  deleteFromStorage("settingsHideNotifications");
+  deleteFromStorage("settingsAlwaysShowBackButton");
+  deleteFromStorage("settingsShowThemeToggle");
+  localStorage.removeItem("settingsFontOverride");
+  console.info(
+    "All preferences in LocalStorage have been cleared - using default settings"
+  );
+}
 
 // Start component
 export default function AboutApplication() {
@@ -28,57 +41,52 @@ export default function AboutApplication() {
   // Application information
   const commit = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
 
-  // Initialisation functions
+  // Reset functions
   const [hideNotifications] = useLocalStorage("settingsHideNotifications");
   const [backButtonLargeWindows] = useLocalStorage(
     "settingsAlwaysShowBackButton"
   );
   const [showSessionThemeToggle] = useLocalStorage("settingsShowThemeToggle");
-  function DeleteSettings() {
-    deleteFromStorage("settingsHideNotifications");
-    deleteFromStorage("settingsAlwaysShowBackButton");
-    deleteFromStorage("settingsShowThemeToggle");
-    localStorage.removeItem("settingsFontOverride");
-    console.info(
-      "All preferences in LocalStorage have been cleared - using default settings"
-    );
-  }
   const accessibleFonts =
     typeof window !== "undefined"
       ? localStorage.getItem("settingsFontOverride")
       : "";
-  function BeginInitialise() {
+  function BeginReset() {
     DeleteSettings();
     if (accessibleFonts) {
       window.location.reload();
     } else onClose();
   }
-  function InitialisationButton() {
+  function ResetButton() {
     return (
       <Tooltip label="Reset All Settings and Clear the Cache" placement="right">
-        <Button colorScheme="red" onClick={BeginInitialise}>
-          Initialise Osopcloud
+        <Button leftIcon={<FiTrash2 />} colorScheme="red" onClick={BeginReset}>
+          Reset Osopcloud
         </Button>
       </Tooltip>
     );
   }
-  function InitialisationDisabled() {
-    return <Button isDisabled>Initialise Osopcloud</Button>;
+  function ResetDisabled() {
+    return (
+      <Button leftIcon={<FiTrash2 />} isDisabled>
+        Reset Osopcloud
+      </Button>
+    );
   }
-  function Initialise() {
+  function Reset() {
     if (hideNotifications) {
-      return <InitialisationButton />;
+      return <ResetButton />;
     } else {
       if (backButtonLargeWindows) {
-        return <InitialisationButton />;
+        return <ResetButton />;
       } else {
         if (showSessionThemeToggle) {
-          return <InitialisationButton />;
+          return <ResetButton />;
         } else {
           if (accessibleFonts) {
-            return <InitialisationButton />;
+            return <ResetButton />;
           } else {
-            return <InitialisationDisabled />;
+            return <ResetDisabled />;
           }
         }
       }
@@ -87,7 +95,11 @@ export default function AboutApplication() {
 
   return (
     <>
-      <Button onClick={onOpen}>About the Osopcloud Application</Button>
+      {isOpen ? (
+        <Button onClick={onOpen}>About the Osopcloud Application</Button>
+      ) : (
+        <Button onClick={onOpen}>About the Osopcloud Application</Button>
+      )}
 
       <Modal
         isOpen={isOpen}
@@ -112,21 +124,29 @@ export default function AboutApplication() {
                 <Flex>
                   <Text>Commit</Text>
                   <Spacer />
-                  {commit ? (
-                    <Code fontSize="xs">{commit}</Code>
-                  ) : (
-                    <Text>Undefined</Text>
-                  )}
+                  <Text>{commit ? commit : "Undefined"}</Text>
                 </Flex>
                 <Flex>
                   <Text>GAS</Text>
                   <Spacer />
                   <Text>Platform 3</Text>
                 </Flex>
+                <Flex>
+                  <Text>Detected Browser</Text>
+                  <Spacer />
+                  <Text>
+                    {/* Sometimes OEM browsers return engine details only, for example PlayStation consoles */}
+                    {browserName.includes("WebKit")
+                      ? "Unknown (like Safari)"
+                      : `${browserName} ${browserVersion}`}{" "}
+                    {/* iPad devices will always return Mac OS, which is potentially confusing */}
+                    ({osName === "Mac OS" ? "macOS/iPadOS" : osName})
+                  </Text>
+                </Flex>
               </Stack>
-              <Initialise />
+              <Reset />
               <Button onClick={onClose} ref={closeRef}>
-                Done
+                Close
               </Button>
             </Stack>
           </ModalBody>

@@ -6,6 +6,7 @@ import type { AppProps } from "next/app";
 // Application-scope providers
 import { ChakraProvider, Spinner } from "@chakra-ui/react";
 import theme from "lib/ThemeProvider";
+import { ErrorFallbackApplication } from "components/errors/ErrorFallbackApplication";
 
 // Routing
 import { useRouter } from "next/router";
@@ -72,9 +73,11 @@ export default function Application({
 
   return (
     <ChakraProvider theme={theme}>
-      <Suspense fallback={<Spinner />}>
-        {getLayout(<Component {...pageProps} />)}
-      </Suspense>
+      <ErrorFallbackApplication>
+        <Suspense fallback={<Spinner m={5} />}>
+          {getLayout(<Component {...pageProps} />)}
+        </Suspense>
+      </ErrorFallbackApplication>
     </ChakraProvider>
   );
 }

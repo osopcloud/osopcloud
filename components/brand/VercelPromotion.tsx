@@ -1,4 +1,4 @@
-// This is a promotion for Vercel that allows us to use OSS pricing
+// This Vercel promotion makes us eligible for OSS pricing
 
 // Start component
 

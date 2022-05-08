@@ -20,7 +20,7 @@ export default function JSWarning() {
             <Text>Please use a browser that supports JavaScript.</Text>
             <Text fontSize="xs">
               Most features won't work correctly. Unexpected behaviour may
-              occur. (2c)
+              occur. (1002)
             </Text>
           </Stack>
         </Stack>

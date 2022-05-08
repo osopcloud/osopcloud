@@ -41,9 +41,7 @@ export default function Custom500() {
           Try Again
         </Button>
       </Stack>
-      <Stack direction="column" spacing={2}>
-        <Text fontSize="xs">Error Reference: HTTP 500</Text>
-      </Stack>
+      <Text fontSize="xs">Error Reference: HTTP 500</Text>
     </Stack>
   );
 }

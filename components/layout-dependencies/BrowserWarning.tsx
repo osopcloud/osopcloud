@@ -20,7 +20,7 @@ export default function BrowserWarning() {
             <Text>Please upgrade to a modern browser.</Text>
             <Text fontSize="xs">
               Some features won't work correctly and others have been disabled
-              as a precautionary measure. (2e)
+              as a precautionary measure. (1101)
             </Text>
           </Stack>
         </Stack>

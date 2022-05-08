@@ -32,9 +32,7 @@ export default function Custom404() {
           Go Back
         </Button>
       </Stack>
-      <Stack direction="column" spacing={2}>
-        <Text fontSize="xs">Error Reference: HTTP 404</Text>
-      </Stack>
+      <Text fontSize="xs">Error Reference: HTTP 404</Text>
     </Stack>
   );
 }

@@ -38,6 +38,7 @@ export default function Custom500() {
           Try Again
         </Button>
       </Stack>
+      <Text fontSize="xs">Error Reference: 1302</Text>
     </Stack>
   );
 }

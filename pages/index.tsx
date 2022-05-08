@@ -6,7 +6,7 @@ import type { ReactElement } from "react";
 // SEO
 
 // Design
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, Stack, Text } from "@chakra-ui/react";
 
 // First-party components
 

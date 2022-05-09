@@ -19,7 +19,7 @@
 ### 2xxx (Settings and Versions)
 
 - **2001:** The setting is invalid.
-- **2003:** The version is invalid.
+- **2002:** The version is invalid.
 - **2101:** Conflicting settings.
 - **2102:** Conflicting version or commit.
 - **2201:** The setting is not supported.

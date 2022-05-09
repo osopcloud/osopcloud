@@ -4,7 +4,11 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 
 // Application-scope providers
-import { ChakraProvider, Spinner } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  createStandaloneToast,
+  Spinner,
+} from "@chakra-ui/react";
 import theme from "lib/ThemeProvider";
 import { ErrorFallbackApplication } from "components/errors/ErrorFallbackApplication";
 
@@ -32,6 +36,7 @@ export default function Application({
   pageProps,
 }: AppPropsWithLayout) {
   const router = useRouter();
+  const createToast = createStandaloneToast({ theme: theme });
 
   // Set up keyboard shortcuts
   useEffect(() => {
@@ -66,6 +71,21 @@ export default function Application({
     };
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
+  }, []);
+
+  useEffect(() => {
+    // Add an event listener that listens for when local storage is cleared
+    const listener = () => {
+      createToast({
+        title: "There's an issue with your Settings.",
+        description: "Reload to apply the latest Settings. (2101)",
+        status: "warning",
+        duration: 20000,
+        isClosable: true,
+      });
+    };
+    window.addEventListener("storage", listener);
+    return () => window.removeEventListener("storage", listener);
   }, []);
 
   // Use the layout defined at the page level, if available

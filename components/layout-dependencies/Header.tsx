@@ -48,9 +48,20 @@ export default function Header() {
                 aria-label="Go Back"
                 onClick={router.back}
                 as="a"
+                display={{ base: "none", sm: "flex" }}
               />
             </Center>
           )}
+          <Center>
+            <IconButton
+              icon={<FiChevronLeft />}
+              me={5}
+              aria-label="Go Back"
+              onClick={router.back}
+              as="a"
+              display={{ base: "flex", sm: "none" }}
+            />
+          </Center>
           <Tooltip
             label={`Go Home (${isMacOs ? "⌘" : "⌃"}/)`}
             placement={backButtonLargeWindows ? "right" : "left"}
@@ -71,6 +82,7 @@ export default function Header() {
                 me={5}
                 aria-label="Toggle the Colour Theme"
                 onClick={toggleColorMode}
+                display={{ base: "none", sm: "flex" }}
               />
             </Center>
           )}

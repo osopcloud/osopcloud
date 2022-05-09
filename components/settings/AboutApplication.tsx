@@ -60,7 +60,13 @@ export default function AboutApplication() {
   function ResetButton() {
     return (
       <Tooltip label="Reset All Settings and Clear the Cache" placement="right">
-        <Button leftIcon={<FiTrash2 />} colorScheme="red" onClick={BeginReset}>
+        <Button
+          leftIcon={<FiTrash2 />}
+          // If the user is using accessible fonts, then resetting could make the page unreadable
+          // To assist with conveying this, the colorScheme is changed from "warning" to "danger"
+          colorScheme={accessibleFonts ? "red" : "orange"}
+          onClick={BeginReset}
+        >
           Reset Osopcloud
         </Button>
       </Tooltip>

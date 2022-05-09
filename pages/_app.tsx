@@ -4,21 +4,21 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 
 // Application-scope providers
-import {
-  ChakraProvider,
-  createStandaloneToast,
-  Spinner,
-} from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import theme from "lib/ThemeProvider";
-import { ErrorFallbackApplication } from "components/errors/ErrorFallbackApplication";
+import { ErrorFallbackApplication } from "components/error-handling/ErrorFallbackApplication";
 
 // Routing
 import { useRouter } from "next/router";
 
 // Design
+import { Spinner, useBoolean } from "@chakra-ui/react";
 import "@fontsource/public-sans/400.css";
 import "@fontsource/public-sans/600.css";
 import "@fontsource/atkinson-hyperlegible";
+
+// First party components
+import ConflictingSettings from "components/errors/ConflictingSettings";
 
 import { Suspense, useEffect } from "react";
 
@@ -36,7 +36,6 @@ export default function Application({
   pageProps,
 }: AppPropsWithLayout) {
   const router = useRouter();
-  const createToast = createStandaloneToast({ theme: theme });
 
   // Set up keyboard shortcuts
   useEffect(() => {
@@ -73,20 +72,17 @@ export default function Application({
     return () => window.removeEventListener("keydown", listener);
   }, []);
 
+  // Because we are using layout persistence, using the browser's clear browsing data option won't show immediate changes
+  // This reassures the user that their preference has been recognised. It then guides the user on how to enact the changes
+  const [isConflictingSettings, setConflictingSettings] = useBoolean();
   useEffect(() => {
     // Add an event listener that listens for when local storage is cleared
     const listener = () => {
-      createToast({
-        title: "There's an issue with your Settings.",
-        description: "Reload to apply the latest Settings. (2101)",
-        status: "warning",
-        duration: 20000,
-        isClosable: true,
-      });
+      setConflictingSettings.on();
     };
     window.addEventListener("storage", listener);
     return () => window.removeEventListener("storage", listener);
-  }, []);
+  }, [setConflictingSettings]);
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -94,6 +90,11 @@ export default function Application({
   return (
     <ChakraProvider theme={theme}>
       <ErrorFallbackApplication>
+        {isConflictingSettings && (
+          <Suspense fallback={<Spinner />}>
+            <ConflictingSettings />
+          </Suspense>
+        )}
         <Suspense fallback={<Spinner m={5} />}>
           {getLayout(<Component {...pageProps} />)}
         </Suspense>

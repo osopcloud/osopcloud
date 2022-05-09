@@ -1,26 +1,20 @@
 // Design
 import { Center, Container, Flex, Icon, Stack, Text } from "@chakra-ui/react";
-import { FiAlertCircle } from "react-icons/fi";
+import { FiSettings } from "react-icons/fi";
 
 // Start component
-export default function BrowserWarning() {
+export default function ConflictingSettings() {
   return (
     <Flex bg="peanut" color="white" as="footer">
       <Container maxWidth="container.md" py={2}>
         <Stack direction="row" spacing={5}>
           <Center>
-            <Icon
-              as={FiAlertCircle}
-              aria-label="Exclamation icon"
-              w={6}
-              h={6}
-            />
+            <Icon as={FiSettings} aria-label="Settings icon" w={6} h={6} />
           </Center>
           <Stack direction="column" spacing={0}>
-            <Text>Please upgrade to a modern browser.</Text>
+            <Text>There's been an issue storing your Settings.</Text>
             <Text fontSize="xs">
-              Some features won't work correctly and others have been disabled
-              as a precautionary measure. (1101)
+              Reload Osopcloud to apply the correct Settings. (2201)
             </Text>
           </Stack>
         </Stack>

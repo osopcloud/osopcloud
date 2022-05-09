@@ -14,9 +14,9 @@ import { FiArrowUp, FiShare } from "react-icons/fi";
 // First-party components
 import Header from "components/layout-dependencies/Header";
 import Footer from "components/layout-dependencies/Footer";
-import JSWarning from "components/layout-dependencies/JSWarning";
-import BrowserWarning from "components/layout-dependencies/BrowserWarning";
-import DevelopmentWarning from "components/layout-dependencies/DevelopmentWarning";
+import JSWarning from "components/errors/JSWarning";
+import BrowserWarning from "components/errors/BrowserWarning";
+import DevelopmentWarning from "components/errors/DevelopmentWarning";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";

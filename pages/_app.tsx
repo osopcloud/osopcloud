@@ -6,6 +6,7 @@ import type { AppProps } from "next/app";
 // Application-scope providers
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "lib/ThemeProvider";
+import UpdateProvider from "lib/UpdateProvider";
 import { ErrorFallbackApplication } from "components/error-handling/ErrorFallbackApplication";
 
 // Routing
@@ -18,7 +19,7 @@ import "@fontsource/public-sans/600.css";
 import "@fontsource/atkinson-hyperlegible";
 
 // First party components
-import ConflictingSettings from "components/errors/ConflictingSettings";
+import ConflictingSettings from "components/alerts/ConflictingSettings";
 
 import { Suspense, useEffect } from "react";
 
@@ -90,14 +91,16 @@ export default function Application({
   return (
     <ChakraProvider theme={theme}>
       <ErrorFallbackApplication>
-        {isConflictingSettings && (
-          <Suspense fallback={<Spinner />}>
-            <ConflictingSettings />
+        <UpdateProvider>
+          {isConflictingSettings && (
+            <Suspense fallback={<Spinner />}>
+              <ConflictingSettings />
+            </Suspense>
+          )}
+          <Suspense fallback={<Spinner m={5} />}>
+            {getLayout(<Component {...pageProps} />)}
           </Suspense>
-        )}
-        <Suspense fallback={<Spinner m={5} />}>
-          {getLayout(<Component {...pageProps} />)}
-        </Suspense>
+        </UpdateProvider>
       </ErrorFallbackApplication>
     </ChakraProvider>
   );

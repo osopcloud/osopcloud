@@ -3,11 +3,11 @@ import { Center, Container, Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import { FiAlertCircle } from "react-icons/fi";
 
 // Start component
-export default function JSWarning() {
+export default function BrowserWarning() {
   return (
     <Flex bg="peanut" color="white" as="footer">
       <Container maxWidth="container.md" py={2}>
-        <Stack direction="row" spacing={5}>
+        <Stack direction={{ base: "column", sm: "row" }} spacing={5}>
           <Center>
             <Icon
               as={FiAlertCircle}
@@ -17,10 +17,10 @@ export default function JSWarning() {
             />
           </Center>
           <Stack direction="column" spacing={0}>
-            <Text>Please use a browser that supports JavaScript.</Text>
+            <Text>Please upgrade to a modern browser.</Text>
             <Text fontSize="xs">
-              Most features won't work correctly. Unexpected behaviour may
-              occur. (1102)
+              Some features won't work correctly and others have been disabled
+              as a precautionary measure. (1201)
             </Text>
           </Stack>
         </Stack>

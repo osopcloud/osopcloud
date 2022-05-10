@@ -7,7 +7,7 @@ export default function ConflictingSettings() {
   return (
     <Flex bg="peanut" color="white" as="footer">
       <Container maxWidth="container.md" py={2}>
-        <Stack direction="row" spacing={5}>
+        <Stack direction={{ base: "column", sm: "row" }} spacing={5}>
           <Center>
             <Icon as={FiSettings} aria-label="Settings icon" w={6} h={6} />
           </Center>

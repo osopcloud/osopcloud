@@ -1,13 +1,17 @@
 // Types
 import type { ReactElement } from "react";
 
-// Routing
-import Link from "next/link";
-
 // SEO
 
 // Design
-import { Button, Heading, Stack, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Stack,
+  Text,
+  Tooltip,
+  useColorMode,
+} from "@chakra-ui/react";
 
 // First-party components
 import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
@@ -29,6 +33,8 @@ export default function Settings() {
   );
   const [showSessionThemeToggle] = useLocalStorage("settingsShowThemeToggle");
 
+  const { toggleColorMode } = useColorMode();
+
   return (
     <Stack direction="column" spacing={5}>
       <Heading>Osopcloud Settings</Heading>
@@ -49,6 +55,7 @@ export default function Settings() {
         </Button>
         <Tooltip label={`⌥${isMacOs ? "⌘" : "⌃"}←`} placement="right">
           <Button
+            display={{ base: "none", sm: "block" }}
             onClick={(_) => {
               writeStorage(
                 "settingsAlwaysShowBackButton",
@@ -61,6 +68,7 @@ export default function Settings() {
           </Button>
         </Tooltip>
         <Button
+          display={{ base: "none", sm: "block" }}
           onClick={(_) => {
             writeStorage(
               "settingsShowThemeToggle",
@@ -69,6 +77,12 @@ export default function Settings() {
           }}
         >
           {showSessionThemeToggle ? "Hide" : "Show"} the Session Theme Toggle
+        </Button>
+        <Button
+          display={{ base: "block", sm: "none" }}
+          onClick={toggleColorMode}
+        >
+          Toggle the Session Theme
         </Button>
       </Stack>
       <Stack direction="column" spacing={2}>

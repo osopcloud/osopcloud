@@ -7,7 +7,7 @@ export default function JSWarning() {
   return (
     <Flex bg="peanut" color="white" as="footer">
       <Container maxWidth="container.md" py={2}>
-        <Stack direction="row" spacing={5}>
+        <Stack direction={{ base: "column", sm: "row" }} spacing={5}>
           <Center>
             <Icon
               as={FiAlertCircle}
@@ -20,7 +20,7 @@ export default function JSWarning() {
             <Text>Please use a browser that supports JavaScript.</Text>
             <Text fontSize="xs">
               Most features won't work correctly. Unexpected behaviour may
-              occur. (1002)
+              occur. (1102)
             </Text>
           </Stack>
         </Stack>

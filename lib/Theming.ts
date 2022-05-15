@@ -1,41 +1,8 @@
-// This implements global theming for Chakra UI
-
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { Button, Heading, Tooltip } from "lib/ComponentStyles";
 
 const config: ThemeConfig = {
   useSystemColorMode: true,
-};
-
-// Components
-const Button = {
-  baseStyle: {
-    fontWeight: 600,
-    borderRadius: "xl",
-    shadow: "inner",
-    userSelect: "none",
-    textDecoration: "none",
-  },
-  defaultProps: {
-    size: "md",
-    variant: "outline",
-  },
-  variants: {
-    ghost: {
-      shadow: "none",
-    },
-  },
-};
-const Tooltip = {
-  baseStyle: {
-    rounded: "md",
-  },
-};
-const Heading = {
-  baseStyle: ({ colorMode }: { colorMode: string }) => ({
-    fontWeight: 600,
-    fontSize: "xl",
-    color: colorMode === "dark" ? "sandstone" : "almond",
-  }),
 };
 
 export const accessibleFont =

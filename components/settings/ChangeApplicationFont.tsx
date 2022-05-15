@@ -1,14 +1,8 @@
 // Design
-import {
-  Button,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  Stack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, Heading, Stack, useDisclosure } from "@chakra-ui/react";
+
+// First party components
+import DynamicModal from "components/overlays/DynamicModal";
 
 import { useRef } from "react";
 
@@ -48,44 +42,39 @@ export default function ChangeApplicationFont() {
         <Button onClick={onOpen}>Change the Application Font</Button>
       )}
 
-      <Modal
+      <DynamicModal
         isOpen={isOpen}
         onClose={onClose}
-        initialFocusRef={closeRef}
-        isCentered
+        cancelRef={closeRef}
+        useAlertDialog={false}
       >
-        <ModalOverlay />
-        <ModalContent rounded="3xl" p={5}>
-          <ModalBody>
-            <Stack direction="column" spacing={5}>
-              <Heading size="md">Change the Application Font</Heading>
-              <Stack direction="column" spacing={2}>
-                {accessibleFonts! && (
-                  <Button fontFamily="Public Sans" onClick={ApplyDefault}>
-                    Restore Public Sans
-                  </Button>
-                )}
-                {accessibleFonts !== "true" && (
-                  <Button
-                    fontFamily="Atkinson Hyperlegible"
-                    onClick={ApplyHyperlegible}
-                  >
-                    Switch to Atkinson Hyperlegible
-                  </Button>
-                )}
-                {accessibleFonts !== "system" && (
-                  <Button fontFamily="system-ui" onClick={ApplySystem}>
-                    Switch to the System Font
-                  </Button>
-                )}
-              </Stack>
-              <Button onClick={onClose} ref={closeRef}>
-                Cancel
+        <Stack direction="column" spacing={5}>
+          <Heading size="md">Change the Application Font</Heading>
+          <Stack direction="column" spacing={2}>
+            {accessibleFonts! && (
+              <Button fontFamily="Public Sans" onClick={ApplyDefault}>
+                Restore Public Sans
               </Button>
-            </Stack>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+            )}
+            {accessibleFonts !== "true" && (
+              <Button
+                fontFamily="Atkinson Hyperlegible"
+                onClick={ApplyHyperlegible}
+              >
+                Switch to Atkinson Hyperlegible
+              </Button>
+            )}
+            {accessibleFonts !== "system" && (
+              <Button fontFamily="system-ui" onClick={ApplySystem}>
+                Switch to the System Font
+              </Button>
+            )}
+          </Stack>
+          <Button onClick={onClose} ref={closeRef}>
+            Cancel
+          </Button>
+        </Stack>
+      </DynamicModal>
     </>
   );
 }

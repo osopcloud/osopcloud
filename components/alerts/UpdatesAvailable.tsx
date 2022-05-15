@@ -19,7 +19,7 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // Start component
 export default function UpdatesAvailable() {
   // Get settings
-  const [updatePreference] = useLocalStorage("P3TriggerUpdate");
+  const [updatePreference] = useLocalStorage("forceUpdate");
 
   const [isUpdating, setUpdating] = useBoolean();
 
@@ -49,10 +49,7 @@ export default function UpdatesAvailable() {
               <Button
                 onClick={(_) => {
                   setUpdating.on();
-                  writeStorage(
-                    "P3TriggerUpdate",
-                    updatePreference ? false : true
-                  );
+                  writeStorage("forceUpdate", updatePreference ? false : true);
                 }}
               >
                 Update Now

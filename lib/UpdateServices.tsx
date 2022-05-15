@@ -13,10 +13,10 @@ import { deleteFromStorage, useLocalStorage } from "@rehooks/local-storage";
 import { useEffect } from "react";
 
 // Begin component
-export default function UpdateProvider({ children }: { children: ReactNode }) {
+export default function UpdateServices({ children }: { children: ReactNode }) {
   const [isUpdateAvailable, setUpdateAvailable] = useBoolean();
 
-  const [updatePreference] = useLocalStorage("P3TriggerUpdate");
+  const [updatePreference] = useLocalStorage("forceUpdate");
 
   useEffect(() => {
     if (
@@ -49,7 +49,7 @@ export default function UpdateProvider({ children }: { children: ReactNode }) {
         if (updatePreference) {
           setUpdateAvailable.off;
 
-          deleteFromStorage("P3TriggerUpdate");
+          deleteFromStorage("forceUpdate");
 
           wb.addEventListener("controlling", (event: any) => {
             window.location.reload();

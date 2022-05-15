@@ -3,7 +3,7 @@ import NextDocument, { Html, Head, Main, NextScript } from "next/document";
 
 // Design
 import { ColorModeScript } from "@chakra-ui/react";
-import theme from "lib/ThemeProvider";
+import theme from "lib/Theming";
 
 // Start HTML document
 export default class Document extends NextDocument {

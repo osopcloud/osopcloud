@@ -141,7 +141,7 @@ export default function AboutApplication() {
               </Text>
             </Flex>
             <Flex>
-              <Text>Framework</Text>
+              <Text>Technology</Text>
               <Spacer />
               <Text>
                 <Link href="https://nextjs.org">Next.js</Link> on{" "}

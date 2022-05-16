@@ -1,7 +1,9 @@
+// Routing
+import Link from "next/link";
+
 // Design
 import {
   Button,
-  Code,
   Flex,
   Icon,
   Spacer,
@@ -37,9 +39,6 @@ export default function AboutApplication() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const closeRef: any = useRef();
 
-  // Application information
-  const commit = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
-
   // Reset functions
   const [hideNotifications] = useLocalStorage("settingsHideNotifications");
   const [backButtonLargeWindows] = useLocalStorage(
@@ -53,6 +52,7 @@ export default function AboutApplication() {
   function BeginReset() {
     DeleteSettings();
     if (accessibleFonts) {
+      onClose();
       window.location.reload();
     } else onClose();
   }
@@ -121,17 +121,12 @@ export default function AboutApplication() {
             <Flex>
               <Text>Version</Text>
               <Spacer />
-              <Code fontSize="xs">1.0.0-alpha.1</Code>
+              <Text>1.0.0</Text>
             </Flex>
             <Flex>
               <Text>Commit</Text>
               <Spacer />
-              <Text>{commit ? commit : "Undefined"}</Text>
-            </Flex>
-            <Flex>
-              <Text>GAS</Text>
-              <Spacer />
-              <Text>Platform 3</Text>
+              <Link href="/commit">View</Link>
             </Flex>
             <Flex>
               <Text>Detected Browser</Text>
@@ -143,6 +138,22 @@ export default function AboutApplication() {
                   : `${browserName} ${browserVersion}`}{" "}
                 {/* iPad devices will always return Mac OS, which is potentially confusing */}
                 ({osName === "Mac OS" ? "macOS/iPadOS" : osName})
+              </Text>
+            </Flex>
+            <Flex>
+              <Text>Framework</Text>
+              <Spacer />
+              <Text>
+                <Link href="https://nextjs.org">Next.js</Link> on{" "}
+                <Link href="https://vercel.com">Vercel</Link> (Platform 3)
+              </Text>
+            </Flex>
+            <Flex>
+              <Text>UTS</Text>
+              <Spacer />
+              <Text>
+                <Link href="https://ackee.electerious.com">Ackee</Link> on{" "}
+                <Link href="https://railway.app">Railway</Link>
               </Text>
             </Flex>
           </Stack>

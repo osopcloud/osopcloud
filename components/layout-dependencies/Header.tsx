@@ -11,7 +11,6 @@ import {
   Icon,
   IconButton,
   Spacer,
-  Tooltip,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -22,7 +21,6 @@ import { Logo } from "components/brand/Logo";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";
-import { isMacOs } from "react-device-detect";
 
 // Start component
 export default function Header() {
@@ -62,19 +60,13 @@ export default function Header() {
               display={{ base: "flex", sm: "none" }}
             />
           </Center>
-          <Tooltip
-            label={`Go Home (${isMacOs ? "⌘" : "⌃"}/)`}
-            placement={backButtonLargeWindows ? "right" : "left"}
-            display={{ base: "none", md: "flex" }}
-          >
-            <Box>
-              <Link href="/" passHref>
-                <Icon w={20} h={20} cursor="pointer" as="a">
-                  <Logo />
-                </Icon>
-              </Link>
+          <Link href="/" passHref>
+            <Box as="a">
+              <Icon w={20} h={20} cursor="pointer">
+                <Logo />
+              </Icon>
             </Box>
-          </Tooltip>
+          </Link>
           <Spacer />
           {sessionThemeToggle && (
             <Center>
@@ -87,21 +79,15 @@ export default function Header() {
               />
             </Center>
           )}
-          <Tooltip
-            label={`Open Settings (⇧${isMacOs ? "⌘" : "⌃"},)`}
-            placement="right"
-            display={{ base: "none", md: "flex" }}
-          >
-            <Center>
-              <Link href="/settings" passHref>
-                <IconButton
-                  icon={<FiSettings />}
-                  aria-label="Open Settings"
-                  as="a"
-                />
-              </Link>
-            </Center>
-          </Tooltip>
+          <Center>
+            <Link href="/settings" passHref>
+              <IconButton
+                icon={<FiSettings />}
+                aria-label="Open Settings"
+                as="a"
+              />
+            </Link>
+          </Center>
         </Flex>
       </Container>
     </Flex>

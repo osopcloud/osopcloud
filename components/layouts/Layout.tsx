@@ -6,7 +6,6 @@ import {
   IconButton,
   Skeleton,
   Spacer,
-  Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FiArrowUp, FiShare } from "react-icons/fi";
@@ -20,7 +19,7 @@ import DevelopmentWarning from "components/alerts/DevelopmentWarning";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
-import { isLegacyEdge, isIE, isMacOs } from "react-device-detect";
+import { isLegacyEdge, isIE } from "react-device-detect";
 
 import { Suspense, useEffect } from "react";
 
@@ -111,17 +110,11 @@ export default function Layout({
           )}
           <Spacer />
           {showToTopButton && (
-            <Tooltip
-              label={`Go to Top (${isMacOs ? "⌘" : "⌃"}↑)`}
-              placement="right"
-              display={{ base: "none", md: "flex" }}
-            >
-              <IconButton
-                icon={<FiArrowUp />}
-                aria-label="Go to top"
-                onClick={() => window.scrollTo(0, 0)}
-              />
-            </Tooltip>
+            <IconButton
+              icon={<FiArrowUp />}
+              aria-label="Go to top"
+              onClick={() => window.scrollTo(0, 0)}
+            />
           )}
         </Flex>
       </Container>

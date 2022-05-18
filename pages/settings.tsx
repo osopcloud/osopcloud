@@ -4,14 +4,7 @@ import type { ReactElement } from "react";
 // SEO
 
 // Design
-import {
-  Button,
-  Heading,
-  Stack,
-  Text,
-  Tooltip,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Button, Heading, Stack, Text, useColorMode } from "@chakra-ui/react";
 
 // First-party components
 import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
@@ -22,7 +15,6 @@ import Layout from "components/layouts/Layout";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
-import { isMacOs } from "react-device-detect";
 
 // Start page
 export default function Settings() {
@@ -53,24 +45,18 @@ export default function Settings() {
         >
           {hideNotifications ? "Disable" : "Enable"} Focus Mode
         </Button>
-        <Tooltip
-          label={`⌥${isMacOs ? "⌘" : "⌃"}←`}
-          placement="right"
-          display={{ base: "none", md: "flex" }}
+        <Button
+          display={{ base: "none", sm: "block" }}
+          onClick={(_) => {
+            writeStorage(
+              "settingsAlwaysShowBackButton",
+              backButtonLargeWindows ? false : true
+            );
+          }}
         >
-          <Button
-            display={{ base: "none", sm: "block" }}
-            onClick={(_) => {
-              writeStorage(
-                "settingsAlwaysShowBackButton",
-                backButtonLargeWindows ? false : true
-              );
-            }}
-          >
-            {backButtonLargeWindows ? "Hide" : "Show"} the Back Button on Large
-            Windows
-          </Button>
-        </Tooltip>
+          {backButtonLargeWindows ? "Hide" : "Show"} the Back Button on Large
+          Windows
+        </Button>
         <Button
           display={{ base: "none", sm: "block" }}
           onClick={(_) => {

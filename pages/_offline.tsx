@@ -15,7 +15,7 @@ import Layout from "components/layouts/Layout";
 import { FiArrowLeft, FiChevronLeft, FiRefreshCw } from "react-icons/fi";
 
 // Start page
-export default function Custom500() {
+export default function Offline() {
   const router = useRouter();
   return (
     <Stack direction="column" spacing={5}>
@@ -42,7 +42,7 @@ export default function Custom500() {
     </Stack>
   );
 }
-Custom500.getLayout = function getLayout(page: ReactElement) {
+Offline.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout showToTopButton={false} showShareButton={false}>
       {page}

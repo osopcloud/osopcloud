@@ -12,10 +12,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FiTrash2 } from "react-icons/fi";
-import { Logo } from "components/brand/Logo";
+import Logo from "components/brand/Logo";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
+import Version from "components/Version";
 
 // Settings
 import { deleteFromStorage, useLocalStorage } from "@rehooks/local-storage";
@@ -118,7 +119,7 @@ export default function AboutApplication() {
             <Flex>
               <Text>Version</Text>
               <Spacer />
-              <Text>1.0.0</Text>
+              <Version />
             </Flex>
             <Flex>
               <Text>Commit</Text>

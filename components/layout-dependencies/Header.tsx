@@ -17,7 +17,7 @@ import {
 import { FiChevronLeft, FiMoon, FiSettings, FiSun } from "react-icons/fi";
 
 // First-party components
-import { Logo } from "components/brand/Logo";
+import Logo from "components/brand/Logo";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";

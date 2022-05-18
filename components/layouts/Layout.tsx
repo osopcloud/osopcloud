@@ -114,6 +114,7 @@ export default function Layout({
             <Tooltip
               label={`Go to Top (${isMacOs ? "⌘" : "⌃"}↑)`}
               placement="right"
+              display={{ base: "none", md: "flex" }}
             >
               <IconButton
                 icon={<FiArrowUp />}

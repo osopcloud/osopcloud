@@ -53,7 +53,11 @@ export default function Settings() {
         >
           {hideNotifications ? "Disable" : "Enable"} Focus Mode
         </Button>
-        <Tooltip label={`⌥${isMacOs ? "⌘" : "⌃"}←`} placement="right">
+        <Tooltip
+          label={`⌥${isMacOs ? "⌘" : "⌃"}←`}
+          placement="right"
+          display={{ base: "none", md: "flex" }}
+        >
           <Button
             display={{ base: "none", sm: "block" }}
             onClick={(_) => {

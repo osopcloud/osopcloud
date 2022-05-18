@@ -9,7 +9,6 @@ import {
   Spacer,
   Stack,
   Text,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { FiTrash2 } from "react-icons/fi";
@@ -58,17 +57,15 @@ export default function AboutApplication() {
   }
   function ResetButton() {
     return (
-      <Tooltip label="Reset All Settings and Clear the Cache" placement="right">
-        <Button
-          leftIcon={<FiTrash2 />}
-          // If the user is using accessible fonts, then resetting could make the page unreadable
-          // To assist with conveying this, the colorScheme is changed from "warning" to "danger"
-          colorScheme={accessibleFonts ? "red" : "orange"}
-          onClick={BeginReset}
-        >
-          Reset Osopcloud
-        </Button>
-      </Tooltip>
+      <Button
+        leftIcon={<FiTrash2 />}
+        // If the user is using accessible fonts, then resetting could make the page unreadable
+        // To assist with conveying this, the colorScheme is changed from "warning" to "danger"
+        colorScheme={accessibleFonts ? "red" : "orange"}
+        onClick={BeginReset}
+      >
+        Reset Osopcloud
+      </Button>
     );
   }
   function ResetDisabled() {

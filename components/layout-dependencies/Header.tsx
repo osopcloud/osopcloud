@@ -65,6 +65,7 @@ export default function Header() {
           <Tooltip
             label={`Go Home (${isMacOs ? "⌘" : "⌃"}/)`}
             placement={backButtonLargeWindows ? "right" : "left"}
+            display={{ base: "none", md: "flex" }}
           >
             <Box>
               <Link href="/" passHref>
@@ -89,6 +90,7 @@ export default function Header() {
           <Tooltip
             label={`Open Settings (⇧${isMacOs ? "⌘" : "⌃"},)`}
             placement="right"
+            display={{ base: "none", md: "flex" }}
           >
             <Center>
               <Link href="/settings" passHref>

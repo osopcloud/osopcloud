@@ -46,9 +46,11 @@ export default function Footer() {
                   Privacy
                 </Button>
               </Link>
-              <Button size="sm" isDisabled>
-                Terms
-              </Button>
+              <Link href="/about/terms" passHref>
+                <Button size="sm" as="a">
+                  Terms
+                </Button>
+              </Link>
             </Stack>
             <Spacer />
             <Button

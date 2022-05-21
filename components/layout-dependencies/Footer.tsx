@@ -34,13 +34,11 @@ export default function Footer() {
                   GitHub
                 </Button>
               </Link>
-              <Button
-                size="sm"
-                isDisabled
-                display={{ base: "none", sm: "flex" }}
-              >
-                Documentation
-              </Button>
+              <Link href="/docs/introduction" passHref>
+                <Button size="sm" display={{ base: "none", sm: "flex" }} as="a">
+                  Documentation
+                </Button>
+              </Link>
               <Link href="/about/privacy" passHref>
                 <Button size="sm" as="a">
                   Privacy

@@ -1,10 +1,21 @@
 // Types
 import type { ReactElement } from "react";
 
+// Routing
+import Link from "next/link";
+
 // SEO
 
 // Design
-import { Button, Heading, Stack, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Heading,
+  Stack,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
+import { VercelLogo } from "components/brand/VercelPromotion";
 
 // First-party components
 import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
@@ -58,7 +69,7 @@ export default function Settings() {
           Windows
         </Button>
         <Button
-          display={{ base: "none", sm: "block" }}
+          display={{ base: "none", sm: "flex" }}
           onClick={(_) => {
             writeStorage(
               "settingsShowThemeToggle",
@@ -69,7 +80,7 @@ export default function Settings() {
           {showSessionThemeToggle ? "Hide" : "Show"} the Session Theme Toggle
         </Button>
         <Button
-          display={{ base: "block", sm: "none" }}
+          display={{ base: "flex", sm: "none" }}
           onClick={toggleColorMode}
         >
           Toggle the Session Theme
@@ -82,6 +93,23 @@ export default function Settings() {
         <ChangeApplicationFont />
         <AboutApplication />
       </Stack>
+      <Link href="/docs/introduction" passHref>
+        <Button display={{ base: "flex", sm: "none" }} as="a">
+          Osopcloud Documentation
+        </Button>
+      </Link>
+      <Button
+        aria-label="Powered by Vercel"
+        display={{ base: "flex", md: "none" }}
+        isDisabled
+      >
+        <Stack direction="row" spacing={2}>
+          <Text>Powered by</Text>
+          <Center>
+            <VercelLogo fill="black" />
+          </Center>
+        </Stack>
+      </Button>
     </Stack>
   );
 }

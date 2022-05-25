@@ -1,3 +1,6 @@
+// Routing
+import Link from "next/link";
+
 // Design
 import {
   Button,
@@ -21,18 +24,31 @@ export default function Footer() {
         <Container maxWidth="container.md" py={2}>
           <Flex>
             <Stack direction="row" spacing={5}>
-              <Button
-                size="sm"
-                leftIcon={<FiGithub />}
-                display={{ base: "none", sm: "flex" }}
-              >
-                GitHub
-              </Button>
-              <Button size="sm" display={{ base: "none", sm: "flex" }}>
-                Documentation
-              </Button>
-              <Button size="sm">Privacy</Button>
-              <Button size="sm">Terms</Button>
+              <Link href="https://github.com/osopcloud" passHref>
+                <Button
+                  size="sm"
+                  leftIcon={<FiGithub />}
+                  display={{ base: "none", sm: "flex" }}
+                  as="a"
+                >
+                  GitHub
+                </Button>
+              </Link>
+              <Link href="/docs/introduction" passHref>
+                <Button size="sm" display={{ base: "none", sm: "flex" }} as="a">
+                  Documentation
+                </Button>
+              </Link>
+              <Link href="/about/privacy" passHref>
+                <Button size="sm" as="a">
+                  Privacy
+                </Button>
+              </Link>
+              <Link href="/about/terms" passHref>
+                <Button size="sm" as="a">
+                  Terms
+                </Button>
+              </Link>
             </Stack>
             <Spacer />
             <Button

@@ -13,7 +13,7 @@ import {
 import { FiTool } from "react-icons/fi";
 
 // First party components
-import { Logo } from "components/brand/Logo";
+import Logo from "components/brand/Logo";
 import { DeleteSettings } from "components/settings/AboutApplication";
 import Version from "components/Version";
 import { commit } from "components/Commit";

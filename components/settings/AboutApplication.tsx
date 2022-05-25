@@ -1,20 +1,22 @@
+// Routing
+import Link from "next/link";
+
 // Design
 import {
   Button,
-  Code,
   Flex,
   Icon,
   Spacer,
   Stack,
   Text,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { FiTrash2 } from "react-icons/fi";
-import { Logo } from "components/brand/Logo";
+import Logo from "components/brand/Logo";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
+import Version from "components/Version";
 
 // Settings
 import { deleteFromStorage, useLocalStorage } from "@rehooks/local-storage";
@@ -37,9 +39,6 @@ export default function AboutApplication() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const closeRef: any = useRef();
 
-  // Application information
-  const commit = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
-
   // Reset functions
   const [hideNotifications] = useLocalStorage("settingsHideNotifications");
   const [backButtonLargeWindows] = useLocalStorage(
@@ -53,22 +52,21 @@ export default function AboutApplication() {
   function BeginReset() {
     DeleteSettings();
     if (accessibleFonts) {
+      onClose();
       window.location.reload();
     } else onClose();
   }
   function ResetButton() {
     return (
-      <Tooltip label="Reset All Settings and Clear the Cache" placement="right">
-        <Button
-          leftIcon={<FiTrash2 />}
-          // If the user is using accessible fonts, then resetting could make the page unreadable
-          // To assist with conveying this, the colorScheme is changed from "warning" to "danger"
-          colorScheme={accessibleFonts ? "red" : "orange"}
-          onClick={BeginReset}
-        >
-          Reset Osopcloud
-        </Button>
-      </Tooltip>
+      <Button
+        leftIcon={<FiTrash2 />}
+        // If the user is using accessible fonts, then resetting could make the page unreadable
+        // To assist with conveying this, the colorScheme is changed from "warning" to "danger"
+        colorScheme={accessibleFonts ? "red" : "orange"}
+        onClick={BeginReset}
+      >
+        Reset Osopcloud
+      </Button>
     );
   }
   function ResetDisabled() {
@@ -121,17 +119,12 @@ export default function AboutApplication() {
             <Flex>
               <Text>Version</Text>
               <Spacer />
-              <Code fontSize="xs">1.0.0-alpha.1</Code>
+              <Version />
             </Flex>
             <Flex>
               <Text>Commit</Text>
               <Spacer />
-              <Text>{commit ? commit : "Undefined"}</Text>
-            </Flex>
-            <Flex>
-              <Text>GAS</Text>
-              <Spacer />
-              <Text>Platform 3</Text>
+              <Link href="/commit">View</Link>
             </Flex>
             <Flex>
               <Text>Detected Browser</Text>
@@ -143,6 +136,22 @@ export default function AboutApplication() {
                   : `${browserName} ${browserVersion}`}{" "}
                 {/* iPad devices will always return Mac OS, which is potentially confusing */}
                 ({osName === "Mac OS" ? "macOS/iPadOS" : osName})
+              </Text>
+            </Flex>
+            <Flex>
+              <Text>Technology</Text>
+              <Spacer />
+              <Text>
+                <Link href="https://nextjs.org">Next.js</Link> on{" "}
+                <Link href="https://vercel.com">Vercel</Link> (Platform 3)
+              </Text>
+            </Flex>
+            <Flex>
+              <Text>UTS</Text>
+              <Spacer />
+              <Text>
+                <Link href="https://ackee.electerious.com">Ackee</Link> on{" "}
+                <Link href="https://railway.app">Railway</Link>
               </Text>
             </Flex>
           </Stack>

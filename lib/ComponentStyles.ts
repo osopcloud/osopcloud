@@ -17,12 +17,6 @@ export const Button = {
   },
 };
 
-export const Tooltip = {
-  baseStyle: {
-    rounded: "md",
-  },
-};
-
 export const Heading = {
   baseStyle: ({ colorMode }: { colorMode: string }) => ({
     fontWeight: 600,

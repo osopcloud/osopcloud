@@ -6,7 +6,7 @@ import type { ReactElement } from "react";
 // SEO
 
 // Design
-import { Heading, Stack, Text } from "@chakra-ui/react";
+import { Heading, Stack, Text, SimpleGrid } from "@chakra-ui/react";
 
 // First-party components
 
@@ -14,14 +14,17 @@ import { Heading, Stack, Text } from "@chakra-ui/react";
 import Layout from "components/layouts/Layout";
 
 // Start page
-export default function Page() {
+export default function Home() {
   return (
     <Stack direction="column" spacing={5}>
       <Heading>Home</Heading>
-      <Text>This is the new Osopcloud, opening in September.</Text>
+      <SimpleGrid minChildWidth="350px">
+        <Text>This is the new Osopcloud.</Text>
+        <Text>More text</Text>
+      </SimpleGrid>
     </Stack>
   );
 }
-Page.getLayout = function getLayout(page: ReactElement) {
+Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout showToTopButton={true}>{page}</Layout>;
 };

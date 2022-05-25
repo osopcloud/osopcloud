@@ -10,16 +10,15 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { FiTool } from "react-icons/fi";
 
 // First party components
 import { Logo } from "components/brand/Logo";
 import { DeleteSettings } from "components/settings/AboutApplication";
+import Version from "components/Version";
+import { commit } from "components/Commit";
 
 import React from "react";
-import { FiTool } from "react-icons/fi";
-
-// Application information
-export const commit = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
 
 // Start component
 export class ErrorFallbackApplication extends React.Component {
@@ -80,7 +79,7 @@ export class ErrorFallbackApplication extends React.Component {
                 <Stack direction="column" spacing={0}>
                   {/* Find that error information from React */}
                   <Text>3102</Text>
-                  <Text>1.0.0-alpha.1</Text>
+                  <Version />
                   <Text>{commit ? commit : "Undefined"}</Text>
                 </Stack>
               </Stack>

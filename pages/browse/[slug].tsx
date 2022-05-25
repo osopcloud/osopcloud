@@ -1,0 +1,243 @@
+// This page uses the legacy Node.js Runtime delivery technology
+// Reason: Uses eval() to process MDX
+// https://nextjs.org/docs/api-reference/edge-runtime
+
+// Types
+import { ReactElement, useRef } from "react";
+import { GetStaticProps } from "next";
+
+// Design
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Stack,
+  Table,
+  Tbody,
+  Text,
+  Td,
+  Tr,
+  useDisclosure,
+  Badge,
+} from "@chakra-ui/react";
+
+// First party components
+import Layout from "components/layouts/Layout";
+import DynamicModal from "components/overlays/DynamicModal";
+
+// Markdown processing libraries
+import fs from "fs";
+import path from "path";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
+// @ts-expect-error
+import MDXProvider from "lib/MDXProvider";
+import { FiDatabase, FiFileText } from "react-icons/fi";
+
+import { useState } from "react";
+import Link from "next/link";
+
+interface OSPageTypes {
+  source: any;
+  componentOverrides: object;
+  descriptionPath: string;
+}
+
+// Start page
+export default function OSPage({ source, componentOverrides }: OSPageTypes) {
+  // Modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const closeRef: any = useRef();
+
+  // Tabs
+  function MDXDescription() {
+    return (
+      <MDXProvider>
+        <MDXRemote {...source} components={componentOverrides} />
+      </MDXProvider>
+    );
+  }
+  function EmbeddedMetadataTable() {
+    return (
+      <Table size="sm" variant="simple">
+        <Tbody>
+          <Tr>
+            <Td>Page Created</Td>
+            <Td>
+              {new Date(source.frontmatter.date[0])
+                .toDateString()
+                .split(" ")
+                .slice(1)
+                .join(" ")}
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Page Updated</Td>
+            <Td>
+              {/* Map source.frontmatter.date but leave out 0*/}
+              {/* If source.frontmatter.donate has more than 1 value */}
+              {source.frontmatter.date.slice(1).map((date: string) => (
+                <>
+                  {/* Format the date with toDateString() removing the day */}
+                  {new Date(date).toDateString().split(" ").slice(1).join(" ")}
+                  {/* Add a comma if not the last date */}
+                  {source.frontmatter.date.indexOf(date) !==
+                  source.frontmatter.date.length - 1
+                    ? ", "
+                    : ""}
+                </>
+              ))}
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    );
+  }
+
+  // Tab array
+  const tabArray = [
+    {
+      label: "Description",
+      icon: <FiFileText />,
+      content: <MDXDescription />,
+    },
+    {
+      label: "Metadata & More",
+      icon: <FiDatabase />,
+      content: <EmbeddedMetadataTable />,
+    },
+  ];
+  const [activeTab, setActiveTab] = useState(0);
+  return (
+    <Stack direction="column" spacing={5}>
+      <Heading>{source.frontmatter.name}</Heading>
+      <Flex display="flex" flexDirection={{ base: "column", md: "row" }}>
+        {/* This can't be a Stack because the first child might not be shown on small windows */}
+        <Box flex={1} mb={{ base: 5, sm: 0 }}>
+          <Stack
+            direction="row"
+            spacing={2}
+            display={{ base: "flex", sm: "none" }}
+            mb={5}
+          >
+            {tabArray.map((tab, index) => (
+              <Button
+                key={index}
+                leftIcon={tab.icon}
+                onClick={(_) => setActiveTab(index)}
+                isActive={activeTab === index}
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </Stack>
+          <Box>{tabArray[activeTab].content}</Box>
+        </Box>
+        <Stack direction="column" spacing={5} ms={{ base: 0, sm: 10 }}>
+          <Stack direction="row" spacing={2}>
+            {source.frontmatter.tags.map((tags: string) => (
+              <Badge>{tags}</Badge>
+            ))}
+          </Stack>
+          <Stack
+            direction="column"
+            spacing={2}
+            display={{ base: "none", sm: "flex" }}
+          >
+            {tabArray.map((tab, index) => (
+              <Button
+                key={index}
+                leftIcon={tab.icon}
+                onClick={(_) => setActiveTab(index)}
+                isActive={activeTab === index}
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </Stack>
+          <Stack direction="column" spacing={2}>
+            <Button isDisabled>Visit Project Website</Button>
+            <Button isDisabled>Visit Project Repository</Button>
+            {isOpen ? (
+              <Button isActive>Donation Options</Button>
+            ) : (
+              <Button onClick={onOpen}>Donation Options</Button>
+            )}
+            <DynamicModal
+              isOpen={isOpen}
+              onClose={onClose}
+              cancelRef={closeRef}
+              useAlertDialog={false}
+            >
+              <Stack direction="column" spacing={5}>
+                <Heading size="md">Donate to {source.frontmatter.name}</Heading>
+                <Text>To be completed</Text>
+                <Button onClick={onClose} ref={closeRef}>
+                  Cancel
+                </Button>
+                <Text fontSize="xs">
+                  Donations are made through third parties. This isn't financial
+                  advice.{" "}
+                  <Link href="/about/terms">
+                    Osopcloud Terms and Other Legal Notices...
+                  </Link>
+                </Text>
+              </Stack>
+            </DynamicModal>
+          </Stack>
+        </Stack>
+      </Flex>
+    </Stack>
+  );
+}
+OSPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout showToTopButton={true}>{page}</Layout>;
+};
+
+// Disable the Edge Runtime
+export const config = {
+  runtime: "nodejs",
+};
+
+interface PathProps {
+  params: {
+    slug: string;
+  };
+  mdxSource: MDXRemoteSerializeResult;
+}
+
+// @ts-expect-error
+export const getStaticProps: GetStaticProps = async ({ params }: PathProps) => {
+  // Find Markdown files
+  const filePath = path.join(`public/markdown/browse`, `${params.slug}.mdx`);
+  const source = fs.readFileSync(filePath);
+
+  // Use the files to parse MDX
+  // @ts-expect-error
+  const mdxSource = await serialize(source, {
+    parseFrontmatter: true,
+  });
+
+  return {
+    props: {
+      source: mdxSource,
+    },
+  };
+};
+export const getStaticPaths = async () => {
+  const pageContentPath = path.join(process.cwd(), "public/markdown/browse");
+
+  const pageFilePaths = fs
+    .readdirSync(pageContentPath)
+    .filter((path) => /\.mdx?$/.test(path));
+
+  const paths = pageFilePaths
+    .map((path) => path.replace(/\.mdx?$/, ""))
+    .map((slug) => ({ params: { slug } }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};

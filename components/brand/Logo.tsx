@@ -1,3 +1,6 @@
+// Design
+import { Icon } from "@chakra-ui/react";
+
 // Start component
 export default function Logo() {
   return (
@@ -13,5 +16,13 @@ export default function Logo() {
         d="M87,39c-.56,2.22-1.86,2.53-10,9-6.52,5.19-2.6,2.61-19,17-.16,.14-7.77,6.77-11,13-1.56,3.01-1.89,5.03-2,6-.32,2.83,.42,3.67,0,5-1.32,4.18-12.33,7.52-17,3-4.24-4.1-1.37-12.86,1-17,1.9-3.32,3.58-5.38,5-7,5.75-6.6,8.91-16.49,15-36,3.76-12.04,3.77-13.52,6-15,8.4-5.57,34.33,12.71,32,22Z"
       />
     </svg>
+  );
+}
+
+export function HeaderLogo() {
+  return (
+    <Icon w={20} h={20} cursor="pointer" as="a">
+      <Logo />
+    </Icon>
   );
 }

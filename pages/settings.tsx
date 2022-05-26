@@ -5,6 +5,7 @@ import type { ReactElement } from "react";
 import Link from "next/link";
 
 // SEO
+import Head from "next/head";
 
 // Design
 import {
@@ -39,78 +40,93 @@ export default function Settings() {
   const { toggleColorMode } = useColorMode();
 
   return (
-    <Stack direction="column" spacing={5}>
-      <Heading>Osopcloud Settings</Heading>
-      <Text>
-        Use Settings to customise how Osopcloud looks and configure how it
-        behaves.
-      </Text>
-      <Stack direction="column" spacing={2}>
-        <Button
-          onClick={(_) => {
-            writeStorage(
-              "settingsHideNotifications",
-              hideNotifications ? false : true
-            );
-          }}
-        >
-          {hideNotifications ? "Disable" : "Enable"} Focus Mode
-        </Button>
-        <Button
-          display={{ base: "none", sm: "block" }}
-          onClick={(_) => {
-            writeStorage(
-              "settingsAlwaysShowBackButton",
-              backButtonLargeWindows ? false : true
-            );
-          }}
-        >
-          {backButtonLargeWindows ? "Hide" : "Show"} the Back Button on Large
-          Windows
-        </Button>
-        <Button
-          display={{ base: "none", sm: "flex" }}
-          onClick={(_) => {
-            writeStorage(
-              "settingsShowThemeToggle",
-              showSessionThemeToggle ? false : true
-            );
-          }}
-        >
-          {showSessionThemeToggle ? "Hide" : "Show"} the Session Theme Toggle
-        </Button>
-        <Button
-          display={{ base: "flex", sm: "none" }}
-          onClick={toggleColorMode}
-        >
-          Toggle the Session Theme
-        </Button>
-      </Stack>
-      <Stack direction="column" spacing={2}>
-        <Button isDisabled>Disable Donation Features</Button>
-      </Stack>
-      <Stack direction="column" spacing={2}>
-        <ChangeApplicationFont />
-        <AboutApplication />
-      </Stack>
-      <Link href="/docs/introduction" passHref>
-        <Button display={{ base: "flex", sm: "none" }} as="a">
-          Osopcloud Documentation
-        </Button>
-      </Link>
-      <Button
-        aria-label="Powered by Vercel"
-        display={{ base: "flex", md: "none" }}
-        isDisabled
-      >
-        <Stack direction="row" spacing={2}>
-          <Text>Powered by</Text>
-          <Center>
-            <VercelLogo fill="black" />
-          </Center>
+    <>
+      <Head>
+        <title>Settings &mdash; Osopcloud</title>
+        <meta
+          name="description"
+          content="Customise and configure Osopcloud with Settings."
+        />
+        <meta name="og:title" content="Settings" />
+        <meta
+          name="og:description"
+          content="Customise and configure Osopcloud."
+        />
+      </Head>
+
+      <Stack direction="column" spacing={5}>
+        <Heading>Osopcloud Settings</Heading>
+        <Text>
+          Use Settings to customise how Osopcloud looks and configure how it
+          behaves.
+        </Text>
+        <Stack direction="column" spacing={2}>
+          <Button
+            onClick={(_) => {
+              writeStorage(
+                "settingsHideNotifications",
+                hideNotifications ? false : true
+              );
+            }}
+          >
+            {hideNotifications ? "Disable" : "Enable"} Focus Mode
+          </Button>
+          <Button
+            display={{ base: "none", sm: "block" }}
+            onClick={(_) => {
+              writeStorage(
+                "settingsAlwaysShowBackButton",
+                backButtonLargeWindows ? false : true
+              );
+            }}
+          >
+            {backButtonLargeWindows ? "Hide" : "Show"} the Back Button on Large
+            Windows
+          </Button>
+          <Button
+            display={{ base: "none", sm: "flex" }}
+            onClick={(_) => {
+              writeStorage(
+                "settingsShowThemeToggle",
+                showSessionThemeToggle ? false : true
+              );
+            }}
+          >
+            {showSessionThemeToggle ? "Hide" : "Show"} the Session Theme Toggle
+          </Button>
+          <Button
+            display={{ base: "flex", sm: "none" }}
+            onClick={toggleColorMode}
+          >
+            Toggle the Session Theme
+          </Button>
         </Stack>
-      </Button>
-    </Stack>
+        <Stack direction="column" spacing={2}>
+          <Button isDisabled>Disable Donation Features</Button>
+        </Stack>
+        <Stack direction="column" spacing={2}>
+          <ChangeApplicationFont />
+          <AboutApplication />
+        </Stack>
+        <Link href="/docs/introduction" passHref>
+          <Button display={{ base: "flex", sm: "none" }} as="a">
+            Osopcloud Documentation
+          </Button>
+        </Link>
+        <Button
+          aria-label="Powered by Vercel"
+          display={{ base: "flex", md: "none" }}
+          isDisabled
+        >
+          <Stack direction="row" spacing={2}>
+            <Text>Powered by</Text>
+            <Center>
+              <VercelLogo fill="black" />
+            </Center>
+          </Stack>
+        </Button>
+      </Stack>
+    </>
   );
 }
 Settings.getLayout = function getLayout(page: ReactElement) {

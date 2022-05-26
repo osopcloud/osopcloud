@@ -6,6 +6,9 @@
 import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
 
+// SEO
+import Head from "next/head";
+
 // First party components
 import Layout from "components/layouts/Layout";
 
@@ -26,9 +29,24 @@ interface OSPageTypes {
 // Start page
 export default function About({ source, componentOverrides }: OSPageTypes) {
   return (
-    <MDXProvider>
-      <MDXRemote {...source} components={componentOverrides} />
-    </MDXProvider>
+    <>
+      <Head>
+        <title>{source.frontmatter.name} &mdash; Osopcloud</title>
+        <meta
+          name="description"
+          content={`${source.frontmatter.name} on Osopcloud.`}
+        />
+        <meta name="og:title" content={source.frontmatter.name} />
+        <meta
+          name="og:description"
+          content={`${source.frontmatter.name} on Osopcloud.`}
+        />
+      </Head>
+
+      <MDXProvider>
+        <MDXRemote {...source} components={componentOverrides} />
+      </MDXProvider>
+    </>
   );
 }
 About.getLayout = function getLayout(page: ReactElement) {

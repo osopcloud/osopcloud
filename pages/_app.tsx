@@ -13,12 +13,11 @@ import { ErrorFallbackApplication } from "components/error-handling/ErrorFallbac
 import { useRouter } from "next/router";
 
 // Design
-import { Spinner } from "@chakra-ui/react";
 import "@fontsource/public-sans/400.css";
 import "@fontsource/public-sans/600.css";
 import "@fontsource/atkinson-hyperlegible";
 
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -77,9 +76,7 @@ export default function Application({
     <ChakraProvider theme={theme}>
       <ErrorFallbackApplication>
         <UpdateServices>
-          <Suspense fallback={<Spinner m={5} />}>
-            {getLayout(<Component {...pageProps} />)}
-          </Suspense>
+          {getLayout(<Component {...pageProps} />)}
         </UpdateServices>
       </ErrorFallbackApplication>
     </ChakraProvider>

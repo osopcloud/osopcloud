@@ -6,6 +6,9 @@
 import { ReactElement, useRef } from "react";
 import { GetStaticProps } from "next";
 
+// SEO
+import Head from "next/head";
+
 // Design
 import {
   Box,
@@ -237,90 +240,107 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
   ];
   const [activeTab, setActiveTab] = useState(0);
   return (
-    <Stack direction="column" spacing={5}>
-      <Heading>{source.frontmatter.name}</Heading>
-      <Flex display="flex" flexDirection={{ base: "column", md: "row" }}>
-        {/* This can't be a Stack because the first child might not be shown on small windows */}
-        <Box flex={1} mb={{ base: 5, sm: 0 }}>
-          <Stack
-            direction="row"
-            spacing={2}
-            display={{ base: "flex", sm: "none" }}
-            mb={5}
-          >
-            {tabArray.map((tab, index) => (
-              <Button
-                key={index}
-                leftIcon={tab.icon}
-                onClick={(_) => setActiveTab(index)}
-                isActive={activeTab === index}
-              >
-                {tab.label}
-              </Button>
-            ))}
-          </Stack>
-          <Box>{tabArray[activeTab].content}</Box>
-        </Box>
-        <Stack direction="column" spacing={5} ms={{ base: 0, sm: 10 }}>
-          <Stack direction="row" spacing={2}>
-            {/* Map source.frontmatter.tags but only show two */}
-            {source.frontmatter.tags.slice(0, 2).map((tag: string) => (
-              <Badge key={tag}>{tag}</Badge>
-            ))}
-          </Stack>
-          <Stack
-            direction="column"
-            spacing={2}
-            display={{ base: "none", sm: "flex" }}
-          >
-            {tabArray.map((tab, index) => (
-              <Button
-                key={index}
-                leftIcon={tab.icon}
-                onClick={(_) => setActiveTab(index)}
-                isActive={activeTab === index}
-              >
-                {tab.label}
-              </Button>
-            ))}
-          </Stack>
-          <Stack direction="column" spacing={2}>
-            <Link href={source.frontmatter.website} passHref>
-              <Button as="a">Visit Project Website</Button>
-            </Link>
-            <Link href={source.frontmatter.repository} passHref>
-              <Button as="a">Visit Project Repository</Button>
-            </Link>
-            {isOpen ? (
-              <Button isActive>Donation Options</Button>
-            ) : (
-              <Button onClick={onOpen}>Donation Options</Button>
-            )}
-            <DynamicModal
-              isOpen={isOpen}
-              onClose={onClose}
-              cancelRef={closeRef}
-              useAlertDialog={false}
+    <>
+      <Head>
+        <title>{source.frontmatter.name} &mdash; Osopcloud</title>
+        <meta
+          name="description"
+          content={`Discover ${source.frontmatter.name} on Osopcloud.`}
+        />
+        <meta name="og:title" content={source.frontmatter.name} />
+        <meta
+          name="og:description"
+          content={`Discover ${source.frontmatter.name} on Osopcloud.`}
+        />
+      </Head>
+
+      <Stack direction="column" spacing={5}>
+        <Heading>{source.frontmatter.name}</Heading>
+        <Flex display="flex" flexDirection={{ base: "column", md: "row" }}>
+          {/* This can't be a Stack because the first child might not be shown on small windows */}
+          <Box flex={1} mb={{ base: 5, sm: 0 }}>
+            <Stack
+              direction="row"
+              spacing={2}
+              display={{ base: "flex", sm: "none" }}
+              mb={5}
             >
-              <Stack direction="column" spacing={5}>
-                <Heading size="md">Donate to {source.frontmatter.name}</Heading>
-                <Text>To be completed</Text>
-                <Text fontSize="xs">
-                  Donations are made through third parties. This isn't financial
-                  advice.{" "}
-                  <Link href="/about/terms">
-                    Osopcloud Terms and Other Legal Notices...
-                  </Link>
-                </Text>
-                <Button onClick={onClose} ref={closeRef}>
-                  Cancel
+              {tabArray.map((tab, index) => (
+                <Button
+                  key={index}
+                  leftIcon={tab.icon}
+                  onClick={(_) => setActiveTab(index)}
+                  isActive={activeTab === index}
+                >
+                  {tab.label}
                 </Button>
-              </Stack>
-            </DynamicModal>
+              ))}
+            </Stack>
+            <Box>{tabArray[activeTab].content}</Box>
+          </Box>
+          <Stack direction="column" spacing={5} ms={{ base: 0, sm: 10 }}>
+            <Stack direction="row" spacing={2}>
+              {/* Map source.frontmatter.tags but only show two */}
+              {source.frontmatter.tags.slice(0, 2).map((tag: string) => (
+                <Badge key={tag}>{tag}</Badge>
+              ))}
+            </Stack>
+            <Stack
+              direction="column"
+              spacing={2}
+              display={{ base: "none", sm: "flex" }}
+            >
+              {tabArray.map((tab, index) => (
+                <Button
+                  key={index}
+                  leftIcon={tab.icon}
+                  onClick={(_) => setActiveTab(index)}
+                  isActive={activeTab === index}
+                >
+                  {tab.label}
+                </Button>
+              ))}
+            </Stack>
+            <Stack direction="column" spacing={2}>
+              <Link href={source.frontmatter.website} passHref>
+                <Button as="a">Visit Project Website</Button>
+              </Link>
+              <Link href={source.frontmatter.repository} passHref>
+                <Button as="a">Visit Project Repository</Button>
+              </Link>
+              {isOpen ? (
+                <Button isActive>Donation Options</Button>
+              ) : (
+                <Button onClick={onOpen}>Donation Options</Button>
+              )}
+              <DynamicModal
+                isOpen={isOpen}
+                onClose={onClose}
+                cancelRef={closeRef}
+                useAlertDialog={false}
+              >
+                <Stack direction="column" spacing={5}>
+                  <Heading size="md">
+                    Donate to {source.frontmatter.name}
+                  </Heading>
+                  <Text>To be completed</Text>
+                  <Text fontSize="xs">
+                    Donations are made through third parties. This isn't
+                    financial advice.{" "}
+                    <Link href="/about/terms">
+                      Osopcloud Terms and Other Legal Notices...
+                    </Link>
+                  </Text>
+                  <Button onClick={onClose} ref={closeRef}>
+                    Cancel
+                  </Button>
+                </Stack>
+              </DynamicModal>
+            </Stack>
           </Stack>
-        </Stack>
-      </Flex>
-    </Stack>
+        </Flex>
+      </Stack>
+    </>
   );
 }
 OSPage.getLayout = function getLayout(page: ReactElement) {

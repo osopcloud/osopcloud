@@ -8,7 +8,6 @@ import {
   Center,
   Container,
   Flex,
-  Icon,
   IconButton,
   Spacer,
   useColorMode,
@@ -17,7 +16,7 @@ import {
 import { FiChevronLeft, FiMoon, FiSettings, FiSun } from "react-icons/fi";
 
 // First-party components
-import Logo from "components/brand/Logo";
+import { HeaderLogo } from "components/brand/Logo";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";
@@ -45,7 +44,6 @@ export default function Header() {
                 me={5}
                 aria-label="Go Back"
                 onClick={router.back}
-                as="a"
                 display={{ base: "none", sm: "flex" }}
               />
             </Center>
@@ -56,16 +54,13 @@ export default function Header() {
               me={5}
               aria-label="Go Back"
               onClick={router.back}
-              as="a"
               display={{ base: "flex", sm: "none" }}
             />
           </Center>
           <Link href="/" passHref>
-            <Box as="a">
-              <Icon w={20} h={20} cursor="pointer">
-                <Logo />
-              </Icon>
-            </Box>
+            <a aria-label="Go Home">
+              <HeaderLogo />
+            </a>
           </Link>
           <Spacer />
           {sessionThemeToggle && (

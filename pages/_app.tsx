@@ -13,13 +13,10 @@ import { ErrorFallbackApplication } from "components/error-handling/ErrorFallbac
 import { useRouter } from "next/router";
 
 // Design
-import { Spinner, useBoolean } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import "@fontsource/public-sans/400.css";
 import "@fontsource/public-sans/600.css";
 import "@fontsource/atkinson-hyperlegible";
-
-// First party components
-import ConflictingSettings from "components/alerts/ConflictingSettings";
 
 import { Suspense, useEffect } from "react";
 
@@ -73,18 +70,6 @@ export default function Application({
     return () => window.removeEventListener("keydown", listener);
   }, []);
 
-  // Because we are using layout persistence, using the browser's clear browsing data option won't show immediate changes
-  // This reassures the user that their preference has been recognised. It then guides the user on how to enact the changes
-  const [isConflictingSettings, setConflictingSettings] = useBoolean();
-  useEffect(() => {
-    // Add an event listener that listens for when local storage is cleared
-    const listener = () => {
-      setConflictingSettings.on();
-    };
-    window.addEventListener("storage", listener);
-    return () => window.removeEventListener("storage", listener);
-  }, [setConflictingSettings]);
-
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -92,11 +77,6 @@ export default function Application({
     <ChakraProvider theme={theme}>
       <ErrorFallbackApplication>
         <UpdateServices>
-          {isConflictingSettings && (
-            <Suspense fallback={<Spinner />}>
-              <ConflictingSettings />
-            </Suspense>
-          )}
           <Suspense fallback={<Spinner m={5} />}>
             {getLayout(<Component {...pageProps} />)}
           </Suspense>

@@ -305,9 +305,6 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
               <Stack direction="column" spacing={5}>
                 <Heading size="md">Donate to {source.frontmatter.name}</Heading>
                 <Text>To be completed</Text>
-                <Button onClick={onClose} ref={closeRef}>
-                  Cancel
-                </Button>
                 <Text fontSize="xs">
                   Donations are made through third parties. This isn't financial
                   advice.{" "}
@@ -315,6 +312,9 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
                     Osopcloud Terms and Other Legal Notices...
                   </Link>
                 </Text>
+                <Button onClick={onClose} ref={closeRef}>
+                  Cancel
+                </Button>
               </Stack>
             </DynamicModal>
           </Stack>

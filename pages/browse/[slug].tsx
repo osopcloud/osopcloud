@@ -3,7 +3,7 @@
 // https://nextjs.org/docs/api-reference/edge-runtime
 
 // Types
-import { ReactElement, useRef } from "react";
+import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
 
 // SEO
@@ -11,6 +11,7 @@ import Head from "next/head";
 
 // Design
 import {
+  Badge,
   Box,
   Button,
   Flex,
@@ -22,7 +23,6 @@ import {
   Td,
   Tr,
   useDisclosure,
-  Badge,
 } from "@chakra-ui/react";
 
 // First party components
@@ -38,7 +38,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import MDXProvider from "lib/MDXProvider";
 import { FiDatabase, FiFileText } from "react-icons/fi";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 
 interface OSPageTypes {
@@ -226,6 +226,7 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
   }
 
   // Tab array
+  const [activeTab, setActiveTab] = useState(0);
   const tabArray = [
     {
       label: "Description",
@@ -238,7 +239,6 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
       content: <EmbeddedMetadataTable />,
     },
   ];
-  const [activeTab, setActiveTab] = useState(0);
   return (
     <>
       <Head>
@@ -344,7 +344,7 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
   );
 }
 OSPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout showToTopButton={true}>{page}</Layout>;
+  return <Layout showToTopButton={false}>{page}</Layout>;
 };
 
 // Disable the Edge Runtime

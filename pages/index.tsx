@@ -24,10 +24,19 @@ import { GetSortedOperatingSystemPages } from "lib/Sorting";
 import Layout from "components/layouts/Layout";
 
 interface MetadataTypes {
+  map: any;
   slug: string;
   name: string;
-  platforms: object;
-  packageManagement: string;
+  platforms: {
+    map: any;
+    indexOf: (value: string) => number;
+    length: number;
+  };
+  packageManagement: {
+    map: any;
+    indexOf: (value: string) => number;
+    length: number;
+  };
   startupManagement: string;
 }
 

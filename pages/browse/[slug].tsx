@@ -19,7 +19,6 @@ import {
   Stack,
   Table,
   Tbody,
-  Text,
   Td,
   Tr,
   useDisclosure,
@@ -27,7 +26,10 @@ import {
 
 // First party components
 import Layout from "components/layouts/Layout";
-import DynamicModal from "components/overlays/DynamicModal";
+import DynamicMenu from "components/overlays/DynamicMenu";
+
+// Settings
+import { useLocalStorage } from "@rehooks/local-storage";
 
 // Markdown processing libraries
 import fs from "fs";
@@ -38,7 +40,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import MDXProvider from "lib/MDXProvider";
 import { FiDatabase, FiFileText } from "react-icons/fi";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 interface OSPageTypes {
@@ -49,9 +51,10 @@ interface OSPageTypes {
 
 // Start page
 export default function OSPage({ source, componentOverrides }: OSPageTypes) {
-  // Modal
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const closeRef: any = useRef();
+  // Get settings
+  const [disableDonationOptions] = useLocalStorage(
+    "settingsDisableDonationOptions"
+  );
 
   // Tabs
   function MDXDescription() {
@@ -308,34 +311,15 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
               <Link href={source.frontmatter.repository} passHref>
                 <Button as="a">Visit Project Repository</Button>
               </Link>
-              {isOpen ? (
-                <Button isActive>Donation Options</Button>
+              {disableDonationOptions ? (
+                <Button isDisabled>Donation Options</Button>
               ) : (
-                <Button onClick={onOpen}>Donation Options</Button>
+                <DynamicMenu
+                  options={source.frontmatter.tags}
+                  buttonLabel="Donation Options"
+                  actionLabel="Select Donation Service"
+                />
               )}
-              <DynamicModal
-                isOpen={isOpen}
-                onClose={onClose}
-                cancelRef={closeRef}
-                useAlertDialog={false}
-              >
-                <Stack direction="column" spacing={5}>
-                  <Heading size="md">
-                    Donate to {source.frontmatter.name}
-                  </Heading>
-                  <Text>To be completed</Text>
-                  <Text fontSize="xs">
-                    Donations are made through third parties. This isn't
-                    financial advice.{" "}
-                    <Link href="/about/terms">
-                      Osopcloud Terms and Other Legal Notices...
-                    </Link>
-                  </Text>
-                  <Button onClick={onClose} ref={closeRef}>
-                    Cancel
-                  </Button>
-                </Stack>
-              </DynamicModal>
             </Stack>
           </Stack>
         </Flex>

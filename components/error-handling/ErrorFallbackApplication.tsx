@@ -14,9 +14,9 @@ import { FiTool } from "react-icons/fi";
 
 // First party components
 import Logo from "components/brand/Logo";
-import { DeleteSettings } from "components/settings/AboutApplication";
-import Version from "components/Version";
+import { version } from "components/Version";
 import { commit } from "components/Commit";
+import DeleteSettings from "components/settings/DeleteSettings";
 
 import React from "react";
 
@@ -79,7 +79,7 @@ export class ErrorFallbackApplication extends React.Component {
                 <Stack direction="column" spacing={0}>
                   {/* Find that error information from React */}
                   <Text>3102</Text>
-                  <Version />
+                  <Text>{version}</Text>
                   <Text>{commit ? commit : "Undefined"}</Text>
                 </Stack>
               </Stack>

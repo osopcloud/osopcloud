@@ -5,7 +5,7 @@ import { commit } from "components/Commit";
 
 // Start page
 export default function CommitDisplayPage() {
-  console.log(commit);
+  console.debug("Commit", commit);
   return (
     <>
       <Head>

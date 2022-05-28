@@ -54,5 +54,4 @@ const theme = extendTheme({
   },
 });
 
-// This is imported by Application Kit (general) and _document.tsx (colour mode only)
 export default theme;

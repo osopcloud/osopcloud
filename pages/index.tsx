@@ -23,7 +23,6 @@ import {
 } from "@chakra-ui/react";
 
 // First-party components
-import ChangeHomeMetadataView from "components/settings/ChangeHomeMetadataView";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";
@@ -87,7 +86,7 @@ export default function Home({
         <SimpleGrid minChildWidth="340px" spacing={10}>
           <Text>This is the new Osopcloud.</Text>
           <Stack direction="column" spacing={2}>
-            <ChangeHomeMetadataView />
+            ]{" "}
             {AZOSPageData.map(
               ({
                 slug,

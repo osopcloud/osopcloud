@@ -94,6 +94,8 @@ export default function Home({
               <MenuButton as={Button}>Change View</MenuButton>
               <MenuList>
                 <MenuItem
+                  // This works
+                  // @ts-ignore
                   isDisabled={metadataView === false || metadataView === null}
                   onClick={(_) =>
                     writeStorage("settingsHomeMetadataView", false)

@@ -28,10 +28,9 @@ export function DeleteSettings() {
   deleteFromStorage("settingsHideNotifications");
   deleteFromStorage("settingsAlwaysShowBackButton");
   deleteFromStorage("settingsShowThemeToggle");
+  deleteFromStorage("settingsHomeMetadataView");
   localStorage.removeItem("settingsFontOverride");
-  console.info(
-    "All preferences in LocalStorage have been cleared - using default settings"
-  );
+  console.info("LocalStorage cleared. Using default Settings.");
 }
 
 // Start component
@@ -55,6 +54,7 @@ export default function AboutApplication() {
       onClose();
       window.location.reload();
     } else onClose();
+    console.info("Reset completed.");
   }
   function ResetButton() {
     return (

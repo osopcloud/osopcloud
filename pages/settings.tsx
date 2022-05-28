@@ -19,6 +19,7 @@ import {
 import { VercelLogo } from "components/brand/VercelPromotion";
 
 // First-party components
+import ChangeHomeMetadataView from "components/settings/ChangeHomeMetadataView";
 import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
 import AboutApplication from "components/settings/AboutApplication";
 
@@ -105,6 +106,7 @@ export default function Settings() {
           <Button isDisabled>Disable Donation Features</Button>
         </Stack>
         <Stack direction="column" spacing={2}>
+          <ChangeHomeMetadataView />
           <ChangeApplicationFont />
           <AboutApplication />
         </Stack>

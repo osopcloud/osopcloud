@@ -20,16 +20,13 @@ import {
   SimpleGrid,
   Button,
   Badge,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
 } from "@chakra-ui/react";
 
 // First-party components
+import ChangeHomeMetadataView from "components/settings/ChangeHomeMetadataView";
 
 // Settings
-import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
+import { useLocalStorage } from "@rehooks/local-storage";
 
 // Markdown processing
 import { GetSortedOperatingSystemPages } from "lib/Sorting";
@@ -90,40 +87,7 @@ export default function Home({
         <SimpleGrid minChildWidth="340px" spacing={10}>
           <Text>This is the new Osopcloud.</Text>
           <Stack direction="column" spacing={2}>
-            <Menu>
-              <MenuButton as={Button}>Change View</MenuButton>
-              <MenuList>
-                <MenuItem
-                  // This works
-                  // @ts-ignore
-                  isDisabled={metadataView === false || metadataView === null}
-                  onClick={(_) =>
-                    writeStorage("settingsHomeMetadataView", false)
-                  }
-                >
-                  Show Package Management
-                </MenuItem>
-                <MenuItem
-                  isDisabled={metadataView === "startupManagement"}
-                  onClick={(_) =>
-                    writeStorage(
-                      "settingsHomeMetadataView",
-                      "startupManagement"
-                    )
-                  }
-                >
-                  Show Startup Framework
-                </MenuItem>
-                <MenuItem
-                  isDisabled={metadataView === "allTags"}
-                  onClick={(_) =>
-                    writeStorage("settingsHomeMetadataView", "allTags")
-                  }
-                >
-                  Show All Tags
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <ChangeHomeMetadataView />
             {AZOSPageData.map(
               ({
                 slug,

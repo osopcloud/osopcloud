@@ -25,7 +25,7 @@ export default function ChangeApplicationFont() {
 
   const buttonArray = [
     {
-      name: "Public Sans",
+      name: "Osopcloud Default",
       onClick: ApplyDefault,
       // @ts-ignore
       isDisabled: accessibleFonts === false || accessibleFonts === null,

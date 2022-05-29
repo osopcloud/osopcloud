@@ -2,9 +2,17 @@
 import Link from "next/link";
 
 // Design
-import { Button, Heading, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Stack,
+  Text,
+  useClipboard,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 // First party components
+import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
 import DynamicModal from "components/overlays/DynamicModal";
 import DeleteSettings from "components/settings/DeleteSettings";
 import { version } from "components/Version";
@@ -12,7 +20,7 @@ import { version } from "components/Version";
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 // Start component
 export default function AdvancedSettings() {
@@ -73,6 +81,29 @@ export default function AdvancedSettings() {
     }
   };
 
+  // Export settings
+  const storage = typeof window !== "undefined" ? localStorage : "";
+  const exportedSettings = JSON.stringify(storage);
+  const { onCopy } = useClipboard(exportedSettings);
+  function ExportSettings() {
+    onCopy();
+    onClose();
+  }
+
+  // Import settings
+  function ImportSettings() {
+    // navigator.clipboard.readText(), then JSON parse, and writeStorage for each key value pair
+
+    // @ts-ignore
+    navigator.clipboard.readText().then((text) => {
+      const importedSettings = JSON.parse(text);
+      for (const key in importedSettings) {
+        writeStorage(key, importedSettings[key]);
+      }
+    });
+    onClose();
+  }
+
   return (
     <>
       {isOpen ? (
@@ -89,6 +120,7 @@ export default function AdvancedSettings() {
       >
         <Stack direction="column" spacing={5}>
           <Heading size="md">Advanced Settings</Heading>
+          <ChangeApplicationFont />
           <Button
             onClick={(_) =>
               writeStorage(
@@ -99,9 +131,22 @@ export default function AdvancedSettings() {
           >
             {disableDonationOptions ? "Enable" : "Disable"} Donation Features
           </Button>
-          <Button isDisabled={resetStatus()} onClick={BeginReset}>
-            Reset Osopcloud
-          </Button>
+          <Stack direction="column" spacing={2}>
+            <Button onClick={ImportSettings}>
+              Import Settings from Clipboard
+            </Button>
+            <Button isDisabled={resetStatus()} onClick={ExportSettings}>
+              Export Settings to Clipboard
+            </Button>
+            <Button isDisabled={resetStatus()} onClick={BeginReset}>
+              Reset Osopcloud
+            </Button>
+          </Stack>
+          <Text fontSize="xs">
+            Import Settings from Clipboard will reveal your full clipboard to
+            the application.{" "}
+            <Link href="/about/privacy">Osopcloud Privacy Notice...</Link>
+          </Text>
           <Stack direction="column" spacing={0} fontSize="xs">
             <Text>Osopcloud Web Application</Text>
             <Text>
@@ -111,6 +156,14 @@ export default function AdvancedSettings() {
               <Link href="https://nextjs.org">Next.js</Link> technology on{" "}
               <Link href="https://vercel.com">Vercel</Link>
             </Text>
+            <Text>
+              Set in{" "}
+              {accessibleFonts === "true"
+                ? "Atkinson Hyperlegible"
+                : accessibleFonts === "system"
+                ? "the System Font"
+                : "Public Sans"}
+            </Text>
           </Stack>
           <Button onClick={onClose} ref={closeRef}>
             Close
@@ -119,4 +172,7 @@ export default function AdvancedSettings() {
       </DynamicModal>
     </>
   );
+}
+function readText() {
+  throw new Error("Function not implemented.");
 }

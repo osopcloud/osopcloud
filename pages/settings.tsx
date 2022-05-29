@@ -20,7 +20,6 @@ import { VercelLogo } from "components/brand/VercelPromotion";
 
 // First-party components
 import ChangeHomeMetadataView from "components/settings/ChangeHomeMetadataView";
-import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
 import AdvancedSettings from "components/settings/AdvancedSettings";
 
 // Layouts
@@ -57,10 +56,6 @@ export default function Settings() {
 
       <Stack direction="column" spacing={5}>
         <Heading>Osopcloud Settings</Heading>
-        <Text>
-          Use Settings to customise how Osopcloud looks and configure how it
-          behaves.
-        </Text>
         <Stack direction="column" spacing={2}>
           <Button
             onClick={(_) => {
@@ -104,7 +99,6 @@ export default function Settings() {
         </Stack>
         <Stack direction="column" spacing={2}>
           <ChangeHomeMetadataView />
-          <ChangeApplicationFont />
         </Stack>
         <Stack direction="column" spacing={2}>
           <AdvancedSettings />

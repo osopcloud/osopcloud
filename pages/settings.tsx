@@ -20,7 +20,9 @@ import { VercelLogo } from "components/brand/VercelPromotion";
 
 // First-party components
 import ChangeHomeMetadataView from "components/settings/ChangeHomeMetadataView";
-import AdvancedSettings from "components/settings/AdvancedSettings";
+import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
+import ManageSettings from "components/settings/ManageSettings";
+import { version } from "components/Version";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -36,6 +38,13 @@ export default function Settings() {
     "settingsAlwaysShowBackButton"
   );
   const [showSessionThemeToggle] = useLocalStorage("settingsShowThemeToggle");
+  const [disableDonationOptions] = useLocalStorage(
+    "settingsDisableDonationOptions"
+  );
+  const accessibleFonts =
+    typeof window !== "undefined"
+      ? localStorage.getItem("settingsFontOverride")
+      : "";
 
   const { toggleColorMode } = useColorMode();
 
@@ -99,9 +108,22 @@ export default function Settings() {
         </Stack>
         <Stack direction="column" spacing={2}>
           <ChangeHomeMetadataView />
+          <ChangeApplicationFont />
         </Stack>
         <Stack direction="column" spacing={2}>
-          <AdvancedSettings />
+          <Button
+            onClick={(_) =>
+              writeStorage(
+                "settingsDisableDonationOptions",
+                disableDonationOptions ? false : true
+              )
+            }
+          >
+            {disableDonationOptions ? "Enable" : "Disable"} Donation Features
+          </Button>
+        </Stack>
+        <Stack direction="column" spacing={2}>
+          <ManageSettings />
         </Stack>
         <Link href="/docs/introduction" passHref>
           <Button display={{ base: "flex", sm: "none" }} as="a">
@@ -120,6 +142,24 @@ export default function Settings() {
             </Center>
           </Stack>
         </Button>
+        <Stack direction="column" spacing={0} fontSize="xs">
+          <Text>Osopcloud Web Application</Text>
+          <Text>
+            Version {version} (<Link href="/commit">View Commit</Link>)
+          </Text>
+          <Text>
+            <Link href="https://nextjs.org">Next.js</Link> technology on{" "}
+            <Link href="https://vercel.com">Vercel</Link>
+          </Text>
+          <Text>
+            Set in{" "}
+            {accessibleFonts === "true"
+              ? "Atkinson Hyperlegible"
+              : accessibleFonts === "system"
+              ? "the System Font"
+              : "Public Sans"}
+          </Text>
+        </Stack>
       </Stack>
     </>
   );

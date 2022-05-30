@@ -18,8 +18,8 @@ export default function Logo() {
         r="80"
         fill="none"
         stroke={fill}
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <line
         x1="42.05"
@@ -28,15 +28,15 @@ export default function Logo() {
         y2="129.79"
         fill="none"
         stroke={fill}
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <polygon
         points="169.4 42.11 56.5 117.87 47.34 102 169.4 42.11"
         fill="none"
         stroke={fill}
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <line
         x1="149.01"
@@ -45,8 +45,8 @@ export default function Logo() {
         y2="150.43"
         fill="none"
         stroke={fill}
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <line
         x1="39.19"
@@ -55,8 +55,8 @@ export default function Logo() {
         y2="150.81"
         fill="none"
         stroke={fill}
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
     </svg>
   );
@@ -79,8 +79,8 @@ export function HeaderLogo() {
           r="80"
           fill="none"
           stroke={fill}
-          stroke-miterlimit="10"
-          stroke-width="5"
+          strokeMiterlimit="10"
+          strokeWidth="5"
         />
         <line
           x1="42.05"
@@ -89,15 +89,15 @@ export function HeaderLogo() {
           y2="129.79"
           fill="none"
           stroke={fill}
-          stroke-miterlimit="10"
-          stroke-width="5"
+          strokeMiterlimit="10"
+          strokeWidth="5"
         />
         <polygon
           points="169.4 42.11 56.5 117.87 47.34 102 169.4 42.11"
           fill="none"
           stroke={fill}
-          stroke-miterlimit="10"
-          stroke-width="5"
+          strokeMiterlimit="10"
+          strokeWidth="5"
         />
         <line
           x1="149.01"
@@ -106,8 +106,8 @@ export function HeaderLogo() {
           y2="150.43"
           fill="none"
           stroke={fill}
-          stroke-miterlimit="10"
-          stroke-width="5"
+          strokeMiterlimit="10"
+          strokeWidth="5"
         />
         <line
           x1="39.19"
@@ -116,8 +116,8 @@ export function HeaderLogo() {
           y2="150.81"
           fill="none"
           stroke={fill}
-          stroke-miterlimit="10"
-          stroke-width="5"
+          strokeMiterlimit="10"
+          strokeWidth="5"
         />
       </svg>
     </Icon>

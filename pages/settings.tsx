@@ -138,7 +138,7 @@ export default function Settings() {
           <Stack direction="row" spacing={2}>
             <Text>Powered by</Text>
             <Center>
-              <VercelLogo fill="black" />
+              <VercelLogo />
             </Center>
           </Stack>
         </Button>

@@ -15,7 +15,6 @@ import Header from "components/layout-dependencies/Header";
 import Footer from "components/layout-dependencies/Footer";
 import JSWarning from "components/alerts/JSWarning";
 import BrowserWarning from "components/alerts/BrowserWarning";
-import DevelopmentWarning from "components/alerts/DevelopmentWarning";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
@@ -74,6 +73,9 @@ export default function Layout({
     }
   }
 
+  const shareCompatibility =
+    typeof navigator !== "undefined" ? navigator.canShare : "";
+
   return (
     <Flex
       display="flex"
@@ -87,7 +89,6 @@ export default function Layout({
       </noscript>
       {/* If the browser isLegacyEdge or isIE, show <BrowserWarning /> */}
       {isLegacyEdge || isIE ? <BrowserWarning /> : null}
-      {hideNotifications ? "" : <DevelopmentWarning />}
       {/* Header */}
       <Suspense fallback={<Skeleton />}>
         <Header />
@@ -103,11 +104,15 @@ export default function Layout({
         mb={5}
       >
         <Flex>
-          {showShareButton ?? (
-            <Button leftIcon={<FiShare />} onClick={Share}>
-              Share
-            </Button>
-          )}
+          {shareCompatibility ? (
+            <>
+              {showShareButton ?? (
+                <Button leftIcon={<FiShare />} onClick={Share}>
+                  Share
+                </Button>
+              )}
+            </>
+          ) : null}
           <Spacer />
           {showToTopButton && (
             <IconButton

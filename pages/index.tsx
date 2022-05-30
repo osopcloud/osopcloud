@@ -84,7 +84,7 @@ export default function Home({
       <Stack direction="column" spacing={5}>
         <Heading>Home</Heading>
         <SimpleGrid minChildWidth="340px" spacing={10}>
-          <Text>This is the new Osopcloud.</Text>
+          <Text>This is new.</Text>
           <Stack direction="column" spacing={2}>
             ]{" "}
             {AZOSPageData.map(

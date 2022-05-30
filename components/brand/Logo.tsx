@@ -1,28 +1,125 @@
 // Design
-import { Icon } from "@chakra-ui/react";
+import { Icon, useColorModeValue } from "@chakra-ui/react";
 
 // Start component
 export default function Logo() {
+  const fill = useColorModeValue("#573d24", "#efe7df");
   return (
-    <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-      <defs></defs>
-      <circle fill="#573d24" cx="60" cy="60" r="60" />
-      <path
-        fill="#efe7df"
-        d="M93.22,78.37c1.9-2.67,1.04-6.61,0-8.92-4.06-9.04-26.2-2.68-36.23,4.05-4.86,3.26-9.21,9.71-7.44,13.38,.82,1.71,2.75,2.37,18.44,3.31,15.34,.91,23.51-9.42,25.22-11.82Z"
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 180 180"
+    >
+      <rect width="180" height="180" fill="none" />
+      <circle
+        cx="90.05"
+        cy="89.66"
+        r="80"
+        fill="none"
+        stroke={fill}
+        stroke-miterlimit="10"
+        stroke-width="5"
       />
-      <path
-        fill="#efe7df"
-        d="M87,39c-.56,2.22-1.86,2.53-10,9-6.52,5.19-2.6,2.61-19,17-.16,.14-7.77,6.77-11,13-1.56,3.01-1.89,5.03-2,6-.32,2.83,.42,3.67,0,5-1.32,4.18-12.33,7.52-17,3-4.24-4.1-1.37-12.86,1-17,1.9-3.32,3.58-5.38,5-7,5.75-6.6,8.91-16.49,15-36,3.76-12.04,3.77-13.52,6-15,8.4-5.57,34.33,12.71,32,22Z"
+      <line
+        x1="42.05"
+        y1="114.81"
+        x2="20.42"
+        y2="129.79"
+        fill="none"
+        stroke={fill}
+        stroke-miterlimit="10"
+        stroke-width="5"
+      />
+      <polygon
+        points="169.4 42.11 56.5 117.87 47.34 102 169.4 42.11"
+        fill="none"
+        stroke={fill}
+        stroke-miterlimit="10"
+        stroke-width="5"
+      />
+      <line
+        x1="149.01"
+        y1="73.47"
+        x2="39.09"
+        y2="150.43"
+        fill="none"
+        stroke={fill}
+        stroke-miterlimit="10"
+        stroke-width="5"
+      />
+      <line
+        x1="39.19"
+        y1="150.81"
+        x2="142.05"
+        y2="150.81"
+        fill="none"
+        stroke={fill}
+        stroke-miterlimit="10"
+        stroke-width="5"
       />
     </svg>
   );
 }
 
 export function HeaderLogo() {
+  const fill = useColorModeValue("#573d24", "#efe7df");
   return (
     <Icon w={20} h={20} cursor="pointer" as="a">
-      <Logo />
+      <svg
+        id="Layer_1"
+        data-name="Layer 1"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 180 180"
+      >
+        <rect width="180" height="180" fill="none" />
+        <circle
+          cx="90.05"
+          cy="89.66"
+          r="80"
+          fill="none"
+          stroke={fill}
+          stroke-miterlimit="10"
+          stroke-width="5"
+        />
+        <line
+          x1="42.05"
+          y1="114.81"
+          x2="20.42"
+          y2="129.79"
+          fill="none"
+          stroke={fill}
+          stroke-miterlimit="10"
+          stroke-width="5"
+        />
+        <polygon
+          points="169.4 42.11 56.5 117.87 47.34 102 169.4 42.11"
+          fill="none"
+          stroke={fill}
+          stroke-miterlimit="10"
+          stroke-width="5"
+        />
+        <line
+          x1="149.01"
+          y1="73.47"
+          x2="39.09"
+          y2="150.43"
+          fill="none"
+          stroke={fill}
+          stroke-miterlimit="10"
+          stroke-width="5"
+        />
+        <line
+          x1="39.19"
+          y1="150.81"
+          x2="142.05"
+          y2="150.81"
+          fill="none"
+          stroke={fill}
+          stroke-miterlimit="10"
+          stroke-width="5"
+        />
+      </svg>
     </Icon>
   );
 }

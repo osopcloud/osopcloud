@@ -78,8 +78,6 @@ export default function ManageSettings() {
 
   // Import settings
   function ImportSettings() {
-    // navigator.clipboard.readText(), then JSON parse, and writeStorage for each key value pair
-
     // @ts-ignore
     navigator.clipboard.readText().then((text) => {
       const importedSettings = JSON.parse(text);
@@ -110,7 +108,6 @@ export default function ManageSettings() {
 
   return (
     <DynamicMenu
-      // @ts-ignore
       options={buttonArray}
       buttonLabel="Import, Export, or Reset"
       actionLabel="Manage Osopcloud Settings"

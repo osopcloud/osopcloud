@@ -6,6 +6,9 @@
 import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
 
+// Routing
+import Link from "next/link";
+
 // SEO
 import Head from "next/head";
 
@@ -21,12 +24,10 @@ import {
   Tbody,
   Td,
   Tr,
-  useDisclosure,
 } from "@chakra-ui/react";
 
 // First party components
 import Layout from "components/layouts/Layout";
-import DynamicMenu from "components/overlays/DynamicMenu";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";
@@ -41,7 +42,6 @@ import MDXProvider from "lib/MDXProvider";
 import { FiDatabase, FiFileText } from "react-icons/fi";
 
 import { useState } from "react";
-import Link from "next/link";
 
 interface OSPageTypes {
   source: any;
@@ -242,6 +242,7 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
       content: <EmbeddedMetadataTable />,
     },
   ];
+
   return (
     <>
       <Head>
@@ -314,11 +315,7 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
               {disableDonationOptions ? (
                 <Button isDisabled>Donation Options</Button>
               ) : (
-                <DynamicMenu
-                  options={source.frontmatter.tags}
-                  buttonLabel="Donation Options"
-                  actionLabel="Select Donation Service"
-                />
+                <Button>Donation Options</Button>
               )}
             </Stack>
           </Stack>

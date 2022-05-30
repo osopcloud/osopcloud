@@ -26,9 +26,9 @@ import { useRef } from "react";
 
 interface OverlayProps {
   options: {
-    name: string;
+    name?: string;
     map?: any;
-    onClick: () => void;
+    onClick?: () => void;
     isDisabled?: boolean | undefined;
   };
   buttonLabel: string;

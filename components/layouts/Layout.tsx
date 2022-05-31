@@ -1,26 +1,32 @@
+// Routing
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 // Design
 import {
+  Box,
   Button,
-  Container,
   Flex,
   IconButton,
-  Skeleton,
   Spacer,
+  Stack,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FiArrowUp, FiShare } from "react-icons/fi";
-
-// First-party components
-import Header from "components/layout-dependencies/Header";
-import Footer from "components/layout-dependencies/Footer";
-import JSWarning from "components/alerts/JSWarning";
-import BrowserWarning from "components/alerts/BrowserWarning";
+import {
+  FiHome,
+  FiPlus,
+  FiSettings,
+  FiShare,
+  FiGithub,
+  FiChevronLeft,
+} from "react-icons/fi";
+import { VercelLogo } from "components/brand/VercelPromotion";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
-import { isLegacyEdge, isIE } from "react-device-detect";
 
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -34,8 +40,9 @@ export default function Layout({
   showShareButton,
   showToTopButton,
 }: LayoutProps) {
+  const router = useRouter();
+
   // Get settings
-  const [hideNotifications] = useLocalStorage("settingsHideNotifications");
   const [backButtonLargeWindows] = useLocalStorage(
     "settingsAlwaysShowBackButton"
   );
@@ -74,59 +81,130 @@ export default function Layout({
   }
 
   const shareCompatibility =
-    typeof navigator !== "undefined" ? navigator.canShare : "";
+    typeof navigator !== "undefined" ? navigator.share : "";
 
   return (
+    // Create a flex container
     <Flex
       display="flex"
-      minH="100vh"
-      direction="column"
+      direction="row"
       bg={useColorModeValue("gray.50", "inherit")}
     >
-      {/* JavaScript warning */}
-      <noscript>
-        <JSWarning />
-      </noscript>
-      {/* If the browser isLegacyEdge or isIE, show <BrowserWarning /> */}
-      {isLegacyEdge || isIE ? <BrowserWarning /> : null}
-      {/* Header */}
-      <Suspense fallback={<Skeleton />}>
-        <Header />
-      </Suspense>
-      {/* Page content */}
-      <Container maxWidth="container.md" flex={1} my={10}>
-        {children}
-      </Container>
-      {/* Share footer (subfooter) */}
-      <Container
-        maxWidth="container.md"
-        display={{ base: "none", sm: "block" }}
-        mb={5}
+      {/* Create a persistent sidebar */}
+      <Flex
+        h="100vh"
+        bg={useColorModeValue("gray.50", "inherit")}
+        position="fixed"
+        top="0"
+        left="0"
+        overflow="auto"
+        zIndex={1}
       >
-        <Flex>
-          {shareCompatibility ? (
-            <>
-              {showShareButton ?? (
-                <Button leftIcon={<FiShare />} onClick={Share}>
-                  Share
-                </Button>
-              )}
-            </>
-          ) : null}
-          <Spacer />
-          {showToTopButton && (
+        <Flex direction="column" p={5}>
+          {backButtonLargeWindows && (
             <IconButton
-              icon={<FiArrowUp />}
-              aria-label="Go to top"
-              onClick={() => window.scrollTo(0, 0)}
+              icon={<FiChevronLeft />}
+              aria-label="Go Back"
+              size="lg"
+              mb={5}
+              onClick={router.back}
             />
           )}
+          <Stack direction="column" spacing={2}>
+            <Link href="/" passHref>
+              <IconButton
+                icon={<FiHome />}
+                aria-label="Go Home"
+                size="lg"
+                as="a"
+              />
+            </Link>
+            <IconButton
+              icon={<FiPlus />}
+              aria-label="Create and Contribute"
+              size="lg"
+              isDisabled
+            />
+          </Stack>
+          <Spacer />
+          <Stack direction="column" spacing={2}>
+            {shareCompatibility ? (
+              <>
+                {showShareButton ?? (
+                  <IconButton
+                    icon={<FiShare />}
+                    aria-label="Share"
+                    size="lg"
+                    onClick={Share}
+                  />
+                )}
+              </>
+            ) : null}
+            <Link href="/settings" passHref>
+              <IconButton
+                icon={<FiSettings />}
+                aria-label="Settings"
+                size="lg"
+                as="a"
+              />
+            </Link>
+          </Stack>
         </Flex>
-      </Container>
-      {/* Footer */}
-      <Suspense fallback={<Skeleton />}>
-        <Footer />
-      </Suspense>
+      </Flex>
+
+      {/* Make sure the children are not obstructed the sidebar */}
+      <Flex
+        minH="100vh"
+        w="100%"
+        position="relative"
+        overflow="hidden"
+        direction="column"
+        ps={100}
+      >
+        <Flex flex={1} p={5} pe={10} py={10}>
+          <Box w="100%">{children}</Box>
+        </Flex>
+        <Flex p={5} pe={10}>
+          <Stack direction="row" spacing={2}>
+            <Link href="https://github.com/osopcloud/osopcloud" passHref>
+              <Button leftIcon={<FiGithub />} size="sm" as="a">
+                GitHub
+              </Button>
+            </Link>
+            <Link href="/docs/introduction" passHref>
+              <Button size="sm" as="a">
+                Documentation
+              </Button>
+            </Link>
+            <Link href="/docs/keyboard-shortcuts" passHref>
+              <Button size="sm" as="a">
+                Keyboard Shortcuts
+              </Button>
+            </Link>
+            <Link href="/about/privacy" passHref>
+              <Button size="sm" as="a">
+                Privacy
+              </Button>
+            </Link>
+            <Link href="/about/terms" passHref>
+              <Button size="sm" as="a">
+                Terms
+              </Button>
+            </Link>
+          </Stack>
+          <Spacer />
+          <Button
+            colorScheme="black"
+            bg="black"
+            color="white"
+            variant="solid"
+            size="sm"
+          >
+            <Text me={2}>Powered by</Text>
+            <VercelLogo />
+          </Button>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }

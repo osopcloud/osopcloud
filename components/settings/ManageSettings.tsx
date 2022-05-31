@@ -1,5 +1,5 @@
 // Design
-import { Button, useClipboard, useDisclosure } from "@chakra-ui/react";
+import { useClipboard } from "@chakra-ui/react";
 
 // First party components
 import DeleteSettings from "components/settings/DeleteSettings";
@@ -8,20 +8,14 @@ import DynamicMenu from "components/overlays/DynamicMenu";
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 
-import { useRef, useState } from "react";
-
 // Start component
 export default function ManageSettings() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const closeRef: any = useRef();
-
   // Reset functions
   function BeginReset() {
     DeleteSettings();
     if (accessibleFonts) {
       window.location.reload();
-      onClose();
-    } else onClose();
+    }
     console.info("Reset completed.");
   }
 
@@ -73,7 +67,6 @@ export default function ManageSettings() {
   const { onCopy } = useClipboard(exportedSettings);
   function ExportSettings() {
     onCopy();
-    onClose();
   }
 
   // Import settings
@@ -85,7 +78,6 @@ export default function ManageSettings() {
         writeStorage(key, importedSettings[key]);
       }
     });
-    onClose();
   }
 
   // Button array

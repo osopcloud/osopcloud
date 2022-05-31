@@ -14,15 +14,17 @@ import Head from "next/head";
 
 // Design
 import {
-  Heading,
   Stack,
   Text,
   SimpleGrid,
   Button,
   Badge,
+  Center,
+  Icon,
 } from "@chakra-ui/react";
 
 // First-party components
+import Logo from "components/brand/Logo";
 
 // Settings
 import { useLocalStorage } from "@rehooks/local-storage";
@@ -81,87 +83,87 @@ export default function Home({
         />
       </Head>
 
-      <Stack direction="column" spacing={5}>
-        <Heading>Home</Heading>
-        <SimpleGrid minChildWidth="340px" spacing={10}>
-          <Text>This is new.</Text>
-          <Stack direction="column" spacing={2}>
-            ]{" "}
-            {AZOSPageData.map(
-              ({
-                slug,
-                name,
-                tags,
-                platforms,
-                packageManagement,
-                startupManagement,
-              }: MetadataTypes) => (
-                <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
-                  <Button as="a" display="block" minH="fit-content" py={3}>
-                    <Text>{name}</Text>
-                    <Stack
-                      direction="row"
-                      spacing={2}
-                      fontWeight="normal"
-                      fontSize="sm"
-                    >
-                      {metadataView === "allTags" ? (
-                        // Show all tags
-                        tags.map((tag: string) => (
-                          <Badge key={`${slug}-${tag}`}>{tag}</Badge>
-                        ))
-                      ) : (
-                        <>
-                          <Badge pt="0.5">
-                            {tags.map((tag: string) => (
-                              <>
-                                {/* Limit to 1 tag */}
-                                {tags.indexOf(tag) < 1 && <>{tag}</>}
-                              </>
-                            ))}
-                          </Badge>
+      <SimpleGrid minChildWidth="340px" spacing={10}>
+        <Stack direction="column" spacing={2} p={20}>
+          {AZOSPageData.map(
+            ({
+              slug,
+              name,
+              tags,
+              platforms,
+              packageManagement,
+              startupManagement,
+            }: MetadataTypes) => (
+              <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+                <Button as="a" display="block" minH="fit-content" py={3}>
+                  <Text>{name}</Text>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    fontWeight="normal"
+                    fontSize="sm"
+                  >
+                    {metadataView === "allTags" ? (
+                      // Show all tags
+                      tags.map((tag: string) => (
+                        <Badge key={`${slug}-${tag}`}>{tag}</Badge>
+                      ))
+                    ) : (
+                      <>
+                        <Badge pt="0.5">
+                          {tags.map((tag: string) => (
+                            <>
+                              {/* Limit to 1 tag */}
+                              {tags.indexOf(tag) < 1 && <>{tag}</>}
+                            </>
+                          ))}
+                        </Badge>
+                        <Text>
+                          {platforms.map((platform: string) => (
+                            <>
+                              {/* Limit to 2 platforms */}
+                              {platforms.indexOf(platform) < 2 && (
+                                <>{platform}</>
+                              )}
+                              {/* Add a comma if not the last date */}
+                              {platforms.indexOf(platform) < 1 &&
+                                platforms.indexOf(platform) <
+                                  platforms.length - 1 && <>, </>}
+                            </>
+                          ))}
+                        </Text>
+                        {metadataView === "startupManagement" ? (
+                          <Text>{startupManagement}</Text>
+                        ) : (
                           <Text>
-                            {platforms.map((platform: string) => (
+                            {packageManagement.map((manager: string) => (
                               <>
                                 {/* Limit to 2 platforms */}
-                                {platforms.indexOf(platform) < 2 && (
-                                  <>{platform}</>
+                                {packageManagement.indexOf(manager) < 2 && (
+                                  <>{manager}</>
                                 )}
                                 {/* Add a comma if not the last date */}
-                                {platforms.indexOf(platform) < 1 &&
-                                  platforms.indexOf(platform) <
-                                    platforms.length - 1 && <>, </>}
+                                {packageManagement.indexOf(manager) < 1 &&
+                                  packageManagement.indexOf(manager) <
+                                    packageManagement.length - 1 && <>, </>}
                               </>
                             ))}
                           </Text>
-                          {metadataView === "startupManagement" ? (
-                            <Text>{startupManagement}</Text>
-                          ) : (
-                            <Text>
-                              {packageManagement.map((manager: string) => (
-                                <>
-                                  {/* Limit to 2 platforms */}
-                                  {packageManagement.indexOf(manager) < 2 && (
-                                    <>{manager}</>
-                                  )}
-                                  {/* Add a comma if not the last date */}
-                                  {packageManagement.indexOf(manager) < 1 &&
-                                    packageManagement.indexOf(manager) <
-                                      packageManagement.length - 1 && <>, </>}
-                                </>
-                              ))}
-                            </Text>
-                          )}
-                        </>
-                      )}
-                    </Stack>
-                  </Button>
-                </Link>
-              )
-            )}
-          </Stack>
-        </SimpleGrid>
-      </Stack>
+                        )}
+                      </>
+                    )}
+                  </Stack>
+                </Button>
+              </Link>
+            )
+          )}
+        </Stack>
+        <Center h="100vh" pb="100">
+          <Icon w={250} h={250} aria-label="Osopcloud Logo">
+            <Logo />
+          </Icon>
+        </Center>
+      </SimpleGrid>
     </>
   );
 }

@@ -66,165 +66,147 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
   }
   function EmbeddedMetadataTable() {
     return (
-      <Stack direction="column" spacing={5}>
-        <Table size="sm" variant="simple">
-          <Tbody>
-            <Tr>
-              <Td>All Tags</Td>
-              <Td>
-                <Stack direction="row" spacing={2}>
-                  {/* Map source.frontmatter.tags */}
-                  {source.frontmatter.tags.map((tag: string) => (
-                    <Badge key={tag}>{tag}</Badge>
-                  ))}
-                </Stack>
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-        <Table size="sm" variant="simple">
-          <Tbody>
-            <Tr>
-              <Td>Popular Platforms</Td>
-              <Td>
-                {source.frontmatter.platforms.map((platform: string) => (
+      <Table size="sm" variant="simple">
+        <Tbody>
+          <Tr>
+            <Td>All Tags</Td>
+            <Td>
+              <Stack direction="row" spacing={2}>
+                {/* Map source.frontmatter.tags */}
+                {source.frontmatter.tags.map((tag: string) => (
+                  <Badge key={tag}>{tag}</Badge>
+                ))}
+              </Stack>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Popular Platforms</Td>
+            <Td>
+              {source.frontmatter.platforms.map((platform: string) => (
+                <>
+                  {platform}
+                  {/* Add a comma if not the last date */}
+                  {source.frontmatter.platforms.indexOf(platform) !==
+                  source.frontmatter.platforms.length - 1
+                    ? ", "
+                    : ""}
+                </>
+              ))}
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Based On</Td>
+            <Td>{source.frontmatter.basedOn}</Td>
+          </Tr>
+          <Tr>
+            <Td>Default Desktop</Td>
+            <Td>{source.frontmatter.desktop}</Td>
+          </Tr>
+          <Tr>
+            <Td>Default Shell</Td>
+            <Td>{source.frontmatter.shell}</Td>
+          </Tr>
+          <Tr>
+            <Td>Key Software</Td>
+            <Td>
+              {/* Map source.frontmatter.software and sort alphabetically */}
+              {source.frontmatter.software.sort().map((software: string) => (
+                <>
+                  {software}
+                  {/* Add a comma if not the last date */}
+                  {source.frontmatter.software.indexOf(software) !==
+                  source.frontmatter.software.length - 1
+                    ? ", "
+                    : ""}
+                </>
+              ))}
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Package Management</Td>
+            <Td>
+              {source.frontmatter.packageManagement
+                .sort()
+                .map((manager: string) => (
                   <>
-                    {platform}
+                    {manager}
                     {/* Add a comma if not the last date */}
-                    {source.frontmatter.platforms.indexOf(platform) !==
-                    source.frontmatter.platforms.length - 1
+                    {source.frontmatter.packageManagement.indexOf(manager) !==
+                    source.frontmatter.packageManagement.length - 1
                       ? ", "
                       : ""}
                   </>
                 ))}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-        <Table size="sm" variant="simple">
-          <Tbody>
-            <Tr>
-              <Td>Based On</Td>
-              <Td>{source.frontmatter.basedOn}</Td>
-            </Tr>
-            <Tr>
-              <Td>Default Desktop</Td>
-              <Td>{source.frontmatter.desktop}</Td>
-            </Tr>
-            <Tr>
-              <Td>Default Shell</Td>
-              <Td>{source.frontmatter.shell}</Td>
-            </Tr>
-            <Tr>
-              <Td>Key Software</Td>
-              <Td>
-                {/* Map source.frontmatter.software and sort alphabetically */}
-                {source.frontmatter.software.sort().map((software: string) => (
-                  <>
-                    {software}
-                    {/* Add a comma if not the last date */}
-                    {source.frontmatter.software.indexOf(software) !==
-                    source.frontmatter.software.length - 1
-                      ? ", "
-                      : ""}
-                  </>
-                ))}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Package Management</Td>
-              <Td>
-                {source.frontmatter.packageManagement
-                  .sort()
-                  .map((manager: string) => (
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Startup Framework</Td>
+            <Td>{source.frontmatter.startupManagement}</Td>
+          </Tr>
+          <Tr>
+            <Td>Authors</Td>
+            <Td>
+              {source.frontmatter.authors.sort().map((author: string) => {
+                // Make everything starting with @ a link to GitHub
+                if (author.startsWith("@")) {
+                  const githubProfile = author.replace("@", "");
+                  return (
                     <>
-                      {manager}
-                      {/* Add a comma if not the last date */}
-                      {source.frontmatter.packageManagement.indexOf(manager) !==
-                      source.frontmatter.packageManagement.length - 1
+                      <Link href={`https://github.com/${githubProfile}`}>
+                        {author}
+                      </Link>
+                      {/* Add a comma if not the last value */}
+                      {source.frontmatter.authors.indexOf(author) !==
+                      source.frontmatter.authors.length - 1
                         ? ", "
                         : ""}
                     </>
-                  ))}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Startup Framework</Td>
-              <Td>{source.frontmatter.startupManagement}</Td>
-            </Tr>
-          </Tbody>
-        </Table>
-        <Table size="sm" variant="simple">
-          <Tbody>
-            <Tr>
-              <Td>Authors</Td>
-              <Td>
-                {source.frontmatter.authors.sort().map((author: string) => {
-                  // Make everything starting with @ a link to GitHub
-                  if (author.startsWith("@")) {
-                    const githubProfile = author.replace("@", "");
-                    return (
-                      <>
-                        <Link href={`https://github.com/${githubProfile}`}>
-                          {author}
-                        </Link>
-                        {/* Add a comma if not the last value */}
-                        {source.frontmatter.authors.indexOf(author) !==
-                        source.frontmatter.authors.length - 1
-                          ? ", "
-                          : ""}
-                      </>
-                    );
-                  } else {
-                    return (
-                      <>
-                        {author}
-                        {/* Add a comma if not the last value */}
-                        {source.frontmatter.authors.indexOf(author) !==
-                        source.frontmatter.authors.length - 1
-                          ? ", "
-                          : ""}
-                      </>
-                    );
-                  }
-                })}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Page Created</Td>
-              <Td>
-                {new Date(source.frontmatter.date[0])
-                  .toDateString()
-                  .split(" ")
-                  .slice(1)
-                  .join(" ")}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Page Updated</Td>
-              <Td>
-                {/* Map source.frontmatter.date but leave out 0*/}
-                {/* If source.frontmatter.donate has more than 1 value */}
-                {source.frontmatter.date.slice(1).map((date: string) => (
-                  <>
-                    {/* Format the date with toDateString() removing the day */}
-                    {new Date(date)
-                      .toDateString()
-                      .split(" ")
-                      .slice(1)
-                      .join(" ")}
-                    {/* Add a comma if not the last date */}
-                    {source.frontmatter.date.indexOf(date) !==
-                    source.frontmatter.date.length - 1
-                      ? ", "
-                      : ""}
-                  </>
-                ))}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </Stack>
+                  );
+                } else {
+                  return (
+                    <>
+                      {author}
+                      {/* Add a comma if not the last value */}
+                      {source.frontmatter.authors.indexOf(author) !==
+                      source.frontmatter.authors.length - 1
+                        ? ", "
+                        : ""}
+                    </>
+                  );
+                }
+              })}
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Page Created</Td>
+            <Td>
+              {new Date(source.frontmatter.date[0])
+                .toDateString()
+                .split(" ")
+                .slice(1)
+                .join(" ")}
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Page Updated</Td>
+            <Td>
+              {/* Map source.frontmatter.date but leave out 0*/}
+              {/* If source.frontmatter.donate has more than 1 value */}
+              {source.frontmatter.date.slice(1).map((date: string) => (
+                <>
+                  {/* Format the date with toDateString() removing the day */}
+                  {new Date(date).toDateString().split(" ").slice(1).join(" ")}
+                  {/* Add a comma if not the last date */}
+                  {source.frontmatter.date.indexOf(date) !==
+                  source.frontmatter.date.length - 1
+                    ? ", "
+                    : ""}
+                </>
+              ))}
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
     );
   }
 

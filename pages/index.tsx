@@ -64,7 +64,7 @@ export default function Home({
   AZOSPageData: MetadataTypes;
 }) {
   // Get settings
-  const [metadataView] = useLocalStorage("settingsHomeMetadataView");
+  const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
   return (
     <>
       <Head>
@@ -92,7 +92,6 @@ export default function Home({
               tags,
               platforms,
               packageManagement,
-              startupManagement,
             }: MetadataTypes) => (
               <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
                 <Button as="a" display="block" minH="fit-content" py={3}>
@@ -103,7 +102,7 @@ export default function Home({
                     fontWeight="normal"
                     fontSize="sm"
                   >
-                    {metadataView === "allTags" ? (
+                    {showTagsOnHome ? (
                       // Show all tags
                       tags.map((tag: string) => (
                         <Badge key={`${slug}-${tag}`}>{tag}</Badge>
@@ -132,24 +131,20 @@ export default function Home({
                             </>
                           ))}
                         </Text>
-                        {metadataView === "startupManagement" ? (
-                          <Text>{startupManagement}</Text>
-                        ) : (
-                          <Text>
-                            {packageManagement.map((manager: string) => (
-                              <>
-                                {/* Limit to 2 platforms */}
-                                {packageManagement.indexOf(manager) < 2 && (
-                                  <>{manager}</>
-                                )}
-                                {/* Add a comma if not the last date */}
-                                {packageManagement.indexOf(manager) < 1 &&
-                                  packageManagement.indexOf(manager) <
-                                    packageManagement.length - 1 && <>, </>}
-                              </>
-                            ))}
-                          </Text>
-                        )}
+                        <Text>
+                          {packageManagement.map((manager: string) => (
+                            <>
+                              {/* Limit to 2 platforms */}
+                              {packageManagement.indexOf(manager) < 2 && (
+                                <>{manager}</>
+                              )}
+                              {/* Add a comma if not the last date */}
+                              {packageManagement.indexOf(manager) < 1 &&
+                                packageManagement.indexOf(manager) <
+                                  packageManagement.length - 1 && <>, </>}
+                            </>
+                          ))}
+                        </Text>
                       </>
                     )}
                   </Stack>

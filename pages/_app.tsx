@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 // Design
 import "@fontsource/public-sans/400.css";
 import "@fontsource/public-sans/600.css";
-import "@fontsource/atkinson-hyperlegible";
 
 import { useEffect } from "react";
 

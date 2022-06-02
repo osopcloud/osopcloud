@@ -6,8 +6,8 @@ export default function DeleteSettings() {
   deleteFromStorage("settingsHideNotifications");
   deleteFromStorage("settingsAlwaysShowBackButton");
   deleteFromStorage("settingsShowThemeToggle");
-  deleteFromStorage("settingsHomeMetadataView");
+  deleteFromStorage("settingsShowTagsOnHome");
   deleteFromStorage("settingsDisableDonationOptions");
-  localStorage.removeItem("settingsFontOverride");
-  console.info("LocalStorage cleared. Using default Settings.");
+  localStorage.removeItem("settingsUseSystemFont");
+  console.info("LocalStorage cleared. Using default settings.");
 }

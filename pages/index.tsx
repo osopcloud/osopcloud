@@ -55,6 +55,7 @@ interface MetadataTypes {
     length: number;
   };
   startupManagement: string;
+  length: number;
 }
 
 // Start page
@@ -85,6 +86,17 @@ export default function Home({
 
       <SimpleGrid minChildWidth="340px" spacing={10}>
         <Stack direction="column" spacing={2} p={20}>
+          <Stack direction="row" spacing={5} fontSize="xs">
+            <Text>
+              {AZOSPageData.length} Operating System
+              {AZOSPageData.length <= 1 ? "" : "s"}
+            </Text>
+            <Text>
+              {showTagsOnHome
+                ? "Showing All Tags"
+                : "Showing Selected Metadata"}
+            </Text>
+          </Stack>
           {AZOSPageData.map(
             ({
               slug,

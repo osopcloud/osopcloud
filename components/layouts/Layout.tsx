@@ -140,7 +140,7 @@ export default function Layout({
                 )}
               </>
             ) : null}
-            <Link href="/settings" passHref>
+            <Link href="/settings/general" passHref>
               <IconButton
                 icon={<FiSettings />}
                 aria-label="Settings"
@@ -171,7 +171,7 @@ export default function Layout({
                 GitHub
               </Button>
             </Link>
-            <Link href="/docs/introduction" passHref>
+            <Link href="/docs/getting-started" passHref>
               <Button size="sm" as="a">
                 Documentation
               </Button>

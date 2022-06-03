@@ -77,8 +77,8 @@ export function HeaderLogo() {
         r="70"
         fill="none"
         stroke="#efe7df"
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <line
         x1="48"
@@ -87,15 +87,15 @@ export function HeaderLogo() {
         y2="125.11"
         fill="none"
         stroke="#efe7df"
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <polygon
         points="159.44 48.39 60.65 114.69 52.63 100.8 159.44 48.39"
         fill="none"
         stroke="#efe7df"
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <line
         x1="141.59"
@@ -104,8 +104,8 @@ export function HeaderLogo() {
         y2="143.17"
         fill="none"
         stroke="#efe7df"
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
       <line
         x1="45.5"
@@ -114,8 +114,8 @@ export function HeaderLogo() {
         y2="143.5"
         fill="none"
         stroke="#efe7df"
-        stroke-miterlimit="10"
-        stroke-width="5"
+        strokeMiterlimit="10"
+        strokeWidth="5"
       />
     </svg>
   );

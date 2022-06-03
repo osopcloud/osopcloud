@@ -6,7 +6,9 @@ import { useRouter } from "next/router";
 import {
   Box,
   Button,
+  Center,
   Flex,
+  Icon,
   IconButton,
   Spacer,
   Stack,
@@ -22,6 +24,7 @@ import {
   FiChevronLeft,
 } from "react-icons/fi";
 import { VercelLogo } from "components/brand/VercelPromotion";
+import { HeaderLogo } from "components/brand/Logo";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
@@ -87,7 +90,7 @@ export default function Layout({
     // Create a flex container
     <Flex
       display="flex"
-      direction="row"
+      direction={{ base: "column", sm: "row" }}
       bg={useColorModeValue("gray.50", "inherit")}
     >
       {/* Create a persistent sidebar */}
@@ -99,6 +102,7 @@ export default function Layout({
         left="0"
         overflow="auto"
         zIndex={1}
+        display={{ base: "none", sm: "flex" }}
       >
         <Flex direction="column" p={5}>
           {backButtonLargeWindows && (
@@ -152,6 +156,34 @@ export default function Layout({
         </Flex>
       </Flex>
 
+      {/* Mobile header */}
+      <Flex display={{ base: "flex", sm: "none" }} p={5}>
+        <Center>
+          <Link href="/" passHref>
+            <Icon w={12} h={12} cursor="pointer" as="a" rounded="xl">
+              <HeaderLogo />
+            </Icon>
+          </Link>
+        </Center>
+        <Spacer />
+        <Stack direction="row" spacing={2}>
+          <IconButton
+            icon={<FiPlus />}
+            aria-label="Create and Contribute"
+            size="lg"
+            isDisabled
+          />
+          <Link href="/settings" passHref>
+            <IconButton
+              icon={<FiSettings />}
+              aria-label="Settings"
+              size="lg"
+              as="a"
+            />
+          </Link>
+        </Stack>
+      </Flex>
+
       {/* Make sure the children are not obstructed the sidebar */}
       <Flex
         minH="100vh"
@@ -159,12 +191,12 @@ export default function Layout({
         position="relative"
         overflow="hidden"
         direction="column"
-        ps={100}
+        ps={{ base: 0, sm: 100 }}
       >
-        <Flex flex={1} p={5} pe={10} py={10}>
+        <Flex flex={1} p={5} pe={{ base: 5, sm: 10 }} py={10}>
           <Box w="100%">{children}</Box>
         </Flex>
-        <Flex p={5} pe={10}>
+        <Flex p={5} pe={{ base: "inherit", sm: 10 }}>
           <Stack direction="row" spacing={2}>
             <Link href="https://github.com/osopcloud/osopcloud" passHref>
               <Button leftIcon={<FiGithub />} size="sm" as="a">
@@ -172,12 +204,12 @@ export default function Layout({
               </Button>
             </Link>
             <Link href="/docs/getting-started" passHref>
-              <Button size="sm" as="a">
+              <Button size="sm" as="a" display={{ base: "none", sm: "flex" }}>
                 Documentation
               </Button>
             </Link>
             <Link href="/docs/keyboard-shortcuts" passHref>
-              <Button size="sm" as="a">
+              <Button size="sm" as="a" display={{ base: "none", sm: "flex" }}>
                 Keyboard Shortcuts
               </Button>
             </Link>
@@ -199,6 +231,7 @@ export default function Layout({
             color="white"
             variant="solid"
             size="sm"
+            display={{ base: "none", sm: "flex" }}
           >
             <Text me={2}>Powered by</Text>
             <VercelLogo />

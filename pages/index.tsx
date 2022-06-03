@@ -85,7 +85,7 @@ export default function Home({
       </Head>
 
       <SimpleGrid minChildWidth="340px" spacing={10}>
-        <Stack direction="column" spacing={2} p={20}>
+        <Stack direction="column" spacing={2} p={{ base: 0, sm: 20 }}>
           <Stack direction="row" spacing={5} fontSize="xs">
             <Text>
               {AZOSPageData.length} Operating System
@@ -165,7 +165,7 @@ export default function Home({
             )
           )}
         </Stack>
-        <Center h="100vh" pb="100">
+        <Center h="100vh" pb="100" display={{ base: "none", sm: "flex" }}>
           <Icon w={250} h={250} aria-label="Osopcloud Logo">
             <Logo />
           </Icon>

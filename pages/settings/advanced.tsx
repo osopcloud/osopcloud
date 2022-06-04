@@ -97,6 +97,13 @@ export default function AdvancedSettings() {
           />
         </Stack>
       </Flex>
+      <Flex>
+        <Center>
+          <Text>Show Developer Tools</Text>
+        </Center>
+        <Spacer />
+        <Switch colorScheme="almondScheme" size="lg" isDisabled />
+      </Flex>
       <Text fontSize="xs">Version {version}</Text>
     </>
   );

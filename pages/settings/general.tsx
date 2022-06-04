@@ -11,6 +11,7 @@ import {
   Flex,
   Heading,
   Spacer,
+  Stack,
   Switch,
   Text,
   useColorMode,
@@ -31,6 +32,7 @@ export default function GeneralSettings() {
   const [backButtonLargeWindows] = useLocalStorage(
     "settingsAlwaysShowBackButton"
   );
+  const [printButton] = useLocalStorage("settingsShowPrintButton");
   const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
 
   const { toggleColorMode } = useColorMode();
@@ -89,9 +91,37 @@ export default function GeneralSettings() {
           <Text>Use the Opposite Colour Mode for this Session</Text>
         </Center>
         <Spacer />
-        <Button size="sm" onClick={toggleColorMode}>
-          Toggle
-        </Button>
+        <Center>
+          <Button size="sm" onClick={toggleColorMode}>
+            Toggle
+          </Button>
+        </Center>
+      </Flex>
+      <Flex>
+        <Center>
+          <Stack direction="column" spacing={0}>
+            <Text>Enable Express Print</Text>
+            <Text fontSize="xs">
+              Only show content when printing. To print the full page, use the
+              browser menu.
+            </Text>
+          </Stack>
+        </Center>
+        <Spacer />
+        <Center>
+          <Switch
+            // @ts-ignore
+            isChecked={printButton}
+            onChange={() =>
+              writeStorage(
+                "settingsShowPrintButton",
+                printButton ? false : true
+              )
+            }
+            colorScheme="almondScheme"
+            size="lg"
+          />
+        </Center>
       </Flex>
     </>
   );

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 // Design
 import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
-import { FiLayout, FiSettings, FiTrash2 } from "react-icons/fi";
+import { FiLayout, FiSettings, FiShare, FiTrash2 } from "react-icons/fi";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,6 +26,11 @@ export default function SettingsLayout({ children }: LayoutProps) {
           <Link href="/settings/general">
             <Button leftIcon={<FiLayout />} as="a">
               Appearance &amp; Layout
+            </Button>
+          </Link>
+          <Link href="/settings/connections">
+            <Button leftIcon={<FiShare />} as="a">
+              Apps, Share, &amp; Print
             </Button>
           </Link>
           <Link href="/settings/advanced">

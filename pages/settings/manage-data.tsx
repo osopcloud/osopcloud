@@ -49,18 +49,22 @@ export default function DataManagement() {
   function BeginReset() {
     DeleteSettings();
     if (systemFont) {
-      setResetting(true);
       window.location.reload();
     }
     console.info("Reset completed.");
   }
   function BeginResetWithToast() {
-    BeginReset();
+    DeleteSettings();
+    if (systemFont) {
+      setResetting(true);
+      window.location.reload();
+    }
     toast({
       title: "Reset Successful",
       status: "success",
       position: "top",
     });
+    console.info("Reset completed.");
   }
 
   // Check reset eligibility

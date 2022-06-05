@@ -6,7 +6,6 @@ import Head from "next/head";
 
 // Design
 import {
-  Button,
   Center,
   Flex,
   Heading,
@@ -14,7 +13,6 @@ import {
   Stack,
   Switch,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
 
 // First party components
@@ -29,7 +27,9 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // Start page
 export default function ConnectionsSettings() {
   // Get settings
-  const [printButton] = useLocalStorage("settingsShowPrintButton");
+  const [disableDynamicPrinting] = useLocalStorage(
+    "settingsDisableDynamicPrinting"
+  );
 
   return (
     <>
@@ -46,14 +46,14 @@ export default function ConnectionsSettings() {
         />
       </Head>
 
-      <Heading size="md">Appearance &amp; Layout Settings</Heading>
+      <Heading size="md">Apps, Sharing, and Printing Settings</Heading>
       <Flex>
         <Center>
           <Stack direction="column" spacing={0}>
-            <Text>Use Dynamic Printing</Text>
+            <Text>Disable Dynamic Printing</Text>
             <Text fontSize="xs">
-              Only show content when printing. To print the full page, use the
-              browser menu.
+              Print the full page when using the sidebar printing option or the
+              Command + P shortcut.
             </Text>
           </Stack>
         </Center>
@@ -61,11 +61,11 @@ export default function ConnectionsSettings() {
         <Center>
           <Switch
             // @ts-ignore
-            isChecked={printButton}
+            isChecked={disableDynamicPrinting}
             onChange={() =>
               writeStorage(
-                "settingsShowPrintButton",
-                printButton ? false : true
+                "settingsDisableDynamicPrinting",
+                disableDynamicPrinting ? false : true
               )
             }
             colorScheme="almondScheme"

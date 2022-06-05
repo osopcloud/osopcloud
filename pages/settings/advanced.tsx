@@ -18,6 +18,7 @@ import {
 
 // First party components
 import { version } from "components/Version";
+import CheckPWA from "lib/CheckPWA";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -31,8 +32,8 @@ import { useState } from "react";
 // Start page
 export default function AdvancedSettings() {
   // Get settings
-  const [disableDonationOptions] = useLocalStorage(
-    "settingsDisableDonationOptions"
+  const [disableDonationLinks] = useLocalStorage(
+    "settingsDisableDonationLinks"
   );
   const [systemFont] = useLocalStorage("settingsUseSystemFont");
 
@@ -61,13 +62,13 @@ export default function AdvancedSettings() {
         <Spacer />
         <Switch
           // @ts-ignore
-          isChecked={disableDonationOptions}
-          onChange={() =>
+          isChecked={disableDonationLinks}
+          onChange={() => {
             writeStorage(
-              "settingsDisableDonationOptions",
-              disableDonationOptions ? false : true
-            )
-          }
+              "settingsDisableDonationLinks",
+              disableDonationLinks ? false : true
+            );
+          }}
           colorScheme="almondScheme"
           size="lg"
         />
@@ -97,14 +98,12 @@ export default function AdvancedSettings() {
           />
         </Stack>
       </Flex>
-      <Flex>
-        <Center>
-          <Text>Show Developer Tools</Text>
-        </Center>
-        <Spacer />
-        <Switch colorScheme="almondScheme" size="lg" isDisabled />
-      </Flex>
-      <Text fontSize="xs">Version {version}</Text>
+      <Stack direction="column" spacing={0}>
+        <Text fontSize="xs">Version {version}</Text>
+        <Text fontSize="xs">
+          {CheckPWA() ? "Standalone Application" : "Web Browser Dependent"}
+        </Text>
+      </Stack>
     </>
   );
 }

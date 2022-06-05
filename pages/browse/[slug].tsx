@@ -29,9 +29,6 @@ import {
 // First party components
 import Layout from "components/layouts/Layout";
 
-// Settings
-import { useLocalStorage } from "@rehooks/local-storage";
-
 // Markdown processing libraries
 import fs from "fs";
 import path from "path";
@@ -45,17 +42,13 @@ import { useState } from "react";
 
 interface OSPageTypes {
   source: any;
+  nextBuildURL: string;
   componentOverrides: object;
   descriptionPath: string;
 }
 
 // Start page
 export default function OSPage({ source, componentOverrides }: OSPageTypes) {
-  // Get settings
-  const [disableDonationOptions] = useLocalStorage(
-    "settingsDisableDonationOptions"
-  );
-
   // Tabs
   function MDXDescription() {
     return (
@@ -294,11 +287,7 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
               <Link href={source.frontmatter.repository} passHref>
                 <Button as="a">Visit Project Repository</Button>
               </Link>
-              {disableDonationOptions ? (
-                <Button isDisabled>Donation Options</Button>
-              ) : (
-                <Button>Donation Options</Button>
-              )}
+              <Button isDisabled>Donation Options</Button>
             </Stack>
           </Stack>
         </Flex>

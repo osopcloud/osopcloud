@@ -16,7 +16,7 @@ import { FiTool } from "react-icons/fi";
 import Logo from "components/brand/Logo";
 import { version } from "components/Version";
 import { commit } from "components/Commit";
-import DeleteSettings from "components/settings/DeleteSettings";
+import DeleteSettings from "lib/DeleteSettings";
 
 import React from "react";
 

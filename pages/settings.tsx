@@ -13,7 +13,13 @@ import { VercelLogo } from "components/brand/VercelPromotion";
 
 // Layouts
 import Layout from "components/layouts/Layout";
-import { FiLayout, FiLifeBuoy, FiSettings, FiTrash2 } from "react-icons/fi";
+import {
+  FiLayout,
+  FiLifeBuoy,
+  FiSettings,
+  FiShare,
+  FiTrash2,
+} from "react-icons/fi";
 
 // Start page
 export default function Settings() {
@@ -30,11 +36,16 @@ export default function Settings() {
       </Head>
 
       <Stack direction="column" spacing={5}>
-        <Heading>Settings</Heading>
+        <Heading>Options</Heading>
         <Stack direction="column" spacing={2}>
           <Link href="/settings/general" passHref>
             <Button leftIcon={<FiLayout />} as="a">
               Appearance &amp; Layout
+            </Button>
+          </Link>
+          <Link href="/settings/connections" passHref>
+            <Button leftIcon={<FiShare />} as="a">
+              Apps, Share, &amp; Print
             </Button>
           </Link>
           <Link href="/settings/advanced" passHref>

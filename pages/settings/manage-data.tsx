@@ -16,7 +16,8 @@ import {
 import theme from "lib/Theming";
 
 // First party components
-import DeleteSettings from "components/settings/DeleteSettings";
+import DeleteSettings from "lib/DeleteSettings";
+import { version } from "components/Version";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -25,21 +26,25 @@ import SettingsLayout from "components/layouts/SettingsLayout";
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Start page
 export default function DataManagement() {
   const toast = createStandaloneToast({ theme: theme });
 
+  useEffect(() => {
+    writeStorage("version", version);
+  });
+
   // Get settings
-  const [backButtonLargeWindows] = useLocalStorage(
-    "settingsAlwaysShowBackButton"
-  );
-  const [showSessionThemeToggle] = useLocalStorage("settingsShowThemeToggle");
-  const [disableDonationOptions] = useLocalStorage(
-    "settingsDisableDonationOptions"
-  );
   const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
+  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
+  const [disableDynamicPrinting] = useLocalStorage(
+    "settingsDisableDynamicPrinting"
+  );
+  const [disableDonationLinks] = useLocalStorage(
+    "settingsDisableDonationLinks"
+  );
   const systemFont =
     typeof window !== "undefined"
       ? localStorage.getItem("settingsUseSystemFont") === "true"
@@ -69,26 +74,13 @@ export default function DataManagement() {
 
   // Check reset eligibility
   const resetStatus = () => {
-    if (backButtonLargeWindows) {
-      return false;
-    } else {
-      if (showSessionThemeToggle) {
+    const storage = typeof window !== "undefined" ? localStorage : "";
+    // If localStorage is not null
+    if (storage) {
+      // If localStorage is not empty
+      if (storage.length > 1) {
         return false;
-      } else {
-        if (showTagsOnHome) {
-          return false;
-        } else {
-          if (disableDonationOptions) {
-            return false;
-          } else {
-            if (systemFont) {
-              return false;
-            } else {
-              return true;
-            }
-          }
-        }
-      }
+      } else return true;
     }
   };
 
@@ -118,30 +110,51 @@ export default function DataManagement() {
         // Then show an error toast
         try {
           const importedSettings = JSON.parse(text);
-          console.debug(
-            "JSON detected in clipboard. Resetting Osopcloud and applying settings."
-          );
-          BeginReset();
-          for (const key in importedSettings) {
-            writeStorage(key, importedSettings[key]);
-          }
-          // If text includes the settingsUseSystemFont key, refresh the page
-          // Else just show a toast
-          if (importedSettings.settingsUseSystemFont) {
-            setImporting(true);
-            console.info("Import completed. Reloading to apply font settings.");
-            window.location.reload();
-          } else {
-            console.info("Import completed. Applied settings from clipboard.");
+          // If the version key in the imported settings is not the same as the current version, show an error toast
+          if (importedSettings.version !== version) {
+            console.error(
+              "Settings are from a different version (2202)",
+              importedSettings.version,
+              version
+            );
             toast({
-              title: "Settings Successfully Imported",
-              status: "success",
+              title: "These Settings are from a different version",
+              status: "error",
               position: "top",
+              description:
+                "For security reasons, Settings cannot be imported from another version of Osopcloud. (2202)",
             });
+          } else {
+            console.debug(
+              "JSON detected in clipboard. Resetting Osopcloud and applying settings.",
+              text
+            );
+            BeginReset();
+            for (const key in importedSettings) {
+              writeStorage(key, importedSettings[key]);
+            }
+            // If text includes the settingsUseSystemFont key, refresh the page
+            // Else just show a toast
+            if (importedSettings.settingsUseSystemFont) {
+              setImporting(true);
+              console.info(
+                "Import completed. Reloading to apply font settings."
+              );
+              window.location.reload();
+            } else {
+              console.info(
+                "Import completed. Applied settings from clipboard."
+              );
+              toast({
+                title: "Settings Successfully Imported",
+                status: "success",
+                position: "top",
+              });
+            }
           }
         } catch (e) {
           // If it fails, it's not a valid JSON string
-          console.error("Import failed. Invalid JSON string.");
+          console.error("Import failed. Invalid JSON string.", e, text);
           toast({
             title: "No Settings Detected",
             status: "warning",
@@ -151,10 +164,10 @@ export default function DataManagement() {
       });
     } else {
       console.error(
-        "Import failed. navigator.clipboard.readText() not supported."
+        "Import failed. navigator.clipboard.readText() not supported. (1102)"
       );
       toast({
-        title: "This browser doesn't support reading the clipboard.",
+        title: "This browser doesn't support reading the clipboard",
         description: "The settings were not imported. (1102)",
         status: "error",
         position: "top",

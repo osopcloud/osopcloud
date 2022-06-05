@@ -5,17 +5,7 @@ import type { ReactElement } from "react";
 import Head from "next/head";
 
 // Design
-import {
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Spacer,
-  Stack,
-  Switch,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Center, Flex, Heading, Spacer, Switch, Text } from "@chakra-ui/react";
 
 // First party components
 
@@ -29,13 +19,8 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // Start page
 export default function GeneralSettings() {
   // Get settings
-  const [backButtonLargeWindows] = useLocalStorage(
-    "settingsAlwaysShowBackButton"
-  );
-  const [printButton] = useLocalStorage("settingsShowPrintButton");
   const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
-
-  const { toggleColorMode } = useColorMode();
+  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
 
   return (
     <>
@@ -70,58 +55,21 @@ export default function GeneralSettings() {
       </Flex>
       <Flex>
         <Center>
-          <Text>Show the Back Button on Large Windows</Text>
+          <Text>Show Printing Options in the Sidebar</Text>
         </Center>
         <Spacer />
         <Switch
           // @ts-ignore
-          isChecked={backButtonLargeWindows}
+          isChecked={showPrintButton}
           onChange={() =>
             writeStorage(
-              "settingsAlwaysShowBackButton",
-              backButtonLargeWindows ? false : true
+              "settingsShowPrintButton",
+              showPrintButton ? false : true
             )
           }
           colorScheme="almondScheme"
           size="lg"
         />
-      </Flex>
-      <Flex>
-        <Center>
-          <Text>Use the Opposite Colour Mode for this Session</Text>
-        </Center>
-        <Spacer />
-        <Center>
-          <Button size="sm" onClick={toggleColorMode}>
-            Toggle
-          </Button>
-        </Center>
-      </Flex>
-      <Flex>
-        <Center>
-          <Stack direction="column" spacing={0}>
-            <Text>Enable Express Print</Text>
-            <Text fontSize="xs">
-              Only show content when printing. To print the full page, use the
-              browser menu.
-            </Text>
-          </Stack>
-        </Center>
-        <Spacer />
-        <Center>
-          <Switch
-            // @ts-ignore
-            isChecked={printButton}
-            onChange={() =>
-              writeStorage(
-                "settingsShowPrintButton",
-                printButton ? false : true
-              )
-            }
-            colorScheme="almondScheme"
-            size="lg"
-          />
-        </Center>
       </Flex>
     </>
   );

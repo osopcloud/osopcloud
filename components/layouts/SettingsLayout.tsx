@@ -23,22 +23,22 @@ export default function SettingsLayout({ children }: LayoutProps) {
           me={{ base: 0, sm: 10 }}
           display={{ base: "none", sm: "flex" }}
         >
-          <Link href="/settings/general">
+          <Link href="/settings/general" passHref>
             <Button leftIcon={<FiLayout />} as="a">
               Appearance &amp; Layout
             </Button>
           </Link>
-          <Link href="/settings/connections">
+          <Link href="/settings/connections" passHref>
             <Button leftIcon={<FiShare />} as="a">
               Apps, Share, &amp; Print
             </Button>
           </Link>
-          <Link href="/settings/advanced">
+          <Link href="/settings/advanced" passHref>
             <Button leftIcon={<FiSettings />} as="a">
               Advanced Settings
             </Button>
           </Link>
-          <Link href="/settings/manage-data">
+          <Link href="/settings/manage-data" passHref>
             <Button leftIcon={<FiTrash2 />} as="a">
               Manage Data &amp; Reset
             </Button>

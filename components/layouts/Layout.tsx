@@ -10,6 +10,7 @@ import {
   Flex,
   Icon,
   IconButton,
+  DarkMode,
   Spacer,
   Stack,
   Text,
@@ -27,8 +28,11 @@ import {
 import { VercelLogo } from "components/brand/VercelPromotion";
 import { HeaderLogo } from "components/brand/Logo";
 
+// First party components
+import CheckPWA from "lib/CheckPWA";
+
 // Settings
-import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
+import { useLocalStorage } from "@rehooks/local-storage";
 
 import { useEffect } from "react";
 
@@ -43,10 +47,10 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
   const router = useRouter();
 
   // Get settings
-  const [backButtonLargeWindows] = useLocalStorage(
-    "settingsAlwaysShowBackButton"
+  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
+  const [disableDynamicPrinting] = useLocalStorage(
+    "settingsDisableDynamicPrinting"
   );
-  const [printButton] = useLocalStorage("settingsShowPrintButton");
 
   // Share experience
   function Share() {
@@ -65,8 +69,15 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
     }
   }
 
-  // Express print
+  // Dynamic printing
   function Print() {
+    if (disableDynamicPrinting) {
+      window.print();
+    } else {
+      DynamicPrint();
+    }
+  }
+  function DynamicPrint() {
     // @ts-ignore
     const printContents = document.getElementById("printRegion").innerHTML;
 
@@ -80,31 +91,18 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
 
   // Layout keyboard shortcuts
   useEffect(() => {
-    // Add an event listener that listens for the keydown Option+Command+LeftArrow key combination on Mac and the Alt+Control+LeftArrow key on others, preventing the default behavior and writing settingsAlwaysShowBackButton to true.
-    const listener = (event: KeyboardEvent) => {
-      if (event.metaKey && event.altKey && event.key === "ArrowLeft") {
-        event.preventDefault();
-        writeStorage(
-          "settingsAlwaysShowBackButton",
-          backButtonLargeWindows ? false : true
-        );
-      }
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [backButtonLargeWindows]);
-  useEffect(() => {
-    if (printButton) {
+    // If disableDynamicPrinting is not true
+    if (!disableDynamicPrinting) {
       const listener = (event: KeyboardEvent) => {
         if (event.metaKey && event.key === "p") {
           event.preventDefault();
-          Print();
+          DynamicPrint();
         }
       };
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [printButton]);
+  }, [disableDynamicPrinting]);
 
   const shareCompatibility =
     typeof navigator !== "undefined" ? navigator.share : "";
@@ -119,7 +117,7 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
       {/* Create a persistent sidebar */}
       <Flex
         h="100vh"
-        bg={useColorModeValue("gray.50", "inherit")}
+        bg="almond"
         position="fixed"
         top="0"
         left="0"
@@ -127,75 +125,86 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         zIndex={1}
         display={{ base: "none", sm: "flex" }}
       >
-        <Flex direction="column" p={5}>
-          {backButtonLargeWindows && (
-            <IconButton
-              icon={<FiChevronLeft />}
-              aria-label="Go Back"
-              size="lg"
-              mb={5}
-              onClick={router.back}
-            />
-          )}
-          <Stack direction="column" spacing={2}>
-            <Link href="/" passHref>
+        {/* @ts-ignore */}
+        <DarkMode>
+          <Flex direction="column" p={5}>
+            {CheckPWA() && (
               <IconButton
-                icon={<FiHome />}
-                aria-label="Go Home"
+                icon={<FiChevronLeft />}
+                aria-label="Go Back"
                 size="lg"
-                as="a"
+                mb={5}
+                onClick={router.back}
               />
-            </Link>
-            <IconButton
-              icon={<FiPlus />}
-              aria-label="Create and Contribute"
-              size="lg"
-              isDisabled
-            />
-          </Stack>
-          <Spacer />
-          <Stack direction="column" spacing={2}>
-            {showShareButton ?? (
-              <>
-                {shareCompatibility ? (
-                  <IconButton
-                    icon={<FiShare />}
-                    aria-label="Share"
-                    size="lg"
-                    onClick={Share}
-                  />
-                ) : null}
-                {printButton ? (
-                  <IconButton
-                    icon={<FiPrinter />}
-                    aria-label="Print"
-                    size="lg"
-                    onClick={Print}
-                  />
-                ) : null}
-              </>
             )}
-            <Link href="/settings/general" passHref>
+            <Stack direction="column" spacing={2}>
+              <Link href="/" passHref>
+                <IconButton
+                  icon={<FiHome />}
+                  aria-label="Go Home"
+                  size="lg"
+                  as="a"
+                />
+              </Link>
               <IconButton
-                icon={<FiSettings />}
-                aria-label="Settings"
+                icon={<FiPlus />}
+                aria-label="Create and Contribute"
                 size="lg"
-                as="a"
+                isDisabled
               />
-            </Link>
-          </Stack>
-        </Flex>
+            </Stack>
+            <Spacer />
+            <Stack direction="column" spacing={2}>
+              {showShareButton ?? (
+                <>
+                  {shareCompatibility ? (
+                    <IconButton
+                      icon={<FiShare />}
+                      aria-label="Share"
+                      size="lg"
+                      onClick={Share}
+                    />
+                  ) : null}
+                  {showPrintButton && (
+                    <IconButton
+                      icon={<FiPrinter />}
+                      aria-label="Print"
+                      size="lg"
+                      onClick={Print}
+                    />
+                  )}
+                </>
+              )}
+              <Link href="/settings/general" passHref>
+                <IconButton
+                  icon={<FiSettings />}
+                  aria-label="Settings"
+                  size="lg"
+                  as="a"
+                />
+              </Link>
+            </Stack>
+          </Flex>
+        </DarkMode>
       </Flex>
 
       {/* Mobile header */}
       <Flex display={{ base: "flex", sm: "none" }} p={5}>
-        <Center>
-          <Link href="/" passHref>
-            <Icon w={12} h={12} cursor="pointer" as="a" rounded="xl">
-              <HeaderLogo />
-            </Icon>
-          </Link>
-        </Center>
+        <Stack direction="row" spacing={5}>
+          <IconButton
+            icon={<FiChevronLeft />}
+            aria-label="Go Back"
+            size="lg"
+            onClick={router.back}
+          />
+          <Center>
+            <Link href="/" passHref>
+              <Icon w={12} h={12} cursor="pointer" as="a" rounded="xl">
+                <HeaderLogo />
+              </Icon>
+            </Link>
+          </Center>
+        </Stack>
         <Spacer />
         <Stack direction="row" spacing={2}>
           <IconButton
@@ -222,7 +231,7 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         position="relative"
         overflow="hidden"
         direction="column"
-        ps={{ base: 0, sm: 100 }}
+        ps={{ base: 0, sm: 115 }}
       >
         <Flex flex={1} p={5} pe={{ base: 5, sm: 10 }} py={10}>
           <Box w="100%" id="printRegion">

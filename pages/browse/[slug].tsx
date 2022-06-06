@@ -3,11 +3,12 @@
 // https://nextjs.org/docs/api-reference/edge-runtime
 
 // Types
-import type { ReactElement } from "react";
+import { ReactElement, useRef } from "react";
 import { GetStaticProps } from "next";
 
 // Routing
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // SEO
 import Head from "next/head";
@@ -23,10 +24,15 @@ import {
   Table,
   Tbody,
   Td,
+  Text,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 // First party components
+import DynamicModal from "components/overlays/DynamicModal";
+
+// Layouts
 import Layout from "components/layouts/Layout";
 
 // Markdown processing libraries
@@ -39,6 +45,8 @@ import MDXProvider from "lib/MDXProvider";
 import { FiDatabase, FiFileText } from "react-icons/fi";
 
 import { useState } from "react";
+import { DeleteComposerData } from "components/create/DeleteComposerDataOverlay";
+import { writeStorage } from "@rehooks/local-storage";
 
 interface OSPageTypes {
   source: any;
@@ -49,6 +57,8 @@ interface OSPageTypes {
 
 // Start page
 export default function OSPage({ source, componentOverrides }: OSPageTypes) {
+  const router = useRouter();
+
   // Tabs
   function MDXDescription() {
     return (
@@ -218,6 +228,46 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
     },
   ];
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef(null);
+
+  // Write Composer data
+  const [writingToComposer, setWritingToComposer] = useState(false);
+
+  // Take source, remove the frontmatter, and make it a string
+  // const sourceWithoutFrontmatter = JSON.stringify(source, (key, value) => {
+  //   if (key === "frontmatter") {
+  //     // Remove the frontmatter
+  //     return undefined;
+  //   } else {
+  //     // Return the value
+  //     return value;
+  //   }
+  // }).toString();
+
+  function CopyToComposer() {
+    setWritingToComposer(true);
+    DeleteComposerData();
+    writeStorage("composerName", source.frontmatter.name);
+    // Write source to composerDescription
+    // writeStorage("composerDescription", sourceWithoutFrontmatter);
+    writeStorage("composerAuthors", source.frontmatter.authors);
+    writeStorage("composerTags", source.frontmatter.tags);
+    writeStorage("composerPlatforms", source.frontmatter.platforms);
+    writeStorage("composerBasedOn", source.frontmatter.basedOn);
+    writeStorage("composerDefaultDesktop", source.frontmatter.desktop);
+    writeStorage("composerDefaultShell", source.frontmatter.shell);
+    writeStorage("composerSoftware", source.frontmatter.software);
+    writeStorage(
+      "composerPackageManagement",
+      source.frontmatter.packageManagement
+    );
+    writeStorage("composerStartup", source.frontmatter.startupManagement);
+    writeStorage("composerWebsite", source.frontmatter.website);
+    writeStorage("composerRepository", source.frontmatter.repository);
+    router.push("/create");
+  }
+
   return (
     <>
       <Head>
@@ -287,8 +337,38 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
               <Link href={source.frontmatter.repository} passHref>
                 <Button as="a">Visit Project Repository</Button>
               </Link>
-              <Button isDisabled>Donation Options</Button>
             </Stack>
+            <Button size="sm" onClick={onOpen}>
+              Open in Composer
+            </Button>
+            <DynamicModal
+              isOpen={isOpen}
+              onClose={onClose}
+              cancelRef={cancelRef}
+              useAlertDialog={true}
+            >
+              <Stack direction="column" spacing={5}>
+                <Heading size="md">Open in Composer?</Heading>
+                <Text>
+                  You are about to open {source.frontmatter.name} in the
+                  Osopcloud Composer.
+                </Text>
+                <Text>
+                  If a project is already open in the Composer, your work will
+                  be lost.
+                </Text>
+                <Button
+                  onClick={CopyToComposer}
+                  isLoading={writingToComposer}
+                  loadingText="Preparing Composer"
+                >
+                  Continue
+                </Button>
+                <Button onClick={onClose} ref={cancelRef}>
+                  Cancel
+                </Button>
+              </Stack>
+            </DynamicModal>
           </Stack>
         </Flex>
       </Stack>

@@ -20,7 +20,6 @@ import { FiArrowLeft, FiArrowRight, FiShare, FiTrash2 } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
-import { DeleteComposerData } from "components/create/DeleteComposerDataOverlay";
 import { version } from "components/Version";
 
 // Storage

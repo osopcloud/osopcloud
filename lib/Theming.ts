@@ -1,5 +1,5 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
-import { Button, Heading } from "lib/ComponentStyles";
+import { Button, Heading, Input, Select, Textarea } from "lib/ComponentStyles";
 
 const config: ThemeConfig = {
   useSystemColorMode: true,
@@ -50,6 +50,9 @@ const theme = extendTheme({
   components: {
     Button,
     Heading,
+    Input,
+    Select,
+    Textarea,
   },
 });
 

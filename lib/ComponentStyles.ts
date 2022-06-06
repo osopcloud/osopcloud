@@ -24,3 +24,21 @@ export const Heading = {
     color: colorMode === "dark" ? "sandstone" : "almond",
   }),
 };
+
+export const Input = {
+  defaultProps: {
+    focusBorderColor: "almond",
+  },
+};
+
+export const Select = {
+  defaultProps: {
+    focusBorderColor: "almond",
+  },
+};
+
+export const Textarea = {
+  defaultProps: {
+    focusBorderColor: "almond",
+  },
+};

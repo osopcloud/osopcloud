@@ -201,15 +201,15 @@ export default function DataManagement() {
           isLoading={importing}
           loadingText="Importing"
         >
-          Import Settings from Clipboard
+          Import Storage from Clipboard
         </Button>
         <Text fontSize="xs">
           Allow Osopcloud to read and analyse your clipboard for compatible
-          settings data.
+          Settings and Composer data.
         </Text>
       </Stack>
       <Button onClick={ExportSettings} isDisabled={resetStatus()}>
-        Export Settings Data to Clipboard
+        Export Storage Data to Clipboard
       </Button>
       <Stack direction="column" spacing={2}>
         <Button
@@ -221,7 +221,8 @@ export default function DataManagement() {
           Reset Osopcloud
         </Button>
         <Text fontSize="xs">
-          Clear all settings and reset the application to the defaults.
+          Reset the Composer and apply the default Settings. Your work will be
+          lost.
         </Text>
       </Stack>
     </>

@@ -124,6 +124,7 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         overflow="auto"
         zIndex={1}
         display={{ base: "none", sm: "flex" }}
+        as="aside"
       >
         {/* @ts-ignore */}
         <DarkMode>
@@ -146,12 +147,14 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
                   as="a"
                 />
               </Link>
-              <IconButton
-                icon={<FiPlus />}
-                aria-label="Create and Contribute"
-                size="lg"
-                isDisabled
-              />
+              <Link href="/create" passHref>
+                <IconButton
+                  icon={<FiPlus />}
+                  aria-label="Create and Contribute"
+                  size="lg"
+                  as="a"
+                />
+              </Link>
             </Stack>
             <Spacer />
             <Stack direction="column" spacing={2}>
@@ -189,7 +192,7 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
       </Flex>
 
       {/* Mobile header */}
-      <Flex display={{ base: "flex", sm: "none" }} p={5}>
+      <Flex display={{ base: "flex", sm: "none" }} p={5} as="header">
         <Stack direction="row" spacing={5}>
           <IconButton
             icon={<FiChevronLeft />}
@@ -234,11 +237,11 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         ps={{ base: 0, sm: 115 }}
       >
         <Flex flex={1} p={5} pe={{ base: 5, sm: 10 }} py={10}>
-          <Box w="100%" id="printRegion">
+          <Box w="100%" id="printRegion" as="main">
             {children}
           </Box>
         </Flex>
-        <Flex p={5} pe={{ base: "inherit", sm: 10 }}>
+        <Flex p={5} pe={{ base: "inherit", sm: 10 }} as="footer">
           <Stack direction="row" spacing={2}>
             <Link href="https://github.com/osopcloud/osopcloud" passHref>
               <Button leftIcon={<FiGithub />} size="sm" as="a">

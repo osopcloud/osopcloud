@@ -1,8 +1,8 @@
 {
   "name": "Demo",
   "description": "Test",
+  "date": ["2022-06-06"],
   "tags": ["Advanced", "Utility", "Enterprise"],
-  "date": ["2022-05-23", "2022-05-24", "2022-05-25"],
   "authors": ["@noahlst", "The Team"],
   "platforms": ["x86", "arm", "risc"],
   "basedOn": "Ubuntu",

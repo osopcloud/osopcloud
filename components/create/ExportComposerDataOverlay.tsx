@@ -40,6 +40,7 @@ export default function ExportComposerDataOverlay() {
   // Storage
   const [name] = useLocalStorage("composerName");
   const [description] = useLocalStorage("composerDescription");
+  const [date, setDate] = useLocalStorage("composerDate", []);
   const [tags, setTags] = useLocalStorage("composerTags", []);
   const [platforms, setPlatforms] = useLocalStorage("composerPlatforms", []);
   const [basedOn] = useLocalStorage("composerBasedOn");
@@ -53,70 +54,37 @@ export default function ExportComposerDataOverlay() {
   const [startup] = useLocalStorage("composerStartup");
   const [authors, setAuthors] = useLocalStorage("composerAuthors", []);
   const [website] = useLocalStorage("composerWebsite");
-  const [sourceRepository] = useLocalStorage("composerSourceRepository");
+  const [sourceRepository] = useLocalStorage("composerRepository");
 
-  // Convert tags to YAML
-  const tagsYAML = tags
-    .map((tag) => {
-      return `- "${tag}"`;
-    })
-    .join("\n");
-  // Convert platforms to YAML
-  const platformsYAML = platforms
-    .map((platform) => {
-      return `- "${platform}"`;
-    })
-    .join("\n");
-  // Convert software to YAML
-  const softwareYAML = software
-    .map((software) => {
-      return `- "${software}"`;
-    })
-    .join("\n");
-  // Convert package management to YAML
-  const packageManagementYAML = packageManagement
-    .map((packageManagement) => {
-      return `- "${packageManagement}"`;
-    })
-    .join("\n");
-  // Convert authors to YAML
-  const authorsYAML = authors
-    .map((author) => {
-      return `- "${author}"`;
-    })
-    .join("\n");
+  const currentDate = new Date().toISOString();
 
-  // Return a YAML array with the current date as ISO 8601 date string
-  const date = new Date().toISOString();
-  const dateYAML = `- "${date}"`;
-
-  // Take this metadata and create an MDX file with embedded metadata
-  const mdx = `---
-# Generated with Osopcloud Composer (${version})
-
-# Start metadata
-name: "${name}"
-date: ${dateYAML}
-authors: ${authorsYAML}
-tags: ${tagsYAML}
-platforms: ${platformsYAML}
-basedOn: "${basedOn}"
-defaultDesktop: "${desktop}"
-defaultShell: "${shell}"
-software: ${softwareYAML}
-packageManagement: ${packageManagementYAML}
-startup: "${startup}"
-website: "${website}"
-repository: "${sourceRepository}"
----
-
-${description}`;
+  // Take this metadata and create the text of a JSON file
+  const json = `
+{
+  "name": "${name}",
+  "description": "${description}",
+  "date": [
+    "${date}",
+    "${currentDate}"
+  ]
+  "tags": ${JSON.stringify(tags)},
+  "platforms": ${JSON.stringify(platforms)},
+  "basedOn": "${basedOn}",
+  "desktop": "${desktop}",
+  "shell": "${shell}",
+  "software": ${JSON.stringify(software)},
+  "packageManagement": ${JSON.stringify(packageManagement)},
+  "startupManagement": "${startup}",
+  "authors": ${JSON.stringify(authors)},
+  "website": "${website}",
+  "sourceRepository": "${sourceRepository}"
+}`;
 
   // Share the file using the Web Share API
   function ShareAsFile() {
-    const blob = new Blob([mdx], { type: "text/plain" });
-    const fileName = `${name}.mdx`.toLowerCase();
-    const file = new File([blob], fileName, { type: "text/plain" });
+    const blob = new Blob([json], { type: "text/json" });
+    const fileName = `${name}.json`.toLowerCase();
+    const file = new File([blob], fileName, { type: "text/json" });
     navigator.share({
       title: `${name}`,
       text: "Generated file with Osopcloud Composer",
@@ -125,14 +93,14 @@ ${description}`;
   }
 
   const fileName = name
-    ? `${name.replace(/\s/g, "-").toLowerCase()}.mdx`
+    ? `${name.replace(/\s/g, "-").toLowerCase()}.json`
     : null;
 
   // Download the file
   function DownloadAsFile() {
-    const blob = new Blob([mdx], { type: "text/plain" });
+    const blob = new Blob([json], { type: "text/json" });
     // @ts-ignore
-    const file = new File([blob], fileName, { type: "text/plain" });
+    const file = new File([blob], fileName, { type: "text/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(file);
     // @ts-ignore
@@ -140,7 +108,7 @@ ${description}`;
     a.click();
   }
 
-  const { hasCopied, onCopy } = useClipboard(mdx);
+  const { hasCopied, onCopy } = useClipboard(json);
 
   function ContinueOnGitHub() {
     setIsNavigatingAway(true);
@@ -175,18 +143,18 @@ ${description}`;
             <>
               <Stack direction="column" spacing={2}>
                 <Button onClick={ShareAsFile}>
-                  Share <Code mx={2}>.mdx</Code> File
+                  Share <Code mx={2}>.json</Code> File
                 </Button>
                 <Text fontSize="xs">
-                  Share a .mdx text file with apps and people.
+                  Share a .json text file with apps and people.
                 </Text>
               </Stack>
               <Stack direction="column" spacing={2}>
                 <Button onClick={DownloadAsFile}>
-                  Save <Code mx={2}>.mdx</Code> File
+                  Save <Code mx={2}>.json</Code> File
                 </Button>
                 <Text fontSize="xs">
-                  Save a .mdx text file on your local system.
+                  Save a .json text file on your local system.
                 </Text>
               </Stack>
               <Button onClick={onCopy} isDisabled={hasCopied}>

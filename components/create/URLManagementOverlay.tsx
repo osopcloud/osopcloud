@@ -37,7 +37,7 @@ export default function URLManagementOverlay() {
 
   // Storage
   const [website] = useLocalStorage("composerWebsite");
-  const [sourceRepository] = useLocalStorage("composerSourceRepository");
+  const [sourceRepository] = useLocalStorage("composerRepository");
 
   return (
     <>

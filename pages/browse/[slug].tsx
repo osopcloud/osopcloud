@@ -226,24 +226,12 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
 
   // Write Composer data
   const [writingToComposer, setWritingToComposer] = useState(false);
-
-  // Take source, remove the frontmatter, and make it a string
-  // const sourceWithoutFrontmatter = JSON.stringify(source, (key, value) => {
-  //   if (key === "frontmatter") {
-  //     // Remove the frontmatter
-  //     return undefined;
-  //   } else {
-  //     // Return the value
-  //     return value;
-  //   }
-  // }).toString();
-
   function CopyToComposer() {
     setWritingToComposer(true);
     DeleteComposerData();
     writeStorage("composerName", source.name);
-    // Write source to composerDescription
-    // writeStorage("composerDescription", sourceWithoutFrontmatter);
+    writeStorage("composerDescription", source.description);
+    writeStorage("composerDate", source.date);
     writeStorage("composerAuthors", source.authors);
     writeStorage("composerTags", source.tags);
     writeStorage("composerPlatforms", source.platforms);

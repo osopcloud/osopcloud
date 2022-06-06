@@ -20,6 +20,7 @@ import { useRef, useState } from "react";
 export function DeleteComposerData() {
   deleteFromStorage("composerName");
   deleteFromStorage("composerDescription");
+  deleteFromStorage("composerDate");
   deleteFromStorage("composerTags");
   deleteFromStorage("composerPlatforms");
   deleteFromStorage("composerBasedOn");
@@ -30,7 +31,7 @@ export function DeleteComposerData() {
   deleteFromStorage("composerStartup");
   deleteFromStorage("composerAuthors");
   deleteFromStorage("composerWebsite");
-  deleteFromStorage("composerSourceRepository");
+  deleteFromStorage("composerRepository");
 }
 
 // Start component

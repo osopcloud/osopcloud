@@ -1,6 +1,1 @@
-import { Text } from "@chakra-ui/react";
-
-// Start component
-export default function Version() {
-  return <Text>1.0.0</Text>;
-}
+export const version = "1.0.0-alpha.2";

@@ -5,112 +5,71 @@ import type { ReactElement } from "react";
 import Link from "next/link";
 
 // SEO
+import Head from "next/head";
 
 // Design
-import {
-  Button,
-  Center,
-  Heading,
-  Stack,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Button, Heading, Stack, Text } from "@chakra-ui/react";
 import { VercelLogo } from "components/brand/VercelPromotion";
-
-// First-party components
-import ChangeApplicationFont from "components/settings/ChangeApplicationFont";
-import AboutApplication from "components/settings/AboutApplication";
 
 // Layouts
 import Layout from "components/layouts/Layout";
-
-// Settings
-import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
+import {
+  FiLayout,
+  FiLifeBuoy,
+  FiSettings,
+  FiShare,
+  FiTrash2,
+} from "react-icons/fi";
 
 // Start page
 export default function Settings() {
-  // Get settings
-  const [hideNotifications] = useLocalStorage("settingsHideNotifications");
-  const [backButtonLargeWindows] = useLocalStorage(
-    "settingsAlwaysShowBackButton"
-  );
-  const [showSessionThemeToggle] = useLocalStorage("settingsShowThemeToggle");
-
-  const { toggleColorMode } = useColorMode();
-
   return (
-    <Stack direction="column" spacing={5}>
-      <Heading>Osopcloud Settings</Heading>
-      <Text>
-        Use Settings to customise how Osopcloud looks and configure how it
-        behaves.
-      </Text>
-      <Stack direction="column" spacing={2}>
-        <Button
-          onClick={(_) => {
-            writeStorage(
-              "settingsHideNotifications",
-              hideNotifications ? false : true
-            );
-          }}
-        >
-          {hideNotifications ? "Disable" : "Enable"} Focus Mode
-        </Button>
-        <Button
-          display={{ base: "none", sm: "block" }}
-          onClick={(_) => {
-            writeStorage(
-              "settingsAlwaysShowBackButton",
-              backButtonLargeWindows ? false : true
-            );
-          }}
-        >
-          {backButtonLargeWindows ? "Hide" : "Show"} the Back Button on Large
-          Windows
-        </Button>
-        <Button
-          display={{ base: "none", sm: "flex" }}
-          onClick={(_) => {
-            writeStorage(
-              "settingsShowThemeToggle",
-              showSessionThemeToggle ? false : true
-            );
-          }}
-        >
-          {showSessionThemeToggle ? "Hide" : "Show"} the Session Theme Toggle
-        </Button>
-        <Button
-          display={{ base: "flex", sm: "none" }}
-          onClick={toggleColorMode}
-        >
-          Toggle the Session Theme
-        </Button>
-      </Stack>
-      <Stack direction="column" spacing={2}>
-        <Button isDisabled>Disable Donation Features</Button>
-      </Stack>
-      <Stack direction="column" spacing={2}>
-        <ChangeApplicationFont />
-        <AboutApplication />
-      </Stack>
-      <Link href="/docs/introduction" passHref>
-        <Button display={{ base: "flex", sm: "none" }} as="a">
-          Osopcloud Documentation
-        </Button>
-      </Link>
-      <Button
-        aria-label="Powered by Vercel"
-        display={{ base: "flex", md: "none" }}
-        isDisabled
-      >
-        <Stack direction="row" spacing={2}>
-          <Text>Powered by</Text>
-          <Center>
-            <VercelLogo fill="black" />
-          </Center>
+    <>
+      <Head>
+        <title>Settings &mdash; Osopcloud</title>
+        <meta name="description" content="Customise and configure Osopcloud." />
+        <meta name="og:title" content="Osopcloud Settings" />
+        <meta
+          name="og:description"
+          content="Customise and configure Osopcloud."
+        />
+      </Head>
+
+      <Stack direction="column" spacing={5}>
+        <Heading>Options</Heading>
+        <Stack direction="column" spacing={2}>
+          <Link href="/settings/general" passHref>
+            <Button leftIcon={<FiLayout />} as="a">
+              Appearance &amp; Layout
+            </Button>
+          </Link>
+          <Link href="/settings/connections" passHref>
+            <Button leftIcon={<FiShare />} as="a">
+              Apps, Share, &amp; Print
+            </Button>
+          </Link>
+          <Link href="/settings/advanced" passHref>
+            <Button leftIcon={<FiSettings />} as="a">
+              Advanced Settings
+            </Button>
+          </Link>
+          <Link href="/settings/manage-data" passHref>
+            <Button leftIcon={<FiTrash2 />} as="a">
+              Manage Data &amp; Reset
+            </Button>
+          </Link>
         </Stack>
-      </Button>
-    </Stack>
+        <Link href="/docs/getting-started" passHref>
+          <Button leftIcon={<FiLifeBuoy />} as="a">
+            Osopcloud Documentation
+          </Button>
+        </Link>
+        <Button colorScheme="black" bg="black" color="white" variant="solid">
+          <Text me={2}>Powered by</Text>
+          <VercelLogo />
+        </Button>
+      </Stack>
+    </>
   );
 }
 Settings.getLayout = function getLayout(page: ReactElement) {

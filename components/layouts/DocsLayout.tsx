@@ -15,9 +15,6 @@ export default function DocsLayout({ children }: LayoutProps) {
       <Heading>Osopcloud Documentation</Heading>
       <Flex display="flex" flexDirection={{ base: "column", md: "row" }}>
         <Stack direction="column" spacing={2} me={10} mb={5}>
-          <Link href="/docs/introduction" passHref>
-            <Button as="a">Introduction</Button>
-          </Link>
           <Link href="/docs/getting-started" passHref>
             <Button as="a">Getting Started</Button>
           </Link>

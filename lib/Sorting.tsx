@@ -1,28 +1,24 @@
 // Markdown processing libraries
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 
 export function GetSortedOperatingSystemPages() {
-  const store = path.join(process.cwd(), "public/markdown/browse");
+  const store = path.join(process.cwd(), "public/json");
 
-  // Get all markdown files in the store
+  // Get all JSON files in the store
   const paths = fs.readdirSync(store);
 
-  // Get the metadata for each file
-  const OSPageData = paths.map((fileName) => {
-    const slug = fileName.replace(/\.mdx$/, "");
-    const fullPath = path.join(store, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const frontmatter = matter(fileContents);
-    return {
-      slug,
-      ...(frontmatter.data as { date: string; title: string }),
-    };
+  // Take this JSON and turn it into a JS object
+  const operatingSystems = paths.map((file) => {
+    const slug = file.replace(/\.json$/, "");
+    const operatingSystem = JSON.parse(
+      fs.readFileSync(path.join(store, file), "utf8")
+    );
+    return { slug, ...operatingSystem };
   });
 
   // Sort the data by date, newest first
-  return OSPageData.sort((a, b) => {
+  return operatingSystems.sort((a, b) => {
     if (a.date < b.date) {
       return 1;
     } else {

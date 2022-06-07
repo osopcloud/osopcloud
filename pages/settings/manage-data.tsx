@@ -37,14 +37,6 @@ export default function DataManagement() {
   });
 
   // Get settings
-  const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
-  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
-  const [disableDynamicPrinting] = useLocalStorage(
-    "settingsDisableDynamicPrinting"
-  );
-  const [disableDonationLinks] = useLocalStorage(
-    "settingsDisableDonationLinks"
-  );
   const systemFont =
     typeof window !== "undefined"
       ? localStorage.getItem("settingsUseSystemFont") === "true"
@@ -78,9 +70,9 @@ export default function DataManagement() {
     // If localStorage is not null
     if (storage) {
       // If localStorage is not empty
-      if (storage.length > 1) {
-        return false;
-      } else return true;
+      if (storage.length <= 1) {
+        return true;
+      } else return false;
     }
   };
 

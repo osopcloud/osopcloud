@@ -1,3 +1,7 @@
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // Routing
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -129,15 +133,17 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         {/* @ts-ignore */}
         <DarkMode>
           <Flex direction="column" p={5}>
-            {CheckPWA() && (
-              <IconButton
-                icon={<FiChevronLeft />}
-                aria-label="Go Back"
-                size="lg"
-                mb={5}
-                onClick={router.back}
-              />
-            )}
+            <Suspense fallback={<Loading />}>
+              {CheckPWA() && (
+                <IconButton
+                  icon={<FiChevronLeft />}
+                  aria-label="Go Back"
+                  size="lg"
+                  mb={5}
+                  onClick={router.back}
+                />
+              )}
+            </Suspense>
             <Stack direction="column" spacing={2}>
               <Link href="/" passHref>
                 <IconButton
@@ -158,26 +164,28 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
             </Stack>
             <Spacer />
             <Stack direction="column" spacing={2}>
-              {showShareButton ?? (
-                <>
-                  {shareCompatibility ? (
-                    <IconButton
-                      icon={<FiShare />}
-                      aria-label="Share"
-                      size="lg"
-                      onClick={Share}
-                    />
-                  ) : null}
-                  {showPrintButton && (
-                    <IconButton
-                      icon={<FiPrinter />}
-                      aria-label="Print"
-                      size="lg"
-                      onClick={Print}
-                    />
-                  )}
-                </>
-              )}
+              <Suspense fallback={<Loading />}>
+                {showShareButton ?? (
+                  <>
+                    {shareCompatibility ? (
+                      <IconButton
+                        icon={<FiShare />}
+                        aria-label="Share"
+                        size="lg"
+                        onClick={Share}
+                      />
+                    ) : null}
+                    {showPrintButton && (
+                      <IconButton
+                        icon={<FiPrinter />}
+                        aria-label="Print"
+                        size="lg"
+                        onClick={Print}
+                      />
+                    )}
+                  </>
+                )}
+              </Suspense>
               <Link href="/settings/general" passHref>
                 <IconButton
                   icon={<FiSettings />}

@@ -3,7 +3,7 @@
 // https://nextjs.org/docs/api-reference/edge-runtime
 
 // Types
-import { ReactElement, useRef } from "react";
+import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
 
 // Routing
@@ -31,18 +31,20 @@ import {
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
+import { DeleteComposerData } from "components/create/DeleteComposerDataOverlay";
 
 // Layouts
 import Layout from "components/layouts/Layout";
+
+// Settings
+import { writeStorage } from "@rehooks/local-storage";
 
 // JSON processing libraries
 import fs from "fs";
 import path from "path";
 import { FiDatabase, FiFileText } from "react-icons/fi";
 
-import { useState } from "react";
-import { DeleteComposerData } from "components/create/DeleteComposerDataOverlay";
-import { writeStorage } from "@rehooks/local-storage";
+import { useRef, useState } from "react";
 
 interface OSPageTypes {
   source: any;

@@ -35,13 +35,9 @@ import DynamicModal from "components/overlays/DynamicModal";
 // Layouts
 import Layout from "components/layouts/Layout";
 
-// Markdown processing libraries
+// JSON processing libraries
 import fs from "fs";
 import path from "path";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { serialize } from "next-mdx-remote/serialize";
-// @ts-expect-error
-import MDXProvider from "lib/MDXProvider";
 import { FiDatabase, FiFileText } from "react-icons/fi";
 
 import { useState } from "react";

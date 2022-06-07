@@ -146,7 +146,7 @@ export default function ExportComposerDataOverlay() {
                   Share <Code mx={2}>.json</Code> File
                 </Button>
                 <Text fontSize="xs">
-                  Share a .json text file with apps and people.
+                  Share a .json file with apps and people.
                 </Text>
               </Stack>
               <Stack direction="column" spacing={2}>
@@ -154,7 +154,7 @@ export default function ExportComposerDataOverlay() {
                   Save <Code mx={2}>.json</Code> File
                 </Button>
                 <Text fontSize="xs">
-                  Save a .json text file on your local system.
+                  Save a .json file on your local system.
                 </Text>
               </Stack>
               <Button onClick={onCopy} isDisabled={hasCopied}>
@@ -180,7 +180,8 @@ export default function ExportComposerDataOverlay() {
               <OrderedList ps={10}>
                 <ListItem>Select "Continue on GitHub".</ListItem>
                 <ListItem>
-                  Name the file "{fileName}" and paste within the file.
+                  Name the file <Code mx={1}>{fileName}</Code> and paste within
+                  the file.
                 </ListItem>
                 <ListItem>
                   Select "Create a New Branch", name the pull request, and

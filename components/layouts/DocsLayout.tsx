@@ -19,7 +19,10 @@ export default function DocsLayout({ children }: LayoutProps) {
             <Button as="a">Getting Started</Button>
           </Link>
           <Link href="/docs/sharing" passHref>
-            <Button as="a">Share Points</Button>
+            <Button as="a">Apps and Sharing</Button>
+          </Link>
+          <Link href="/docs/composer" passHref>
+            <Button as="a">Composer</Button>
           </Link>
           <Link href="/docs/settings" passHref>
             <Button as="a">Settings</Button>

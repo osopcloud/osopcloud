@@ -6,6 +6,10 @@
 import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
 
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // Routing
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,6 +22,7 @@ import {
   Badge,
   Box,
   Button,
+  Code,
   Flex,
   Heading,
   Stack,
@@ -37,7 +42,7 @@ import { DeleteComposerData } from "components/create/DeleteComposerDataOverlay"
 import Layout from "components/layouts/Layout";
 
 // Settings
-import { writeStorage } from "@rehooks/local-storage";
+import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 
 // JSON processing libraries
 import fs from "fs";
@@ -48,14 +53,16 @@ import { useRef, useState } from "react";
 
 interface OSPageTypes {
   source: any;
-  nextBuildURL: string;
-  componentOverrides: object;
-  descriptionPath: string;
+  rawJSONLink: string;
 }
 
 // Start page
-export default function OSPage({ source, componentOverrides }: OSPageTypes) {
+export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
   const router = useRouter();
+
+  const [showDeveloperOptions] = useLocalStorage(
+    "settingsShowDeveloperOptions"
+  );
 
   // Tabs
   function MDXDescription() {
@@ -314,36 +321,48 @@ export default function OSPage({ source, componentOverrides }: OSPageTypes) {
                 <Button as="a">Visit Project Repository</Button>
               </Link>
             </Stack>
-            <Button size="sm" onClick={onOpen}>
-              Open in Composer
-            </Button>
-            <DynamicModal
-              isOpen={isOpen}
-              onClose={onClose}
-              cancelRef={cancelRef}
-              useAlertDialog={true}
-            >
-              <Stack direction="column" spacing={5}>
-                <Heading size="md">Open in Composer?</Heading>
-                <Text>
-                  You are about to open {source.name} in the Osopcloud Composer.
-                </Text>
-                <Text>
-                  If a project is already open in the Composer, your work will
-                  be lost.
-                </Text>
-                <Button
-                  onClick={CopyToComposer}
-                  isLoading={writingToComposer}
-                  loadingText="Preparing Composer"
-                >
-                  Continue
-                </Button>
-                <Button onClick={onClose} ref={cancelRef}>
-                  Cancel
-                </Button>
-              </Stack>
-            </DynamicModal>
+            <Stack direction="column" spacing={2}>
+              <Button size="sm" onClick={onOpen}>
+                Open in Composer
+              </Button>
+              <DynamicModal
+                isOpen={isOpen}
+                onClose={onClose}
+                cancelRef={cancelRef}
+                useAlertDialog={true}
+              >
+                <Stack direction="column" spacing={5}>
+                  <Heading size="md">Open in Composer?</Heading>
+                  <Text>
+                    You are about to open {source.name} in the Osopcloud
+                    Composer.
+                  </Text>
+                  <Text>
+                    If a project is already open in the Composer, your work will
+                    be lost.
+                  </Text>
+                  <Button
+                    onClick={CopyToComposer}
+                    isLoading={writingToComposer}
+                    loadingText="Preparing Composer"
+                  >
+                    Continue
+                  </Button>
+                  <Button onClick={onClose} ref={cancelRef}>
+                    Cancel
+                  </Button>
+                </Stack>
+              </DynamicModal>
+              <Suspense fallback={<Loading />}>
+                {showDeveloperOptions && (
+                  <Link href={rawJSONLink} passHref>
+                    <Button size="sm" as="a">
+                      Show Raw <Code ms={2}>JSON</Code>
+                    </Button>
+                  </Link>
+                )}
+              </Suspense>
+            </Stack>
           </Stack>
         </Flex>
       </Stack>
@@ -370,9 +389,12 @@ export const getStaticProps: GetStaticProps = async ({ params }: PathProps) => {
   // Take this JSON and turn it into a JS object
   const sourceObject = JSON.parse(source);
 
+  const rawJSONLink = `/json/${params.slug}.json`;
+
   return {
     props: {
       source: sourceObject,
+      rawJSONLink,
     },
   };
 };

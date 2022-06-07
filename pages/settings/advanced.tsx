@@ -36,6 +36,9 @@ export default function AdvancedSettings() {
     "settingsDisableDonationLinks"
   );
   const [systemFont] = useLocalStorage("settingsUseSystemFont");
+  const [showDeveloperOptions] = useLocalStorage(
+    "settingsShowDeveloperOptions"
+  );
 
   const [applyingCustomFont, setApplyingCustomFont] = useState(false);
 
@@ -97,6 +100,25 @@ export default function AdvancedSettings() {
             size="lg"
           />
         </Stack>
+      </Flex>
+      <Flex>
+        <Center>
+          <Text>Show Developer Options</Text>
+        </Center>
+        <Spacer />
+
+        <Switch
+          // @ts-ignore
+          isChecked={showDeveloperOptions}
+          onChange={() => {
+            writeStorage(
+              "settingsShowDeveloperOptions",
+              showDeveloperOptions ? false : true
+            );
+          }}
+          colorScheme="almondScheme"
+          size="lg"
+        />
       </Flex>
       <Stack direction="column" spacing={0}>
         <Text fontSize="xs">Version {version}</Text>

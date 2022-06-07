@@ -98,9 +98,9 @@ export default function ExportComposerDataOverlay() {
 
   // Download the file
   function DownloadAsFile() {
-    const blob = new Blob([json], { type: "text/json" });
+    const blob = new Blob([json], { type: "application/json" });
     // @ts-ignore
-    const file = new File([blob], fileName, { type: "text/json" });
+    const file = new File([blob], fileName, { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(file);
     // @ts-ignore

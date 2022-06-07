@@ -6,6 +6,10 @@
 import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
 
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // Routing
 import Link from "next/link";
 
@@ -91,79 +95,83 @@ export default function Home({
               {AZOSPageData.length} Operating System
               {AZOSPageData.length <= 1 ? "" : "s"}
             </Text>
-            <Text>
-              {showTagsOnHome
-                ? "Showing All Tags"
-                : "Showing Selected Metadata"}
-            </Text>
+            <Suspense fallback={<Text>Preparing the Operating List...</Text>}>
+              <Text>
+                {showTagsOnHome
+                  ? "Showing All Tags"
+                  : "Showing Selected Metadata"}
+              </Text>
+            </Suspense>
           </Stack>
-          {AZOSPageData.map(
-            ({
-              slug,
-              name,
-              tags,
-              platforms,
-              packageManagement,
-            }: MetadataTypes) => (
-              <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
-                <Button as="a" display="block" minH="fit-content" py={3}>
-                  <Text>{name}</Text>
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    fontWeight="normal"
-                    fontSize="sm"
-                  >
-                    {showTagsOnHome ? (
-                      // Show all tags
-                      tags.map((tag: string) => (
-                        <Badge key={`${slug}-${tag}`}>{tag}</Badge>
-                      ))
-                    ) : (
-                      <>
-                        <Badge pt="0.5">
-                          {tags.map((tag: string) => (
-                            <>
-                              {/* Limit to 1 tag */}
-                              {tags.indexOf(tag) < 1 && <>{tag}</>}
-                            </>
-                          ))}
-                        </Badge>
-                        <Text>
-                          {platforms.map((platform: string) => (
-                            <>
-                              {/* Limit to 2 platforms */}
-                              {platforms.indexOf(platform) < 2 && (
-                                <>{platform}</>
-                              )}
-                              {/* Add a comma if not the last date */}
-                              {platforms.indexOf(platform) < 1 &&
-                                platforms.indexOf(platform) <
-                                  platforms.length - 1 && <>, </>}
-                            </>
-                          ))}
-                        </Text>
-                        <Text>
-                          {packageManagement.map((manager: string) => (
-                            <>
-                              {/* Limit to 2 platforms */}
-                              {packageManagement.indexOf(manager) < 2 && (
-                                <>{manager}</>
-                              )}
-                              {/* Add a comma if not the last date */}
-                              {packageManagement.indexOf(manager) < 1 &&
-                                packageManagement.indexOf(manager) <
-                                  packageManagement.length - 1 && <>, </>}
-                            </>
-                          ))}
-                        </Text>
-                      </>
-                    )}
-                  </Stack>
-                </Button>
-              </Link>
-            )
-          )}
+          <Suspense fallback={<Loading />}>
+            {AZOSPageData.map(
+              ({
+                slug,
+                name,
+                tags,
+                platforms,
+                packageManagement,
+              }: MetadataTypes) => (
+                <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+                  <Button as="a" display="block" minH="fit-content" py={3}>
+                    <Text>{name}</Text>
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      fontWeight="normal"
+                      fontSize="sm"
+                    >
+                      {showTagsOnHome ? (
+                        // Show all tags
+                        tags.map((tag: string) => (
+                          <Badge key={`${slug}-${tag}`}>{tag}</Badge>
+                        ))
+                      ) : (
+                        <>
+                          <Badge pt="0.5">
+                            {tags.map((tag: string) => (
+                              <>
+                                {/* Limit to 1 tag */}
+                                {tags.indexOf(tag) < 1 && <>{tag}</>}
+                              </>
+                            ))}
+                          </Badge>
+                          <Text>
+                            {platforms.map((platform: string) => (
+                              <>
+                                {/* Limit to 2 platforms */}
+                                {platforms.indexOf(platform) < 2 && (
+                                  <>{platform}</>
+                                )}
+                                {/* Add a comma if not the last date */}
+                                {platforms.indexOf(platform) < 1 &&
+                                  platforms.indexOf(platform) <
+                                    platforms.length - 1 && <>, </>}
+                              </>
+                            ))}
+                          </Text>
+                          <Text>
+                            {packageManagement.map((manager: string) => (
+                              <>
+                                {/* Limit to 2 platforms */}
+                                {packageManagement.indexOf(manager) < 2 && (
+                                  <>{manager}</>
+                                )}
+                                {/* Add a comma if not the last date */}
+                                {packageManagement.indexOf(manager) < 1 &&
+                                  packageManagement.indexOf(manager) <
+                                    packageManagement.length - 1 && <>, </>}
+                              </>
+                            ))}
+                          </Text>
+                        </>
+                      )}
+                    </Stack>
+                  </Button>
+                </Link>
+              )
+            )}
+          </Suspense>
         </Stack>
         <Center h="100vh" pb="100" display={{ base: "none", sm: "flex" }}>
           <Icon w={250} h={250} aria-label="Osopcloud Logo">

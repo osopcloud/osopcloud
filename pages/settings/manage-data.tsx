@@ -65,16 +65,70 @@ export default function DataManagement() {
   }
 
   // Check reset eligibility
-  const resetStatus = () => {
-    const storage = typeof window !== "undefined" ? localStorage : "";
-    // If localStorage is not null
-    if (storage) {
-      // If localStorage is not empty
-      if (storage.length <= 1) {
-        return true;
-      } else return false;
-    }
-  };
+  const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
+  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
+  const [disableDynamicPrinting] = useLocalStorage(
+    "settingsDisableDynamicPrinting"
+  );
+  const [useSystemFont] = useLocalStorage("settingsUseSystemFont");
+  const [showDeveloperOptions] = useLocalStorage(
+    "settingsShowDeveloperOptions"
+  );
+  const [composerName] = useLocalStorage("composerName");
+  const [composerDescription] = useLocalStorage("composerDescription");
+  const [composerDate] = useLocalStorage("composerDate");
+  const [composerTags] = useLocalStorage("composerTags");
+  const [composerPlatforms] = useLocalStorage("composerPlatforms");
+  const [composerBasedOn] = useLocalStorage("composerBasedOn");
+  const [composerDefaultDesktop] = useLocalStorage("composerDefaultDesktop");
+  const [composerDefaultShell] = useLocalStorage("composerDefaultShell");
+  const [composerSoftware] = useLocalStorage("composerSoftware");
+  const [composerPackageManagement] = useLocalStorage(
+    "composerPackageManagement"
+  );
+  const [composerStartup] = useLocalStorage("composerStartup");
+  const [composerAuthors] = useLocalStorage("composerAuthors");
+  const [composerWebsite] = useLocalStorage("composerWebsite");
+  const [composerRepository] = useLocalStorage("composerRepository");
+  const resetStatus = showTagsOnHome
+    ? false
+    : showPrintButton
+    ? false
+    : disableDynamicPrinting
+    ? false
+    : useSystemFont
+    ? false
+    : showDeveloperOptions
+    ? false
+    : composerName
+    ? false
+    : composerDescription
+    ? false
+    : composerDate
+    ? false
+    : composerTags
+    ? false
+    : composerPlatforms
+    ? false
+    : composerBasedOn
+    ? false
+    : composerDefaultDesktop
+    ? false
+    : composerDefaultShell
+    ? false
+    : composerSoftware
+    ? false
+    : composerPackageManagement
+    ? false
+    : composerStartup
+    ? false
+    : composerAuthors
+    ? false
+    : composerWebsite
+    ? false
+    : composerRepository
+    ? false
+    : true;
 
   // Export settings
   const storage = typeof window !== "undefined" ? localStorage : "";
@@ -200,13 +254,13 @@ export default function DataManagement() {
           Settings and Composer data.
         </Text>
       </Stack>
-      <Button onClick={ExportSettings} isDisabled={resetStatus()}>
+      <Button onClick={ExportSettings} isDisabled={resetStatus}>
         Export Storage Data to Clipboard
       </Button>
       <Stack direction="column" spacing={2}>
         <Button
           onClick={BeginResetWithToast}
-          isDisabled={resetStatus()}
+          isDisabled={resetStatus}
           isLoading={resetting}
           loadingText="Resetting Osopcloud"
         >

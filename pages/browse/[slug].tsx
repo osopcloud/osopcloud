@@ -230,6 +230,7 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
   const cancelRef = useRef(null);
 
   // Write Composer data
+  const [isComposerOccupied] = useLocalStorage("composerName");
   const [writingToComposer, setWritingToComposer] = useState(false);
   function CopyToComposer() {
     setWritingToComposer(true);
@@ -322,7 +323,10 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
               </Link>
             </Stack>
             <Stack direction="column" spacing={2}>
-              <Button size="sm" onClick={onOpen}>
+              <Button
+                size="sm"
+                onClick={isComposerOccupied ? onOpen : CopyToComposer}
+              >
                 Open in Composer
               </Button>
               <DynamicModal
@@ -334,19 +338,18 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
                 <Stack direction="column" spacing={5}>
                   <Heading size="md">Open in Composer?</Heading>
                   <Text>
-                    You are about to open {source.name} in the Osopcloud
-                    Composer.
+                    There is already a project open in the Osopcloud Composer.
                   </Text>
                   <Text>
-                    If a project is already open in the Composer, your work will
-                    be lost.
+                    Your work, "{isComposerOccupied}", will be lost if you
+                    continue.
                   </Text>
                   <Button
                     onClick={CopyToComposer}
                     isLoading={writingToComposer}
                     loadingText="Preparing Composer"
                   >
-                    Continue
+                    Continue &amp; Reset Composer
                   </Button>
                   <Button onClick={onClose} ref={cancelRef}>
                     Cancel

@@ -7,7 +7,6 @@ import Loading from "components/Loading";
 
 // Routing
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 // SEO
 import Head from "next/head";
@@ -35,14 +34,13 @@ import {
   Text,
   Textarea,
   Tr,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { FiArrowRight, FiMinus, FiPlus, FiX } from "react-icons/fi";
 
 // First party components
-import DeleteComposerDataOverlay from "components/create/DeleteComposerDataOverlay";
-import ExportComposerDataOverlay from "components/create/ExportComposerDataOverlay";
-import URLManagementOverlay from "components/create/URLManagementOverlay";
+import DeleteComposerDataOverlay from "components/composer/DeleteComposerDataOverlay";
+import ExportComposerDataOverlay from "components/composer/ExportComposerDataOverlay";
+import URLManagementOverlay from "components/composer/URLManagementOverlay";
 
 // Storage
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";

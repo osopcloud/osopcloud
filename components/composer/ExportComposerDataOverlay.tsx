@@ -125,7 +125,7 @@ export default function ExportComposerDataOverlay() {
 
   return (
     <>
-      <Button leftIcon={<FiShare />} onClick={onOpen}>
+      <Button leftIcon={<FiShare />} onClick={onOpen} isDisabled={!name}>
         Export and Share
       </Button>
 

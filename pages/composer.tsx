@@ -7,7 +7,6 @@ import Loading from "components/Loading";
 
 // Routing
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 // SEO
 import Head from "next/head";
@@ -18,6 +17,7 @@ import {
   Box,
   Button,
   Center,
+  Container,
   Editable,
   EditableInput,
   EditablePreview,
@@ -34,15 +34,13 @@ import {
   Text,
   Textarea,
   Tr,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { FiArrowRight, FiMinus, FiPlus, FiX } from "react-icons/fi";
 
 // First party components
-import DynamicModal from "components/overlays/DynamicModal";
-import DeleteComposerDataOverlay from "components/create/DeleteComposerDataOverlay";
-import ExportComposerDataOverlay from "components/create/ExportComposerDataOverlay";
-import URLManagementOverlay from "components/create/URLManagementOverlay";
+import DeleteComposerDataOverlay from "components/composer/DeleteComposerDataOverlay";
+import ExportComposerDataOverlay from "components/composer/ExportComposerDataOverlay";
+import URLManagementOverlay from "components/composer/URLManagementOverlay";
 
 // Storage
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
@@ -50,15 +48,10 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // Layouts
 import Layout from "components/layouts/Layout";
 
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 
 // Start page
 export default function Create() {
-  const router = useRouter();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
-
   // Storage
   const [name] = useLocalStorage("composerName");
   const [description] = useLocalStorage("composerDescription");
@@ -76,12 +69,13 @@ export default function Create() {
   const [authors, setAuthors] = useLocalStorage("composerAuthors", []);
 
   // Composer greeting
-  useEffect(() => {
+  const openComposerGreeting = () => {
     if (!name) {
-      onOpen();
-    }
-  }, [name, onOpen]);
-  const [namePage, setNamePage] = useState(false);
+      return true;
+    } else return false;
+  };
+  const [composerGreeting, setComposerGreeting] =
+    useState(openComposerGreeting);
 
   // Array editing fields
   const [editingTags, setEditingTags] = useState(false);
@@ -138,62 +132,6 @@ export default function Create() {
         />
       </Head>
 
-      {/* Greeting modal */}
-      <DynamicModal
-        isOpen={isOpen}
-        onClose={onClose}
-        useAlertDialog={false}
-        cancelRef={cancelRef}
-      >
-        <Stack direction="column" spacing={5}>
-          {namePage ? (
-            <>
-              <Heading size="md">What's the name of the OS?</Heading>
-              <Input
-                placeholder="Enter the Operating System name"
-                onChange={(e) => {
-                  writeStorage("composerName", e.target.value);
-                }}
-              />
-              <Button
-                leftIcon={<FiArrowRight />}
-                onClick={() => {
-                  onClose();
-                }}
-                isDisabled={!name}
-              >
-                Open the Composer
-              </Button>
-            </>
-          ) : (
-            <>
-              <Heading size="md">Welcome to the Composer</Heading>
-              <Text>
-                The Osopcloud Composer makes it easy to create an Operating
-                System Page ready for publication on Osopcloud.
-              </Text>
-              <Button
-                leftIcon={<FiArrowRight />}
-                onClick={() => {
-                  setNamePage(true);
-                }}
-              >
-                Get Started
-              </Button>
-              <Button
-                onClick={() => {
-                  onClose();
-                  router.back();
-                }}
-                ref={cancelRef}
-              >
-                Cancel
-              </Button>
-            </>
-          )}
-        </Stack>
-      </DynamicModal>
-
       <Stack
         direction="row"
         spacing={2}
@@ -228,7 +166,39 @@ export default function Create() {
         </Flex>
 
         <Suspense fallback={<Loading />}>
-          {!isOpen && (
+          {composerGreeting ? (
+            <Flex w="100%">
+              <Container
+                maxWidth="container.sm"
+                mt={{ base: "none", lg: "20vh" }}
+              >
+                <Stack direction="column" spacing={5}>
+                  <Heading size="md">What's the name of the OS?</Heading>
+                  <Input
+                    placeholder="Enter the Operating System name"
+                    onChange={(e) => {
+                      writeStorage("composerName", e.target.value);
+                    }}
+                  />
+                  <Text fontSize="xs">
+                    You're about to create{" "}
+                    {name ? `a page for ${name}` : "something new"}. To edit an
+                    operating system that's already on Osopcloud, open it and
+                    select "Open in Composer".
+                  </Text>
+                  <Button
+                    leftIcon={<FiArrowRight />}
+                    onClick={() => {
+                      setComposerGreeting(false);
+                    }}
+                    isDisabled={!name}
+                  >
+                    Open the Composer
+                  </Button>
+                </Stack>
+              </Container>
+            </Flex>
+          ) : (
             <Flex display="flex" flexDirection={{ base: "column", md: "row" }}>
               {/* This can't be a Stack because the first child might not be shown on small windows */}
               <Box flex={1} mb={{ base: 5, sm: 0 }}>

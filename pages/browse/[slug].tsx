@@ -36,7 +36,7 @@ import {
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
-import { DeleteComposerData } from "components/create/DeleteComposerDataOverlay";
+import { DeleteComposerData } from "components/composer/DeleteComposerDataOverlay";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -65,10 +65,10 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
   );
 
   // Tabs
-  function MDXDescription() {
+  function Description() {
     return <Text>{source.description}</Text>;
   }
-  function EmbeddedMetadataTable() {
+  function MetadataTable() {
     return (
       <Table size="sm" variant="simple">
         <Tbody>
@@ -217,12 +217,12 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
     {
       label: "Description",
       icon: <FiFileText />,
-      content: <MDXDescription />,
+      content: <Description />,
     },
     {
       label: "Metadata & More",
       icon: <FiDatabase />,
-      content: <EmbeddedMetadataTable />,
+      content: <MetadataTable />,
     },
   ];
 
@@ -230,6 +230,7 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
   const cancelRef = useRef(null);
 
   // Write Composer data
+  const [isComposerOccupied] = useLocalStorage("composerName");
   const [writingToComposer, setWritingToComposer] = useState(false);
   function CopyToComposer() {
     setWritingToComposer(true);
@@ -248,7 +249,7 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
     writeStorage("composerStartup", source.startupManagement);
     writeStorage("composerWebsite", source.website);
     writeStorage("composerRepository", source.repository);
-    router.push("/create");
+    router.push("/composer");
   }
 
   return (
@@ -322,7 +323,10 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
               </Link>
             </Stack>
             <Stack direction="column" spacing={2}>
-              <Button size="sm" onClick={onOpen}>
+              <Button
+                size="sm"
+                onClick={isComposerOccupied ? onOpen : CopyToComposer}
+              >
                 Open in Composer
               </Button>
               <DynamicModal
@@ -334,19 +338,18 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
                 <Stack direction="column" spacing={5}>
                   <Heading size="md">Open in Composer?</Heading>
                   <Text>
-                    You are about to open {source.name} in the Osopcloud
-                    Composer.
+                    There is already a project open in the Osopcloud Composer.
                   </Text>
                   <Text>
-                    If a project is already open in the Composer, your work will
-                    be lost.
+                    Your work, "{isComposerOccupied}", will be lost if you
+                    continue.
                   </Text>
                   <Button
                     onClick={CopyToComposer}
                     isLoading={writingToComposer}
                     loadingText="Preparing Composer"
                   >
-                    Continue
+                    Continue &amp; Reset Composer
                   </Button>
                   <Button onClick={onClose} ref={cancelRef}>
                     Cancel

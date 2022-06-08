@@ -9,7 +9,7 @@ import { FiArrowLeft, FiTrash2 } from "react-icons/fi";
 import DynamicModal from "components/overlays/DynamicModal";
 
 // Storage
-import { deleteFromStorage } from "@rehooks/local-storage";
+import useLocalStorage, { deleteFromStorage } from "@rehooks/local-storage";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -39,11 +39,15 @@ export default function DeleteComposerDataOverlay() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
 
+  const [name] = useLocalStorage("composerName");
+
   const [isResetting, setIsResetting] = useState(false);
 
   return (
     <>
-      <Button onClick={onOpen}>Reset</Button>
+      <Button onClick={onOpen} isDisabled={!name}>
+        Reset
+      </Button>
 
       <DynamicModal
         isOpen={isOpen}

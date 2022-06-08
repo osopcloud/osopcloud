@@ -153,10 +153,10 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
                   as="a"
                 />
               </Link>
-              <Link href="/create" passHref>
+              <Link href="/composer" passHref>
                 <IconButton
                   icon={<FiPlus />}
-                  aria-label="Create and Contribute"
+                  aria-label="Osopcloud Composer"
                   size="lg"
                   as="a"
                 />
@@ -218,12 +218,13 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         </Stack>
         <Spacer />
         <Stack direction="row" spacing={2}>
-          <IconButton
-            icon={<FiPlus />}
-            aria-label="Create and Contribute"
-            size="lg"
-            isDisabled
-          />
+          <Link href="/composer" passHref>
+            <IconButton
+              icon={<FiPlus />}
+              aria-label="Osopcloud Composer"
+              size="lg"
+            />
+          </Link>
           <Link href="/settings" passHref>
             <IconButton
               icon={<FiSettings />}

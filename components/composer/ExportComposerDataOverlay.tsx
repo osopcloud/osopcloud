@@ -16,11 +16,10 @@ import {
   useClipboard,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FiArrowLeft, FiArrowRight, FiShare, FiTrash2 } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiShare } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
-import { version } from "components/Version";
 
 // Storage
 import { useLocalStorage } from "@rehooks/local-storage";
@@ -114,7 +113,7 @@ export default function ExportComposerDataOverlay() {
     setIsNavigatingAway(true);
     onCopy();
     router.push(
-      `https://github.com/noahlst/osopcloud/new/main/public/markdown/browse`
+      `https://github.com/osopcloud/osopcloud/new/main/public/markdown/browse`
     );
   }
 
@@ -125,8 +124,16 @@ export default function ExportComposerDataOverlay() {
 
   return (
     <>
-      <Button leftIcon={<FiShare />} onClick={onOpen} isDisabled={!name}>
-        Export and Share
+      {/* This opens the export menu */}
+      {/* This button needs to be disabled (isDisabled) when any of name, description, tags, platforms, basedOn, website are empty */}
+      <Button
+        leftIcon={<FiShare />}
+        onClick={onOpen}
+        isDisabled={
+          !name || !description || !tags || !platforms || !basedOn || !website
+        }
+      >
+        Export and Publish
       </Button>
 
       <DynamicModal

@@ -82,10 +82,7 @@ export default function URLManagementOverlay() {
                     <Input
                       as={EditableInput}
                       onChange={(e) => {
-                        writeStorage(
-                          "composerSourceRepository",
-                          e.target.value
-                        );
+                        writeStorage("composerRepository", e.target.value);
                       }}
                       size="sm"
                     />

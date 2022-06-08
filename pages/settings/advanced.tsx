@@ -60,24 +60,6 @@ export default function AdvancedSettings() {
       <Heading size="md">Advanced Settings</Heading>
       <Flex>
         <Center>
-          <Text>Hide Links to External Financial Services</Text>
-        </Center>
-        <Spacer />
-        <Switch
-          // @ts-ignore
-          isChecked={disableDonationLinks}
-          onChange={() => {
-            writeStorage(
-              "settingsDisableDonationLinks",
-              disableDonationLinks ? false : true
-            );
-          }}
-          colorScheme="almondScheme"
-          size="lg"
-        />
-      </Flex>
-      <Flex>
-        <Center>
           <Text>Use the System Font</Text>
         </Center>
         <Spacer />

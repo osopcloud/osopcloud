@@ -41,7 +41,9 @@ export default function URLManagementOverlay() {
 
   return (
     <>
-      <Button onClick={onOpen}>Edit Website &amp; Repository</Button>
+      <Button isActive={isOpen} onClick={onOpen}>
+        Edit Website &amp; Repository
+      </Button>
 
       <DynamicModal
         isOpen={isOpen}
@@ -102,10 +104,3 @@ export default function URLManagementOverlay() {
     </>
   );
 }
-URLManagementOverlay.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout showToTopButton={false} showShareButton={false}>
-      {page}
-    </Layout>
-  );
-};

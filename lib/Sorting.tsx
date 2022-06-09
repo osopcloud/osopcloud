@@ -1,4 +1,4 @@
-// Markdown processing libraries
+// JSON processing libraries
 import fs from "fs";
 import path from "path";
 

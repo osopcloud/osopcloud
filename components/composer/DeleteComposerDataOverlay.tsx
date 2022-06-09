@@ -45,7 +45,7 @@ export default function DeleteComposerDataOverlay() {
 
   return (
     <>
-      <Button onClick={onOpen} isDisabled={!name}>
+      <Button isActive={isOpen} onClick={onOpen} isDisabled={!name}>
         Reset
       </Button>
 
@@ -83,10 +83,3 @@ export default function DeleteComposerDataOverlay() {
     </>
   );
 }
-DeleteComposerDataOverlay.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout showToTopButton={false} showShareButton={false}>
-      {page}
-    </Layout>
-  );
-};

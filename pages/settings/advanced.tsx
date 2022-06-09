@@ -32,9 +32,6 @@ import { useState } from "react";
 // Start page
 export default function AdvancedSettings() {
   // Get settings
-  const [disableDonationLinks] = useLocalStorage(
-    "settingsDisableDonationLinks"
-  );
   const [systemFont] = useLocalStorage("settingsUseSystemFont");
   const [showDeveloperOptions] = useLocalStorage(
     "settingsShowDeveloperOptions"
@@ -88,7 +85,6 @@ export default function AdvancedSettings() {
           <Text>Show Developer Options</Text>
         </Center>
         <Spacer />
-
         <Switch
           // @ts-ignore
           isChecked={showDeveloperOptions}

@@ -222,10 +222,3 @@ export default function ExportComposerDataOverlay() {
     </>
   );
 }
-ExportComposerDataOverlay.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout showToTopButton={false} showShareButton={false}>
-      {page}
-    </Layout>
-  );
-};

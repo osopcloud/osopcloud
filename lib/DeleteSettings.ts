@@ -4,7 +4,6 @@ import { deleteFromStorage } from "@rehooks/local-storage";
 // Start component
 export default function DeleteSettings() {
   // Delete Settings data
-  deleteFromStorage("settingsShowTagsOnHome");
   deleteFromStorage("settingsShowPrintButton");
   deleteFromStorage("settingsDisableDynamicPrinting");
   deleteFromStorage("settingsUseSystemFont");

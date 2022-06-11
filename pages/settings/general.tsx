@@ -19,7 +19,6 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // Start page
 export default function GeneralSettings() {
   // Get settings
-  const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
   const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
 
   return (
@@ -35,24 +34,6 @@ export default function GeneralSettings() {
       </Head>
 
       <Heading size="md">Appearance &amp; Layout Settings</Heading>
-      <Flex>
-        <Center>
-          <Text>Show All Tags on Home</Text>
-        </Center>
-        <Spacer />
-        <Switch
-          // @ts-ignore
-          isChecked={showTagsOnHome}
-          onChange={() =>
-            writeStorage(
-              "settingsShowTagsOnHome",
-              showTagsOnHome ? false : true
-            )
-          }
-          colorScheme="almondScheme"
-          size="lg"
-        />
-      </Flex>
       <Flex>
         <Center>
           <Text>Show Printing Options in the Sidebar</Text>

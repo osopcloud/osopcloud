@@ -4,7 +4,7 @@
   "date": ["2022-06-06"],
   "tags": ["Advanced", "Utility", "Enterprise"],
   "authors": ["@noahlst", "The Team"],
-  "platforms": ["x86", "arm", "risc"],
+  "platforms": ["Itanium"],
   "basedOn": "Ubuntu",
   "desktop": "GNOME",
   "shell": "bash",

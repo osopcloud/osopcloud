@@ -65,7 +65,6 @@ export default function DataManagement() {
   }
 
   // Check reset eligibility
-  const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
   const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
   const [disableDynamicPrinting] = useLocalStorage(
     "settingsDisableDynamicPrinting"
@@ -90,9 +89,7 @@ export default function DataManagement() {
   const [composerAuthors] = useLocalStorage("composerAuthors");
   const [composerWebsite] = useLocalStorage("composerWebsite");
   const [composerRepository] = useLocalStorage("composerRepository");
-  const resetStatus = showTagsOnHome
-    ? false
-    : showPrintButton
+  const resetStatus = showPrintButton
     ? false
     : disableDynamicPrinting
     ? false

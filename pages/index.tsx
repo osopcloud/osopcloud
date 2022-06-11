@@ -34,7 +34,12 @@ import Logo from "components/brand/Logo";
 import { useLocalStorage } from "@rehooks/local-storage";
 
 // JSON processing
-import { GetSortedOperatingSystemPages, SortByTags } from "lib/Sorting";
+import {
+  SortByName,
+  SortByPackageManagement,
+  SortByPlatforms,
+  SortByTags,
+} from "lib/Sorting";
 
 // Search libraries
 import {
@@ -74,20 +79,21 @@ interface MetadataTypes {
 
 // Start page
 export default function Home({
-  AZOSPageData,
+  SortedNameData,
   SortedTagsData,
+  SortedPlatformsData,
+  SortedPackageManagementData,
 }: {
-  AZOSPageData: MetadataTypes;
+  SortedNameData: MetadataTypes;
   SortedTagsData: MetadataTypes;
+  SortedPlatformsData: MetadataTypes;
+  SortedPackageManagementData: MetadataTypes;
 }) {
-  // Get settings
-  const [showTagsOnHome] = useLocalStorage("settingsShowTagsOnHome");
-
   // List tabs
   function ListByName() {
     return (
       <>
-        {AZOSPageData.map(
+        {SortedNameData.map(
           ({
             slug,
             name,
@@ -104,49 +110,40 @@ export default function Home({
                   fontWeight="normal"
                   fontSize="sm"
                 >
-                  {showTagsOnHome ? (
-                    // Show all tags
-                    tags.map((tag: string) => (
-                      <Badge key={`${slug}-${tag}`}>{tag}</Badge>
-                    ))
-                  ) : (
-                    <>
-                      <Badge pt="0.5">
-                        {tags.map((tag: string) => (
-                          <>
-                            {/* Limit to 1 tag */}
-                            {tags.indexOf(tag) < 1 && <>{tag}</>}
-                          </>
-                        ))}
-                      </Badge>
-                      <Text>
-                        {platforms.map((platform: string) => (
-                          <>
-                            {/* Limit to 2 platforms */}
-                            {platforms.indexOf(platform) < 2 && <>{platform}</>}
-                            {/* Add a comma if not the last date */}
-                            {platforms.indexOf(platform) < 1 &&
-                              platforms.indexOf(platform) <
-                                platforms.length - 1 && <>, </>}
-                          </>
-                        ))}
-                      </Text>
-                      <Text>
-                        {packageManagement.map((manager: string) => (
-                          <>
-                            {/* Limit to 2 platforms */}
-                            {packageManagement.indexOf(manager) < 2 && (
-                              <>{manager}</>
-                            )}
-                            {/* Add a comma if not the last date */}
-                            {packageManagement.indexOf(manager) < 1 &&
-                              packageManagement.indexOf(manager) <
-                                packageManagement.length - 1 && <>, </>}
-                          </>
-                        ))}
-                      </Text>
-                    </>
-                  )}
+                  <Badge pt="0.5">
+                    {tags.map((tag: string) => (
+                      <>
+                        {/* Limit to 1 tag */}
+                        {tags.indexOf(tag) < 1 && <>{tag}</>}
+                      </>
+                    ))}
+                  </Badge>
+                  <Text>
+                    {platforms.map((platform: string) => (
+                      <>
+                        {/* Limit to 2 platforms */}
+                        {platforms.indexOf(platform) < 2 && <>{platform}</>}
+                        {/* Add a comma if not the last date */}
+                        {platforms.indexOf(platform) < 1 &&
+                          platforms.indexOf(platform) <
+                            platforms.length - 1 && <>, </>}
+                      </>
+                    ))}
+                  </Text>
+                  <Text>
+                    {packageManagement.map((manager: string) => (
+                      <>
+                        {/* Limit to 2 platforms */}
+                        {packageManagement.indexOf(manager) < 2 && (
+                          <>{manager}</>
+                        )}
+                        {/* Add a comma if not the last date */}
+                        {packageManagement.indexOf(manager) < 1 &&
+                          packageManagement.indexOf(manager) <
+                            packageManagement.length - 1 && <>, </>}
+                      </>
+                    ))}
+                  </Text>
                 </Stack>
               </Button>
             </Link>
@@ -159,7 +156,6 @@ export default function Home({
   function ListByTags() {
     return (
       <>
-        {/* Get AZOSPageData, and sort it by tags */}
         {SortedTagsData.map(({ slug, name, tags }: MetadataTypes) => (
           <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
             <Button as="a" display="block" minH="fit-content" py={3}>
@@ -180,17 +176,110 @@ export default function Home({
       </>
     );
   }
+  // List by platforms
+  function ListByPlatforms() {
+    return (
+      <>
+        {SortedPlatformsData.map(
+          ({ slug, name, tags, platforms }: MetadataTypes) => (
+            <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+              <Button as="a" display="block" minH="fit-content" py={3}>
+                <Text>{name}</Text>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  fontWeight="normal"
+                  fontSize="sm"
+                >
+                  <Badge pt="0.5">
+                    {tags.map((tag: string) => (
+                      <>
+                        {/* Limit to 1 tag */}
+                        {tags.indexOf(tag) < 1 && <>{tag}</>}
+                      </>
+                    ))}
+                  </Badge>
+                  <Text fontWeight={600}>
+                    {platforms.map((platform: string) => (
+                      <>
+                        {platform}
+                        {/* Add a comma if not the last platform */}
+                        {platforms.indexOf(platform) !== platforms.length - 1
+                          ? ", "
+                          : ""}
+                      </>
+                    ))}
+                  </Text>
+                </Stack>
+              </Button>
+            </Link>
+          )
+        )}
+      </>
+    );
+  }
+  // List by package management
+  function ListByPackageManager() {
+    return (
+      <>
+        {SortedPackageManagementData.map(
+          ({ slug, name, tags, packageManagement }: MetadataTypes) => (
+            <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+              <Button as="a" display="block" minH="fit-content" py={3}>
+                <Text>{name}</Text>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  fontWeight="normal"
+                  fontSize="sm"
+                >
+                  <Badge pt="0.5">
+                    {tags.map((tag: string) => (
+                      <>
+                        {/* Limit to 1 tag */}
+                        {tags.indexOf(tag) < 1 && <>{tag}</>}
+                      </>
+                    ))}
+                  </Badge>
+                  <Text fontWeight={600}>
+                    {packageManagement.map((manager: string) => (
+                      <>
+                        {manager}
+                        {/* Add a comma if not the last manager */}
+                        {packageManagement.indexOf(manager) !==
+                        packageManagement.length - 1
+                          ? ", "
+                          : ""}
+                      </>
+                    ))}
+                  </Text>
+                </Stack>
+              </Button>
+            </Link>
+          )
+        )}
+      </>
+    );
+  }
 
   // Tab system for the list
   const [activeTab, setActiveTab] = useState(0);
   const tabArray = [
     {
-      label: "Sort by Name",
+      label: "Name",
       component: <ListByName />,
     },
     {
-      label: "Sort by Tag",
+      label: "Tag",
       component: <ListByTags />,
+    },
+    {
+      label: "Platform",
+      component: <ListByPlatforms />,
+    },
+    {
+      label: "Package Manager",
+      component: <ListByPackageManager />,
     },
   ];
 
@@ -223,7 +312,7 @@ export default function Home({
               placeholder="Find an Operating System..."
             />
             <AutoCompleteList>
-              {AZOSPageData.map(
+              {SortedNameData.map(
                 ({
                   slug,
                   name,
@@ -251,51 +340,42 @@ export default function Home({
                         fontWeight="normal"
                         fontSize="sm"
                       >
-                        {showTagsOnHome ? (
-                          // Show all tags
-                          tags.map((tag: string) => (
-                            <Badge key={`${slug}-${tag}`}>{tag}</Badge>
-                          ))
-                        ) : (
-                          <>
-                            <Badge pt="0.5">
-                              {tags.map((tag: string) => (
-                                <>
-                                  {/* Limit to 1 tag */}
-                                  {tags.indexOf(tag) < 1 && <>{tag}</>}
-                                </>
-                              ))}
-                            </Badge>
-                            <Text>
-                              {platforms.map((platform: string) => (
-                                <>
-                                  {/* Limit to 2 platforms */}
-                                  {platforms.indexOf(platform) < 2 && (
-                                    <>{platform}</>
-                                  )}
-                                  {/* Add a comma if not the last date */}
-                                  {platforms.indexOf(platform) < 1 &&
-                                    platforms.indexOf(platform) <
-                                      platforms.length - 1 && <>, </>}
-                                </>
-                              ))}
-                            </Text>
-                            <Text>
-                              {packageManagement.map((manager: string) => (
-                                <>
-                                  {/* Limit to 2 platforms */}
-                                  {packageManagement.indexOf(manager) < 2 && (
-                                    <>{manager}</>
-                                  )}
-                                  {/* Add a comma if not the last date */}
-                                  {packageManagement.indexOf(manager) < 1 &&
-                                    packageManagement.indexOf(manager) <
-                                      packageManagement.length - 1 && <>, </>}
-                                </>
-                              ))}
-                            </Text>
-                          </>
-                        )}
+                        <Badge pt="0.5">
+                          {tags.map((tag: string) => (
+                            <>
+                              {/* Limit to 1 tag */}
+                              {tags.indexOf(tag) < 1 && <>{tag}</>}
+                            </>
+                          ))}
+                        </Badge>
+                        <Text>
+                          {platforms.map((platform: string) => (
+                            <>
+                              {/* Limit to 2 platforms */}
+                              {platforms.indexOf(platform) < 2 && (
+                                <>{platform}</>
+                              )}
+                              {/* Add a comma if not the last date */}
+                              {platforms.indexOf(platform) < 1 &&
+                                platforms.indexOf(platform) <
+                                  platforms.length - 1 && <>, </>}
+                            </>
+                          ))}
+                        </Text>
+                        <Text>
+                          {packageManagement.map((manager: string) => (
+                            <>
+                              {/* Limit to 2 platforms */}
+                              {packageManagement.indexOf(manager) < 2 && (
+                                <>{manager}</>
+                              )}
+                              {/* Add a comma if not the last date */}
+                              {packageManagement.indexOf(manager) < 1 &&
+                                packageManagement.indexOf(manager) <
+                                  packageManagement.length - 1 && <>, </>}
+                            </>
+                          ))}
+                        </Text>
                       </Stack>
                     </AutoCompleteItem>
                   </Link>
@@ -304,19 +384,15 @@ export default function Home({
             </AutoCompleteList>
           </AutoComplete>
           <Stack direction="column" spacing={2}>
-            <Stack direction="row" spacing={5} fontSize="xs">
-              <Text>
-                {AZOSPageData.length} Operating System
-                {AZOSPageData.length <= 1 ? "" : "s"}
-              </Text>
-              <Suspense fallback={<Text>Preparing the Operating List...</Text>}>
-                <Text>
-                  {showTagsOnHome
-                    ? "Showing All Tags"
-                    : "Showing Selected Metadata"}
-                </Text>
-              </Suspense>
-            </Stack>
+            <Text fontSize="xs">
+              {activeTab > 0
+                ? `Grouping ${tabArray[activeTab].label}s`
+                : `
+                    ${SortedNameData.length} Operating System${
+                    SortedNameData.length <= 1 ? "" : "s"
+                  }
+                  `}
+            </Text>
             <Stack direction="row" spacing={2} fontSize="xs">
               {/* Map tab buttons */}
               {tabArray.map((tab, index: number) => (
@@ -354,14 +430,17 @@ export const config = {
   runtime: "nodejs",
 };
 
-// Import AZOSPageData OS Page handling
 export const getStaticProps: GetStaticProps = async () => {
-  const AZOSPageData = GetSortedOperatingSystemPages();
+  const SortedNameData = SortByName();
   const SortedTagsData = SortByTags();
+  const SortedPlatformsData = SortByPlatforms();
+  const SortedPackageManagementData = SortByPackageManagement();
   return {
     props: {
-      AZOSPageData,
+      SortedNameData,
       SortedTagsData,
+      SortedPlatformsData,
+      SortedPackageManagementData,
     },
   };
 };

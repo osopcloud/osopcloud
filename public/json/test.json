@@ -4,7 +4,7 @@
   "date": ["2022-06-06"],
   "tags": ["Utility"],
   "authors": ["@noahlst", "The Team"],
-  "platforms": ["x86", "arm", "risc"],
+  "platforms": ["risc"],
   "basedOn": "Ubuntu",
   "desktop": "GNOME",
   "shell": "bash",

@@ -10,7 +10,7 @@
   "shell": "bash",
   "software": ["Mozilla Firefox", "LibreOffice"],
   "packageManagement": ["apt", "yum", "zypper"],
-  "startupManagement": "systemd",
+  "startupManagement": "busybox",
   "website": "https://www.osopcloud.com",
   "repository": "https://github.com/osopcloud/osopcloud"
 }

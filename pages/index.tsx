@@ -25,19 +25,24 @@ import {
   Badge,
   Center,
   Icon,
+  Heading,
+  useDisclosure,
+  Box,
 } from "@chakra-ui/react";
 
 // First-party components
 import Logo from "components/brand/Logo";
-
-// Settings
-import { useLocalStorage } from "@rehooks/local-storage";
+import DynamicModal from "components/overlays/DynamicModal";
 
 // JSON processing
 import {
+  SortByBasedOn,
+  SortByDesktop,
   SortByName,
   SortByPackageManagement,
   SortByPlatforms,
+  SortByShell,
+  SortByStartupManagement,
   SortByTags,
 } from "lib/Sorting";
 
@@ -52,7 +57,7 @@ import {
 // Layouts
 import Layout from "components/layouts/Layout";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface MetadataTypes {
   map: any;
@@ -74,6 +79,9 @@ interface MetadataTypes {
     length: number;
   };
   startupManagement: string;
+  desktop: string;
+  shell: string;
+  basedOn: string;
   length: number;
 }
 
@@ -83,11 +91,19 @@ export default function Home({
   SortedTagsData,
   SortedPlatformsData,
   SortedPackageManagementData,
+  SortedStartupManagementData,
+  SortedDesktopData,
+  SortedShellData,
+  SortedBasedOnData,
 }: {
   SortedNameData: MetadataTypes;
   SortedTagsData: MetadataTypes;
   SortedPlatformsData: MetadataTypes;
   SortedPackageManagementData: MetadataTypes;
+  SortedStartupManagementData: MetadataTypes;
+  SortedDesktopData: MetadataTypes;
+  SortedShellData: MetadataTypes;
+  SortedBasedOnData: MetadataTypes;
 }) {
   // List tabs
   function ListByName() {
@@ -219,7 +235,7 @@ export default function Home({
     );
   }
   // List by package management
-  function ListByPackageManager() {
+  function ListByPackageManagement() {
     return (
       <>
         {SortedPackageManagementData.map(
@@ -261,6 +277,132 @@ export default function Home({
       </>
     );
   }
+  // List by startup management
+  function ListByStartupManagement() {
+    return (
+      <>
+        {SortedStartupManagementData.map(
+          ({ slug, name, tags, startupManagement }: MetadataTypes) => (
+            <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+              <Button as="a" display="block" minH="fit-content" py={3}>
+                <Text>{name}</Text>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  fontWeight="normal"
+                  fontSize="sm"
+                >
+                  <Badge pt="0.5">
+                    {tags.map((tag: string) => (
+                      <>
+                        {/* Limit to 1 tag */}
+                        {tags.indexOf(tag) < 1 && <>{tag}</>}
+                      </>
+                    ))}
+                  </Badge>
+                  <Text>{startupManagement}</Text>
+                </Stack>
+              </Button>
+            </Link>
+          )
+        )}
+      </>
+    );
+  }
+  // List by desktop
+  function ListByDesktop() {
+    return (
+      <>
+        {SortedDesktopData.map(
+          ({ slug, name, tags, desktop }: MetadataTypes) => (
+            <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+              <Button as="a" display="block" minH="fit-content" py={3}>
+                <Text>{name}</Text>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  fontWeight="normal"
+                  fontSize="sm"
+                >
+                  <Badge pt="0.5">
+                    {tags.map((tag: string) => (
+                      <>
+                        {/* Limit to 1 tag */}
+                        {tags.indexOf(tag) < 1 && <>{tag}</>}
+                      </>
+                    ))}
+                  </Badge>
+                  <Text>{desktop}</Text>
+                </Stack>
+              </Button>
+            </Link>
+          )
+        )}
+      </>
+    );
+  }
+  // List by shell
+  function ListByShell() {
+    return (
+      <>
+        {SortedShellData.map(({ slug, name, tags, shell }: MetadataTypes) => (
+          <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+            <Button as="a" display="block" minH="fit-content" py={3}>
+              <Text>{name}</Text>
+              <Stack
+                direction="row"
+                spacing={2}
+                fontWeight="normal"
+                fontSize="sm"
+              >
+                <Badge pt="0.5">
+                  {tags.map((tag: string) => (
+                    <>
+                      {/* Limit to 1 tag */}
+                      {tags.indexOf(tag) < 1 && <>{tag}</>}
+                    </>
+                  ))}
+                </Badge>
+                <Text>{shell}</Text>
+              </Stack>
+            </Button>
+          </Link>
+        ))}
+      </>
+    );
+  }
+  // List by basedOn
+  function ListByBasedOn() {
+    return (
+      <>
+        {SortedBasedOnData.map(
+          ({ slug, name, tags, basedOn }: MetadataTypes) => (
+            <Link href={`/browse/${slug}`} key={`/browse/${slug}`} passHref>
+              <Button as="a" display="block" minH="fit-content" py={3}>
+                <Text>{name}</Text>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  fontWeight="normal"
+                  fontSize="sm"
+                >
+                  <Badge pt="0.5">
+                    {tags.map((tag: string) => (
+                      <>
+                        {/* Limit to 1 tag */}
+                        {tags.indexOf(tag) < 1 && <>{tag}</>}
+                      </>
+                    ))}
+                  </Badge>
+                  <Text>{basedOn}</Text>
+                </Stack>
+              </Button>
+            </Link>
+          )
+        )}
+      </>
+    );
+  }
 
   // Tab system for the list
   const [activeTab, setActiveTab] = useState(0);
@@ -279,9 +421,19 @@ export default function Home({
     },
     {
       label: "Package Manager",
-      component: <ListByPackageManager />,
+      component: <ListByPackageManagement />,
     },
+    {
+      label: "Startup Framework",
+      component: <ListByStartupManagement />,
+    },
+    { label: "Desktop", component: <ListByDesktop /> },
+    { label: "Shell", component: <ListByShell /> },
+    { label: "Based On", component: <ListByBasedOn /> },
   ];
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef(null);
 
   return (
     <>
@@ -394,17 +546,61 @@ export default function Home({
                   `}
             </Text>
             <Stack direction="row" spacing={2} fontSize="xs">
-              {/* Map tab buttons */}
-              {tabArray.map((tab, index: number) => (
+              {/* Show 4 tabs at most on large windows */}
+              {tabArray.slice(0, 4).map(({ label }, index) => (
                 <Button
-                  key={`tab-${index}`}
+                  key={`tab-${label}`}
                   isActive={activeTab === index}
-                  size="sm"
                   onClick={() => setActiveTab(index)}
+                  size="sm"
+                  display={{ base: "none", sm: "flex" }}
                 >
-                  {tab.label}
+                  {label}
                 </Button>
               ))}
+              {/* Show 1 tab at most on small windows */}
+              {tabArray.slice(0, 1).map(({ label }, index) => (
+                <Button
+                  key={`tab-${label}`}
+                  isActive={activeTab === index}
+                  onClick={() => setActiveTab(index)}
+                  size="sm"
+                  display={{ base: "flex", sm: "none" }}
+                >
+                  {label}
+                </Button>
+              ))}
+              <Button size="sm" onClick={onOpen}>
+                More
+              </Button>
+              <DynamicModal
+                isOpen={isOpen}
+                onClose={onClose}
+                useAlertDialog={false}
+                cancelRef={cancelRef}
+              >
+                <Stack direction="column" spacing={5}>
+                  <Heading size="md">Group the List by:</Heading>
+                  <Stack direction="column" spacing={2}>
+                    {/* All tab buttons */}
+                    {tabArray.map(({ label }, index) => (
+                      <Button
+                        key={`tab-${label}`}
+                        isActive={activeTab === index}
+                        onClick={() => {
+                          setActiveTab(index);
+                          onClose();
+                        }}
+                      >
+                        {label}
+                      </Button>
+                    ))}
+                  </Stack>
+                  <Button onClick={onClose} ref={cancelRef}>
+                    Cancel
+                  </Button>
+                </Stack>
+              </DynamicModal>
             </Stack>
             <Suspense fallback={<Loading />}>
               {/* Current tab */}
@@ -435,12 +631,20 @@ export const getStaticProps: GetStaticProps = async () => {
   const SortedTagsData = SortByTags();
   const SortedPlatformsData = SortByPlatforms();
   const SortedPackageManagementData = SortByPackageManagement();
+  const SortedStartupManagementData = SortByStartupManagement();
+  const SortedDesktopData = SortByDesktop();
+  const SortedShellData = SortByShell();
+  const SortedBasedOnData = SortByBasedOn();
   return {
     props: {
       SortedNameData,
       SortedTagsData,
       SortedPlatformsData,
       SortedPackageManagementData,
+      SortedStartupManagementData,
+      SortedDesktopData,
+      SortedShellData,
+      SortedBasedOnData,
     },
   };
 };

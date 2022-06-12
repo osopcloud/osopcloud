@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 // Get and process JSON files
-export function GetOperatingSystemPages() {
+export function GetOperatingSystemsAsObject() {
   const store = path.join(process.cwd(), "public/json");
 
   // Get all JSON files in the store
@@ -23,7 +23,7 @@ export function GetOperatingSystemPages() {
 
 // Sort by name
 export function SortByName() {
-  const operatingSystems = GetOperatingSystemPages();
+  const operatingSystems = GetOperatingSystemsAsObject();
 
   // Sort the data by date, newest first
   return operatingSystems.sort((a, b) => {
@@ -37,7 +37,7 @@ export function SortByName() {
 
 // Sort by tags
 export function SortByTags() {
-  const operatingSystems = GetOperatingSystemPages();
+  const operatingSystems = GetOperatingSystemsAsObject();
 
   // Sort the data by tags
   return operatingSystems.sort((a, b) => {
@@ -51,7 +51,7 @@ export function SortByTags() {
 
 // Sort by platforms
 export function SortByPlatforms() {
-  const operatingSystems = GetOperatingSystemPages();
+  const operatingSystems = GetOperatingSystemsAsObject();
 
   // Sort the data by platforms
   return operatingSystems.sort((a, b) => {
@@ -65,11 +65,67 @@ export function SortByPlatforms() {
 
 // Sort by packageManagement
 export function SortByPackageManagement() {
-  const operatingSystems = GetOperatingSystemPages();
+  const operatingSystems = GetOperatingSystemsAsObject();
 
   // Sort the data by packageManagement
   return operatingSystems.sort((a, b) => {
     if (a.packageManagement < b.packageManagement) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}
+
+// Sort by startupManagement
+export function SortByStartupManagement() {
+  const operatingSystems = GetOperatingSystemsAsObject();
+
+  // Sort the data by startupManagement
+  return operatingSystems.sort((a, b) => {
+    if (a.startupManagement < b.startupManagement) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}
+
+// Sort by desktop
+export function SortByDesktop() {
+  const operatingSystems = GetOperatingSystemsAsObject();
+
+  // Sort the data by desktop
+  return operatingSystems.sort((a, b) => {
+    if (a.desktop < b.desktop) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}
+
+// Sort by shell
+export function SortByShell() {
+  const operatingSystems = GetOperatingSystemsAsObject();
+
+  // Sort the data by shell
+  return operatingSystems.sort((a, b) => {
+    if (a.shell < b.shell) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}
+
+// Sort by basedOn
+export function SortByBasedOn() {
+  const operatingSystems = GetOperatingSystemsAsObject();
+
+  // Sort the data by basedOn
+  return operatingSystems.sort((a, b) => {
+    if (a.basedOn < b.basedOn) {
       return -1;
     } else {
       return 1;

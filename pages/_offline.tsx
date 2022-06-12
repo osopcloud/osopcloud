@@ -47,7 +47,7 @@ export default function Offline() {
             Try Again
           </Button>
         </Stack>
-        <Text fontSize="xs">Error Reference: 1302</Text>
+        <Text fontSize="xs">Error Reference: 1</Text>
       </Stack>
     </>
   );

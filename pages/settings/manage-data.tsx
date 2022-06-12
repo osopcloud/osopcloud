@@ -156,7 +156,7 @@ export default function DataManagement() {
           // If the version key in the imported settings is not the same as the current version, show an error toast
           if (importedSettings.version !== version) {
             console.error(
-              "Settings are from a different version (2202)",
+              "Settings are from a different version (6)",
               importedSettings.version,
               version
             );
@@ -164,8 +164,7 @@ export default function DataManagement() {
               title: "These Settings are from a different version",
               status: "error",
               position: "top",
-              description:
-                "For security reasons, Settings cannot be imported from another version of Osopcloud. (2202)",
+              description: "Try exporting the Settings again. (6)",
             });
           } else {
             console.debug(
@@ -207,11 +206,11 @@ export default function DataManagement() {
       });
     } else {
       console.error(
-        "Import failed. navigator.clipboard.readText() not supported. (1102)"
+        "Import failed. navigator.clipboard.readText() not supported. (2)"
       );
       toast({
         title: "This browser doesn't support reading the clipboard",
-        description: "The settings were not imported. (1102)",
+        description: "The settings were not imported. (2)",
         status: "error",
         position: "top",
       });

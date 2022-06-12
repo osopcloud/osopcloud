@@ -1,18 +1,12 @@
-// Types
-import type { ReactElement } from "react";
-
 // Design
 import { Button, Heading, Stack, Text, useDisclosure } from "@chakra-ui/react";
-import { FiArrowLeft, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
 
 // Storage
 import useLocalStorage, { deleteFromStorage } from "@rehooks/local-storage";
-
-// Layouts
-import Layout from "components/layouts/Layout";
 
 import { useRef, useState } from "react";
 

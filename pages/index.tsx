@@ -199,7 +199,7 @@ export default function Home({
                       </>
                     ))}
                   </Badge>
-                  <Text fontWeight={600}>
+                  <Text>
                     {platforms.map((platform: string) => (
                       <>
                         {platform}
@@ -241,7 +241,7 @@ export default function Home({
                       </>
                     ))}
                   </Badge>
-                  <Text fontWeight={600}>
+                  <Text>
                     {packageManagement.map((manager: string) => (
                       <>
                         {manager}

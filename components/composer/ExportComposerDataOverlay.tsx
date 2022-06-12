@@ -24,9 +24,6 @@ import DynamicModal from "components/overlays/DynamicModal";
 // Storage
 import { useLocalStorage } from "@rehooks/local-storage";
 
-// Layouts
-import Layout from "components/layouts/Layout";
-
 import { useRef, useState } from "react";
 
 // Start component
@@ -84,11 +81,18 @@ export default function ExportComposerDataOverlay() {
     const blob = new Blob([json], { type: "text/json" });
     const fileName = `${name}.json`.toLowerCase();
     const file = new File([blob], fileName, { type: "text/json" });
-    navigator.share({
-      title: `${name}`,
-      text: "Generated file with Osopcloud Composer",
-      files: [file],
-    });
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `${name}`,
+          text: "Generated file with Osopcloud Composer",
+          files: [file],
+        })
+        .then(() => console.log("Shared successfully"))
+        .catch((error) =>
+          console.warn("Unable to complete sharing (8)", error)
+        );
+    }
   }
 
   const fileName = name

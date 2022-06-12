@@ -1,7 +1,3 @@
-// This page uses the legacy Node.js Runtime delivery technology
-// Reason: Uses eval() to process MDX
-// https://nextjs.org/docs/api-reference/edge-runtime
-
 // Types
 import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
@@ -619,11 +615,6 @@ export default function Home({
 }
 Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout showToTopButton={true}>{page}</Layout>;
-};
-
-// Disable the Edge Runtime
-export const config = {
-  runtime: "nodejs",
 };
 
 export const getStaticProps: GetStaticProps = async () => {

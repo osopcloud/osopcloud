@@ -48,6 +48,7 @@ export default function ExportComposerDataOverlay() {
   const [authors, setAuthors] = useLocalStorage("composerAuthors", []);
   const [website] = useLocalStorage("composerWebsite");
   const [sourceRepository] = useLocalStorage("composerRepository");
+  const [projectColour] = useLocalStorage("composerProjectColour");
 
   const currentDate = new Date().toISOString();
 
@@ -71,6 +72,7 @@ export default function ExportComposerDataOverlay() {
   "authors": ${JSON.stringify(authors)},
   "website": "${website}",
   "sourceRepository": "${sourceRepository}"
+  "projectColour": "${projectColour}"
 }`;
 
   // Share the file using the Web Share API
@@ -130,6 +132,7 @@ export default function ExportComposerDataOverlay() {
       <Button
         leftIcon={<FiShare />}
         onClick={onOpen}
+        isActive={isOpen}
         isDisabled={
           !name || !description || !tags || !platforms || !basedOn || !website
         }

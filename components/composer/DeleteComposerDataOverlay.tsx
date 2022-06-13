@@ -26,6 +26,7 @@ export function DeleteComposerData() {
   deleteFromStorage("composerAuthors");
   deleteFromStorage("composerWebsite");
   deleteFromStorage("composerRepository");
+  deleteFromStorage("composerProjectColour");
 }
 
 // Start component

@@ -1,5 +1,6 @@
 // Settings
 import { deleteFromStorage } from "@rehooks/local-storage";
+import { DeleteComposerData } from "components/composer/DeleteComposerDataOverlay";
 
 // Start component
 export default function DeleteSettings() {
@@ -9,20 +10,7 @@ export default function DeleteSettings() {
   deleteFromStorage("settingsUseSystemFont");
   deleteFromStorage("settingsShowDeveloperOptions");
   // Delete Composer data
-  deleteFromStorage("composerName");
-  deleteFromStorage("composerDescription");
-  deleteFromStorage("composerDate");
-  deleteFromStorage("composerTags");
-  deleteFromStorage("composerPlatforms");
-  deleteFromStorage("composerBasedOn");
-  deleteFromStorage("composerDefaultDesktop");
-  deleteFromStorage("composerDefaultShell");
-  deleteFromStorage("composerSoftware");
-  deleteFromStorage("composerPackageManagement");
-  deleteFromStorage("composerStartup");
-  deleteFromStorage("composerAuthors");
-  deleteFromStorage("composerWebsite");
-  deleteFromStorage("composerRepository");
+  DeleteComposerData()
   // Log completion
   console.info("LocalStorage cleared. Using default settings.");
 }

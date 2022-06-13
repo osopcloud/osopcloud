@@ -89,6 +89,7 @@ export default function DataManagement() {
   const [composerAuthors] = useLocalStorage("composerAuthors");
   const [composerWebsite] = useLocalStorage("composerWebsite");
   const [composerRepository] = useLocalStorage("composerRepository");
+    const [composerProjectColour] = useLocalStorage("composerProjectColour");
   const resetStatus = showPrintButton
     ? false
     : disableDynamicPrinting
@@ -124,6 +125,8 @@ export default function DataManagement() {
     : composerWebsite
     ? false
     : composerRepository
+    ? false
+    : composerProjectColour
     ? false
     : true;
 

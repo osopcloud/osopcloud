@@ -14,10 +14,15 @@ const theme = extendTheme({
   systemFont,
   config,
   colors: {
+    // "hazelnut" is not used
     hazelnut: "#57300A",
+    // "sandstone" is our secondary, replaces almond on dark backgrounds
     sandstone: "#EFE7DF",
+    // "honeycomb" may be used for errors only
     honeycomb: "#D67718",
+    // "almond" is our primary
     almond: "#573D24",
+    // "peanut" is not used
     peanut: "#A35B12",
     almondScheme: {
       50: "#fef1e5",

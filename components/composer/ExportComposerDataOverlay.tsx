@@ -1,6 +1,3 @@
-// Types
-import type { ReactElement } from "react";
-
 // Routing
 import { useRouter } from "next/router";
 

@@ -60,6 +60,32 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
     "settingsShowDeveloperOptions"
   );
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef(null);
+
+  // Write Composer data
+  const [isComposerOccupied] = useLocalStorage("composerName");
+  const [writingToComposer, setWritingToComposer] = useState(false);
+  function CopyToComposer() {
+    setWritingToComposer(true);
+    DeleteComposerData();
+    writeStorage("composerName", source.name);
+    writeStorage("composerDescription", source.description);
+    writeStorage("composerDate", source.date);
+    writeStorage("composerAuthors", source.authors);
+    writeStorage("composerTags", source.tags);
+    writeStorage("composerPlatforms", source.platforms);
+    writeStorage("composerBasedOn", source.basedOn);
+    writeStorage("composerDefaultDesktop", source.desktop);
+    writeStorage("composerDefaultShell", source.shell);
+    writeStorage("composerSoftware", source.software);
+    writeStorage("composerPackageManagement", source.packageManagement);
+    writeStorage("composerStartup", source.startupManagement);
+    writeStorage("composerWebsite", source.website);
+    writeStorage("composerRepository", source.repository);
+    router.push("/composer");
+  }
+
   // Tabs
   function Description() {
     return <Text>{source.description}</Text>;
@@ -221,32 +247,6 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
       content: <MetadataTable />,
     },
   ];
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
-
-  // Write Composer data
-  const [isComposerOccupied] = useLocalStorage("composerName");
-  const [writingToComposer, setWritingToComposer] = useState(false);
-  function CopyToComposer() {
-    setWritingToComposer(true);
-    DeleteComposerData();
-    writeStorage("composerName", source.name);
-    writeStorage("composerDescription", source.description);
-    writeStorage("composerDate", source.date);
-    writeStorage("composerAuthors", source.authors);
-    writeStorage("composerTags", source.tags);
-    writeStorage("composerPlatforms", source.platforms);
-    writeStorage("composerBasedOn", source.basedOn);
-    writeStorage("composerDefaultDesktop", source.desktop);
-    writeStorage("composerDefaultShell", source.shell);
-    writeStorage("composerSoftware", source.software);
-    writeStorage("composerPackageManagement", source.packageManagement);
-    writeStorage("composerStartup", source.startupManagement);
-    writeStorage("composerWebsite", source.website);
-    writeStorage("composerRepository", source.repository);
-    router.push("/composer");
-  }
 
   return (
     <>

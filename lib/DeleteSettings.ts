@@ -10,7 +10,7 @@ export default function DeleteSettings() {
   deleteFromStorage("settingsUseSystemFont");
   deleteFromStorage("settingsShowDeveloperOptions");
   // Delete Composer data
-  DeleteComposerData()
+  DeleteComposerData();
   // Log completion
-  console.info("LocalStorage cleared. Using default settings.");
+  console.info("LocalStorage cleared.");
 }

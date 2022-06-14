@@ -29,6 +29,7 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
+import { FiArrowLeft, FiDatabase, FiFileText } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
@@ -43,7 +44,6 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // JSON processing libraries
 import fs from "fs";
 import path from "path";
-import { FiDatabase, FiFileText } from "react-icons/fi";
 
 import { useRef, useState } from "react";
 
@@ -342,6 +342,7 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
                   </Text>
                   <Button
                     onClick={CopyToComposer}
+                    leftIcon={<FiArrowLeft />}
                     isLoading={writingToComposer}
                     loadingText="Preparing Composer"
                   >

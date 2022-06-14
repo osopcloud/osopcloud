@@ -89,7 +89,7 @@ export default function DataManagement() {
   const [composerAuthors] = useLocalStorage("composerAuthors");
   const [composerWebsite] = useLocalStorage("composerWebsite");
   const [composerRepository] = useLocalStorage("composerRepository");
-    const [composerProjectColour] = useLocalStorage("composerProjectColour");
+  const [composerProjectColour] = useLocalStorage("composerProjectColour");
   const resetStatus = showPrintButton
     ? false
     : disableDynamicPrinting
@@ -136,9 +136,11 @@ export default function DataManagement() {
   const { onCopy } = useClipboard(exportedSettings);
   function ExportSettings() {
     onCopy();
-    console.info("Export completed. Osopcloud settings copied to clipboard.");
+    console.info(
+      "Export completed. Osopcloud storage data copied to clipboard."
+    );
     toast({
-      title: "Settings Successfully Exported",
+      title: "Storage Data Successfully Exported",
       status: "success",
       position: "top",
     });
@@ -159,7 +161,7 @@ export default function DataManagement() {
           // If the version key in the imported settings is not the same as the current version, show an error toast
           if (importedSettings.version !== version) {
             console.error(
-              "Settings are from a different version (6)",
+              "Storage data is from a different version (6)",
               importedSettings.version,
               version
             );
@@ -167,11 +169,11 @@ export default function DataManagement() {
               title: "These Settings are from a different version",
               status: "error",
               position: "top",
-              description: "Try exporting the Settings again. (6)",
+              description: "Try exporting storage data again. (6)",
             });
           } else {
             console.debug(
-              "JSON detected in clipboard. Resetting Osopcloud and applying settings.",
+              "JSON detected in clipboard. Resetting Osopcloud and applying new storage data.",
               text
             );
             BeginReset();
@@ -188,10 +190,10 @@ export default function DataManagement() {
               window.location.reload();
             } else {
               console.info(
-                "Import completed. Applied settings from clipboard."
+                "Import completed. Applied storage data from clipboard."
               );
               toast({
-                title: "Settings Successfully Imported",
+                title: "Storage Successfully Imported",
                 status: "success",
                 position: "top",
               });
@@ -201,7 +203,7 @@ export default function DataManagement() {
           // If it fails, it's not a valid JSON string
           console.error("Import failed. Invalid JSON string.", e, text);
           toast({
-            title: "No Settings Detected",
+            title: "No Storage Data Detected",
             status: "warning",
             position: "top",
           });
@@ -213,7 +215,7 @@ export default function DataManagement() {
       );
       toast({
         title: "This browser doesn't support reading the clipboard",
-        description: "The settings were not imported. (2)",
+        description: "Storage data was not imported. (2)",
         status: "error",
         position: "top",
       });

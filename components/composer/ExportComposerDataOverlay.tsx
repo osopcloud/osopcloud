@@ -137,7 +137,7 @@ export default function ExportComposerDataOverlay() {
           !name || !description || !tags || !platforms || !basedOn || !website
         }
       >
-        Export and Publish
+        Export &amp; Publish
       </Button>
 
       <DynamicModal

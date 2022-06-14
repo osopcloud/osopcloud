@@ -192,7 +192,7 @@ export default function Create() {
                     }}
                   />
                   <Text fontSize="xs">
-                    You're about to create{" "}
+                    You're about to create $
                     {name ? `a page for ${name}` : "something new"}. To edit an
                     operating system that's already on Osopcloud, open it and
                     select "Open in Composer".

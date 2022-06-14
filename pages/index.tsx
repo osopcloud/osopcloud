@@ -458,7 +458,7 @@ export default function Home({
                 size="md"
                 borderRadius="xl"
                 shadow="inner"
-                placeholder="Find an Operating System..."
+                placeholder="Find an Operating System"
               />
               <AutoCompleteList>
                 {SortedNameData.map(

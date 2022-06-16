@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 // First party components
+import CheckConnectionOverlay from "components/settings/CheckConnectionOverlay";
 import { version } from "components/Version";
 import CheckPWA from "lib/CheckPWA";
 
@@ -98,6 +99,7 @@ export default function AdvancedSettings() {
           size="lg"
         />
       </Flex>
+      <CheckConnectionOverlay />
       <Stack direction="column" spacing={0}>
         <Text fontSize="xs">Version {version}</Text>
         <Text fontSize="xs">

@@ -125,15 +125,15 @@ export default function Create() {
   return (
     <>
       <Head>
-        <title>Create &mdash; Osopcloud</title>
+        <title>Composer &mdash; Osopcloud</title>
         <meta
           name="description"
           content="Create an operating system page ready for publication on Osopcloud."
         />
-        <meta name="og:title" content="Create an Osopcloud Page" />
+        <meta name="og:title" content="Osopcloud Composer" />
         <meta
           name="og:description"
-          content="Create an operating system page."
+          content="Create an OS page for Osopcloud."
         />
       </Head>
 
@@ -190,9 +190,11 @@ export default function Create() {
                     onChange={(e) => {
                       writeStorage("composerName", e.target.value);
                     }}
+                    shadow="inner"
+                    borderRadius="xl"
                   />
                   <Text fontSize="xs">
-                    You're about to create $
+                    You're about to create{" "}
                     {name ? `a page for ${name}` : "something new"}. To edit an
                     operating system that's already on Osopcloud, open it and
                     select "Open in Composer".

@@ -24,40 +24,38 @@ export default function UpdatesAvailable() {
   const [isUpdating, setUpdating] = useBoolean();
 
   return (
-    <Flex bg="peanut" color="white" as="footer">
-      <Container maxWidth="container.md" py={2}>
-        {/* @ts-ignore */}
-        <DarkMode>
-          <Flex>
-            <Stack direction={{ base: "column", sm: "row" }} spacing={5}>
-              <Center>
-                <Icon as={FiDownload} aria-label="Download icon" w={6} h={6} />
-              </Center>
-              <Stack direction="column" spacing={0}>
-                <Text>There are updates waiting to be installed.</Text>
-                <Text fontSize="xs">
-                  Update to get the latest content and features.
-                </Text>
-              </Stack>
+    <Flex bg="almond" color="white" w="100%" p={5} ps={{ base: 0, sm: 115 }}>
+      {/* @ts-ignore */}
+      <DarkMode>
+        <Flex w="full" ps={5} pe={{ base: 5, sm: 10 }}>
+          <Stack direction={{ base: "column", sm: "row" }} spacing={5}>
+            <Center>
+              <Icon as={FiDownload} aria-label="Download icon" w={6} h={6} />
+            </Center>
+            <Stack direction="column" spacing={0}>
+              <Text>There are updates waiting to be installed</Text>
+              <Text fontSize="xs">
+                Update to get the latest content and features.
+              </Text>
             </Stack>
-            <Spacer />
-            {isUpdating ? (
-              <Button isLoading loadingText="Updating">
-                Update Now
-              </Button>
-            ) : (
-              <Button
-                onClick={(_) => {
-                  setUpdating.on();
-                  writeStorage("forceUpdate", updatePreference ? false : true);
-                }}
-              >
-                Update Now
-              </Button>
-            )}
-          </Flex>
-        </DarkMode>
-      </Container>
+          </Stack>
+          <Spacer />
+          {isUpdating ? (
+            <Button isLoading loadingText="Updating">
+              Update Now
+            </Button>
+          ) : (
+            <Button
+              onClick={(_) => {
+                setUpdating.on();
+                writeStorage("forceUpdate", updatePreference ? false : true);
+              }}
+            >
+              Update Now
+            </Button>
+          )}
+        </Flex>
+      </DarkMode>
     </Flex>
   );
 }

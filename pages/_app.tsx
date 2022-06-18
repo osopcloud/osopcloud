@@ -13,15 +13,11 @@ import { ErrorFallbackApplication } from "components/error-handling/ErrorFallbac
 import { useRouter } from "next/router";
 
 // Design
-import { Spinner, useBoolean } from "@chakra-ui/react";
 import "@fontsource/public-sans/400.css";
 import "@fontsource/public-sans/600.css";
-import "@fontsource/atkinson-hyperlegible";
 
-// First party components
-import ConflictingSettings from "components/alerts/ConflictingSettings";
-
-import { Suspense, useEffect } from "react";
+// Keyboard shortcuts
+import { useKeyboardShortcut } from "hooks/useKeyboardShortcut";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -38,52 +34,28 @@ export default function Application({
 }: AppPropsWithLayout) {
   const router = useRouter();
 
-  // Set up keyboard shortcuts
-  useEffect(() => {
-    // Add an event listener that listens for the keydown Command+/ key combination, preventing the default behavior and opening Home.
-    const listener = (event: KeyboardEvent) => {
-      if (event.metaKey && event.key === "/") {
-        event.preventDefault();
-        router.push("/");
-      }
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [router]);
-  useEffect(() => {
-    // Add an event listener that listens for the keydown Command+Shift+, key combination, preventing the default behavior and opening settings.
-    const listener = (event: KeyboardEvent) => {
-      if (event.metaKey && event.shiftKey && event.key === ",") {
-        event.preventDefault();
-        router.push("/settings");
-      }
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [router]);
-  useEffect(() => {
-    // Add an event listener that listens for the keydown Command+UpArrow key combination, preventing the default behavior and scrolling up.
-    const listener = (event: KeyboardEvent) => {
-      if (event.metaKey && event.key === "ArrowUp") {
-        event.preventDefault();
-        window.scrollTo(0, 0);
-      }
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, []);
-
-  // Because we are using layout persistence, using the browser's clear browsing data option won't show immediate changes
-  // This reassures the user that their preference has been recognised. It then guides the user on how to enact the changes
-  const [isConflictingSettings, setConflictingSettings] = useBoolean();
-  useEffect(() => {
-    // Add an event listener that listens for when local storage is cleared
-    const listener = () => {
-      setConflictingSettings.on();
-    };
-    window.addEventListener("storage", listener);
-    return () => window.removeEventListener("storage", listener);
-  }, [setConflictingSettings]);
+  // Keyboard shortcuts
+  useKeyboardShortcut("g then h", () => {
+    router.push("/");
+  });
+  useKeyboardShortcut("g then c", () => {
+    router.push("/composer");
+  });
+  useKeyboardShortcut(["g then s", ", then 1"], () => {
+    router.push("/settings/general");
+  });
+  useKeyboardShortcut([", then 2"], () => {
+    router.push("/settings/accessibility");
+  });
+  useKeyboardShortcut([", then 3"], () => {
+    router.push("/settings/sharing");
+  });
+  useKeyboardShortcut([", then 4"], () => {
+    router.push("/settings/network");
+  });
+  useKeyboardShortcut([", then 5"], () => {
+    router.push("/settings/storage");
+  });
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -92,14 +64,7 @@ export default function Application({
     <ChakraProvider theme={theme}>
       <ErrorFallbackApplication>
         <UpdateServices>
-          {isConflictingSettings && (
-            <Suspense fallback={<Spinner />}>
-              <ConflictingSettings />
-            </Suspense>
-          )}
-          <Suspense fallback={<Spinner m={5} />}>
-            {getLayout(<Component {...pageProps} />)}
-          </Suspense>
+          {getLayout(<Component {...pageProps} />)}
         </UpdateServices>
       </ErrorFallbackApplication>
     </ChakraProvider>

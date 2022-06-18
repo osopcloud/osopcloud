@@ -1,0 +1,16 @@
+{
+  "name": "Demo 3",
+  "description": "Test",
+  "date": ["2022-06-06"],
+  "tags": ["Utility"],
+  "authors": ["@noahlst", "The Team"],
+  "platforms": ["x86", "arm", "risc"],
+  "basedOn": "Ubuntu",
+  "desktop": "GNOME",
+  "shell": "bash",
+  "software": ["Mozilla Firefox", "LibreOffice"],
+  "packageManagement": ["apt", "yum", "zypper"],
+  "startupManagement": "busybox",
+  "website": "https://www.osopcloud.com",
+  "repository": "https://github.com/osopcloud/osopcloud"
+}

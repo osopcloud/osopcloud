@@ -1,28 +1,44 @@
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
+// Routing
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 // Design
 import {
+  Box,
   Button,
-  Container,
+  Center,
   Flex,
+  Icon,
   IconButton,
-  Skeleton,
+  DarkMode,
   Spacer,
-  Tooltip,
+  Stack,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FiArrowUp, FiShare } from "react-icons/fi";
+import {
+  FiHome,
+  FiPlus,
+  FiSettings,
+  FiShare,
+  FiGithub,
+  FiChevronLeft,
+  FiPrinter,
+} from "react-icons/fi";
+import { VercelLogo } from "components/brand/VercelPromotion";
+import { HeaderLogo } from "components/brand/Logo";
 
-// First-party components
-import Header from "components/layout-dependencies/Header";
-import Footer from "components/layout-dependencies/Footer";
-import JSWarning from "components/alerts/JSWarning";
-import BrowserWarning from "components/alerts/BrowserWarning";
-import DevelopmentWarning from "components/alerts/DevelopmentWarning";
+// First party components
+import CheckPWA from "lib/CheckPWA";
 
 // Settings
-import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
-import { isLegacyEdge, isIE, isMacOs } from "react-device-detect";
+import { useLocalStorage } from "@rehooks/local-storage";
 
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -31,32 +47,14 @@ interface LayoutProps {
 }
 
 // Start component
-export default function Layout({
-  children,
-  showShareButton,
-  showToTopButton,
-}: LayoutProps) {
-  // Get settings
-  const [hideNotifications] = useLocalStorage("settingsHideNotifications");
-  const [backButtonLargeWindows] = useLocalStorage(
-    "settingsAlwaysShowBackButton"
-  );
+export default function Layout({ children, showShareButton }: LayoutProps) {
+  const router = useRouter();
 
-  // Layout keyboard shortcuts
-  useEffect(() => {
-    // Add an event listener that listens for the keydown Option+Command+LeftArrow key combination on Mac and the Alt+Control+LeftArrow key on others, preventing the default behavior and writing settingsAlwaysShowBackButton to true.
-    const listener = (event: KeyboardEvent) => {
-      if (event.metaKey && event.altKey && event.key === "ArrowLeft") {
-        event.preventDefault();
-        writeStorage(
-          "settingsAlwaysShowBackButton",
-          backButtonLargeWindows ? false : true
-        );
-      }
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [backButtonLargeWindows]);
+  // Get settings
+  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
+  const [disableDynamicPrinting] = useLocalStorage(
+    "settingsDisableDynamicPrinting"
+  );
 
   // Share experience
   function Share() {
@@ -65,69 +63,235 @@ export default function Layout({
       navigator
         .share({
           title: document.title,
-          text: "Discover ULOSINO",
+          text: `Discover ${document.title} on Osopcloud`,
           url: url,
         })
         .then(() => console.log("Shared successfully"))
         .catch((error) =>
-          console.warn("Integrated Application Error: ShareErrorCaught", error)
+          console.warn("Unable to complete sharing (8)", error)
         );
     }
   }
 
+  // Dynamic printing
+  function Print() {
+    if (disableDynamicPrinting) {
+      window.print();
+    } else {
+      DynamicPrint();
+    }
+  }
+  function DynamicPrint() {
+    // @ts-ignore
+    const printContents = document.getElementById("printRegion").innerHTML;
+
+    // Set the DOM to the defined region and print it
+    document.body.innerHTML = printContents;
+    window.print();
+
+    // Exit the print mode when the print dialog is closed
+    window.location.reload();
+  }
+
+  // Layout keyboard shortcuts
+  useEffect(() => {
+    // If disableDynamicPrinting is not true
+    if (!disableDynamicPrinting) {
+      const listener = (event: KeyboardEvent) => {
+        if (event.metaKey && event.key === "p") {
+          event.preventDefault();
+          DynamicPrint();
+        }
+      };
+      window.addEventListener("keydown", listener);
+      return () => window.removeEventListener("keydown", listener);
+    }
+  }, [disableDynamicPrinting]);
+
+  const shareCompatibility =
+    typeof navigator !== "undefined" ? navigator.share : "";
+
   return (
+    // Create a flex container
     <Flex
       display="flex"
-      minH="100vh"
-      direction="column"
+      direction={{ base: "column", sm: "row" }}
       bg={useColorModeValue("gray.50", "inherit")}
     >
-      {/* JavaScript warning */}
-      <noscript>
-        <JSWarning />
-      </noscript>
-      {/* If the browser isLegacyEdge or isIE, show <BrowserWarning /> */}
-      {isLegacyEdge || isIE ? <BrowserWarning /> : null}
-      {hideNotifications ? "" : <DevelopmentWarning />}
-      {/* Header */}
-      <Suspense fallback={<Skeleton />}>
-        <Header />
-      </Suspense>
-      {/* Page content */}
-      <Container maxWidth="container.md" flex={1} my={10}>
-        {children}
-      </Container>
-      {/* Share footer (subfooter) */}
-      <Container
-        maxWidth="container.md"
-        display={{ base: "none", sm: "block" }}
-        mb={5}
+      {/* Create a persistent sidebar */}
+      <Flex
+        h="100vh"
+        bg="almond"
+        position="fixed"
+        top="0"
+        left="0"
+        overflow="auto"
+        zIndex={1}
+        display={{ base: "none", sm: "flex" }}
+        as="aside"
       >
-        <Flex>
-          {showShareButton ?? (
-            <Button leftIcon={<FiShare />} onClick={Share}>
-              Share
-            </Button>
-          )}
-          <Spacer />
-          {showToTopButton && (
-            <Tooltip
-              label={`Go to Top (${isMacOs ? "⌘" : "⌃"}↑)`}
-              placement="right"
-            >
-              <IconButton
-                icon={<FiArrowUp />}
-                aria-label="Go to top"
-                onClick={() => window.scrollTo(0, 0)}
-              />
-            </Tooltip>
-          )}
+        {/* @ts-ignore */}
+        <DarkMode>
+          <Flex direction="column" p={5}>
+            <Suspense fallback={<Loading />}>
+              {CheckPWA() && (
+                <IconButton
+                  icon={<FiChevronLeft />}
+                  aria-label="Go Back"
+                  size="lg"
+                  mb={5}
+                  onClick={router.back}
+                />
+              )}
+            </Suspense>
+            <Stack direction="column" spacing={2}>
+              <Link href="/" passHref>
+                <IconButton
+                  icon={<FiHome />}
+                  aria-label="Go Home"
+                  size="lg"
+                  as="a"
+                />
+              </Link>
+              <Link href="/composer" passHref>
+                <IconButton
+                  icon={<FiPlus />}
+                  aria-label="Osopcloud Composer"
+                  size="lg"
+                  as="a"
+                />
+              </Link>
+            </Stack>
+            <Spacer />
+            <Stack direction="column" spacing={2}>
+              <Suspense fallback={<Loading />}>
+                {showShareButton ?? (
+                  <>
+                    {shareCompatibility ? (
+                      <IconButton
+                        icon={<FiShare />}
+                        aria-label="Share"
+                        size="lg"
+                        onClick={Share}
+                      />
+                    ) : null}
+                    {showPrintButton && (
+                      <IconButton
+                        icon={<FiPrinter />}
+                        aria-label="Print"
+                        size="lg"
+                        onClick={Print}
+                      />
+                    )}
+                  </>
+                )}
+              </Suspense>
+              <Link href="/settings/general" passHref>
+                <IconButton
+                  icon={<FiSettings />}
+                  aria-label="Settings"
+                  size="lg"
+                  as="a"
+                />
+              </Link>
+            </Stack>
+          </Flex>
+        </DarkMode>
+      </Flex>
+
+      {/* Mobile header */}
+      <Flex display={{ base: "flex", sm: "none" }} p={5} as="header">
+        <Stack direction="row" spacing={5}>
+          <IconButton
+            icon={<FiChevronLeft />}
+            aria-label="Go Back"
+            size="lg"
+            onClick={router.back}
+          />
+          <Center>
+            <Link href="/" passHref>
+              <Icon w={12} h={12} cursor="pointer" as="a" rounded="xl">
+                <HeaderLogo />
+              </Icon>
+            </Link>
+          </Center>
+        </Stack>
+        <Spacer />
+        <Stack direction="row" spacing={2}>
+          <Link href="/composer" passHref>
+            <IconButton
+              icon={<FiPlus />}
+              aria-label="Osopcloud Composer"
+              size="lg"
+            />
+          </Link>
+          <Link href="/settings" passHref>
+            <IconButton
+              icon={<FiSettings />}
+              aria-label="Settings"
+              size="lg"
+              as="a"
+            />
+          </Link>
+        </Stack>
+      </Flex>
+
+      {/* Make sure the children are not obstructed the sidebar */}
+      <Flex
+        minH="100vh"
+        w="100%"
+        position="relative"
+        overflow="hidden"
+        direction="column"
+        ps={{ base: 0, sm: 115 }}
+      >
+        <Flex flex={1} p={5} pe={{ base: 5, sm: 10 }} py={10}>
+          <Box w="100%" id="printRegion" as="main">
+            {children}
+          </Box>
         </Flex>
-      </Container>
-      {/* Footer */}
-      <Suspense fallback={<Skeleton />}>
-        <Footer />
-      </Suspense>
+        <Flex p={5} pe={{ base: "inherit", sm: 10 }} as="footer">
+          <Stack direction="row" spacing={2}>
+            <Link href="https://github.com/osopcloud/osopcloud" passHref>
+              <Button leftIcon={<FiGithub />} size="sm" as="a">
+                GitHub
+              </Button>
+            </Link>
+            <Link href="/docs/getting-started" passHref>
+              <Button size="sm" as="a" display={{ base: "none", sm: "flex" }}>
+                Documentation
+              </Button>
+            </Link>
+            <Link href="/docs/keyboard-shortcuts" passHref>
+              <Button size="sm" as="a" display={{ base: "none", sm: "flex" }}>
+                Keyboard Shortcuts
+              </Button>
+            </Link>
+            <Link href="/about/privacy" passHref>
+              <Button size="sm" as="a">
+                Privacy
+              </Button>
+            </Link>
+            <Link href="/about/terms" passHref>
+              <Button size="sm" as="a">
+                Terms
+              </Button>
+            </Link>
+          </Stack>
+          <Spacer />
+          <Button
+            colorScheme="black"
+            bg="black"
+            color="white"
+            variant="solid"
+            size="sm"
+            display={{ base: "none", sm: "flex" }}
+          >
+            <Text me={2}>Powered by</Text>
+            <VercelLogo />
+          </Button>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }

@@ -17,16 +17,32 @@ export const Button = {
   },
 };
 
-export const Tooltip = {
-  baseStyle: {
-    rounded: "md",
-  },
-};
-
 export const Heading = {
   baseStyle: ({ colorMode }: { colorMode: string }) => ({
     fontWeight: 600,
     fontSize: "xl",
     color: colorMode === "dark" ? "sandstone" : "almond",
   }),
+};
+
+export const Input = {
+  defaultProps: {
+    focusBorderColor: "almond",
+  },
+  baseStyle: {
+    shadow: "inner",
+    borderRadius: "xl",
+  },
+};
+
+export const Select = {
+  defaultProps: {
+    focusBorderColor: "almond",
+  },
+};
+
+export const Textarea = {
+  defaultProps: {
+    focusBorderColor: "almond",
+  },
 };

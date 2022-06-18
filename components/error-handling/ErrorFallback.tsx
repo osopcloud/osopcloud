@@ -19,7 +19,7 @@ export class ErrorFallback extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <Text>An error occurred. (3001)</Text>;
+      return <Text>An error occurred. (2)</Text>;
     }
 
     return this.props.children;

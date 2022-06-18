@@ -28,7 +28,7 @@ export default class Document extends NextDocument {
             name="apple-mobile-web-app-status-bar-style"
             content="default"
           />
-          <meta name="apple-mobile-web-app-title" content="ULOSINO" />
+          <meta name="apple-mobile-web-app-title" content="Osopcloud" />
           <meta name="mobile-web-app-capable" content="yes" />
           <link
             rel="apple-touch-icon"

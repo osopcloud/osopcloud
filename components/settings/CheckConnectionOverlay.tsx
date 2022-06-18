@@ -84,7 +84,7 @@ export default function CheckConnectionOverlay() {
         }}
         isActive={isOpen}
       >
-        Check Connection
+        Check Networking
       </Button>
 
       <DynamicModal
@@ -94,7 +94,7 @@ export default function CheckConnectionOverlay() {
         cancelRef={cancelRef}
       >
         <Stack direction="column" spacing={5}>
-          <Heading size="md">Connection Troubleshooting</Heading>
+          <Heading size="md">Network Troubleshooting</Heading>
           {isLoading ? (
             <>
               <Center py={10}>

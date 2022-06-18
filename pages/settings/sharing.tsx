@@ -22,6 +22,7 @@ export default function SharingSettings() {
   const [disableDynamicPrinting] = useLocalStorage(
     "settingsDisableDynamicPrinting"
   );
+  const [switchLabels] = useLocalStorage("settingsShowSwitchLabels");
 
   return (
     <>
@@ -50,18 +51,27 @@ export default function SharingSettings() {
         </Center>
         <Spacer />
         <Center>
-          <Switch
-            // @ts-ignore
-            isChecked={disableDynamicPrinting}
-            onChange={() =>
-              writeStorage(
-                "settingsDisableDynamicPrinting",
-                disableDynamicPrinting ? false : true
-              )
-            }
-            colorScheme="almondScheme"
-            size="lg"
-          />
+          <Stack direction="row" spacing={5}>
+            {switchLabels && (
+              <Center>
+                <Text fontSize="xs">
+                  {disableDynamicPrinting ? "on" : "off"}
+                </Text>
+              </Center>
+            )}
+            <Switch
+              // @ts-ignore
+              isChecked={disableDynamicPrinting}
+              onChange={() =>
+                writeStorage(
+                  "settingsDisableDynamicPrinting",
+                  disableDynamicPrinting ? false : true
+                )
+              }
+              colorScheme="almondScheme"
+              size="lg"
+            />
+          </Stack>
         </Center>
       </Flex>
     </>

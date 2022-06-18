@@ -45,16 +45,16 @@ export default function Application({
     router.push("/settings/general");
   });
   useKeyboardShortcut([", then 2"], () => {
-    router.push("/settings/sharing");
+    router.push("/settings/accessibility");
   });
   useKeyboardShortcut([", then 3"], () => {
-    router.push("/settings/network");
+    router.push("/settings/sharing");
   });
   useKeyboardShortcut([", then 4"], () => {
-    router.push("/settings/storage");
+    router.push("/settings/network");
   });
   useKeyboardShortcut([", then 5"], () => {
-    router.push("/settings/advanced");
+    router.push("/settings/storage");
   });
 
   // Use the layout defined at the page level, if available

@@ -53,6 +53,18 @@ export const splitKeys = (keys: string) => {
     .split(/\s/);
 };
 
+// Get settingsDisableCOKeyboardShortcuts from Local Storage
+const getDisableCOKeyboardShortcuts = () => {
+  const disableCOKeyboardShortcuts = localStorage.getItem(
+    "settingsDisableCOKeyboardShortcuts"
+  );
+  if (disableCOKeyboardShortcuts) {
+    return disableCOKeyboardShortcuts === "true";
+  } else return false;
+};
+
+// Check if disableCOKeyboardShortcuts is true
+// If so, we need to disable keyboard shortcuts with "then"
 const parseKeys = (keys: string | string[]) => {
   if (typeof keys === "string") {
     keys = [keys];
@@ -136,29 +148,31 @@ export const useKeyboardShortcut = (
   const bufferTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function onKeyDown(event: KeyboardEvent): void {
-    if (isInputEvent(event)) {
-      return;
-    }
+    if (!getDisableCOKeyboardShortcuts()) {
+      if (isInputEvent(event)) {
+        return;
+      }
 
-    const key = getKeyFromEvent(event);
-    pressedKeys.add(key);
-    bufferKeys.add(key);
+      const key = getKeyFromEvent(event);
+      pressedKeys.add(key);
+      bufferKeys.add(key);
 
-    if (bufferTimeout.current) {
-      clearTimeout(bufferTimeout.current);
-      bufferTimeout.current = null;
-    }
-    bufferTimeout.current = setTimeout(() => {
-      bufferKeys.clear();
-    }, 400);
+      if (bufferTimeout.current) {
+        clearTimeout(bufferTimeout.current);
+        bufferTimeout.current = null;
+      }
+      bufferTimeout.current = setTimeout(() => {
+        bufferKeys.clear();
+      }, 400);
 
-    if (
-      keysMatch(pressedKeys, targetKeys) ||
-      (bufferKeys.size > 1 && keysMatch(bufferKeys, targetKeys))
-    ) {
-      bufferKeys.clear(); // make sure the buffer gets cleared
-      // execute on next tick to make sure the last keyup doesn't trigger in any focused field
-      setTimeout(() => memoizedCallback(event), 0);
+      if (
+        keysMatch(pressedKeys, targetKeys) ||
+        (bufferKeys.size > 1 && keysMatch(bufferKeys, targetKeys))
+      ) {
+        bufferKeys.clear(); // make sure the buffer gets cleared
+        // execute on next tick to make sure the last keyup doesn't trigger in any focused field
+        setTimeout(() => memoizedCallback(event), 0);
+      }
     }
   }
 

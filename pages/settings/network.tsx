@@ -5,7 +5,7 @@ import type { ReactElement } from "react";
 import Head from "next/head";
 
 // Design
-import { Center, Flex, Spacer, Switch, Text } from "@chakra-ui/react";
+import { Center, Flex, Spacer, Stack, Switch, Text } from "@chakra-ui/react";
 
 // First party components
 
@@ -19,6 +19,10 @@ import CheckConnectionOverlay from "components/settings/CheckConnectionOverlay";
 
 // Start page
 export default function NetworkSettings() {
+  // Get settings
+  const [immediateUpdate] = useLocalStorage("forceUpdate");
+  const [switchLabels] = useLocalStorage("settingsShowSwitchLabels");
+
   return (
     <>
       <Head>
@@ -39,7 +43,21 @@ export default function NetworkSettings() {
           <Text>Install Updates Immediately</Text>
         </Center>
         <Spacer />
-        <Switch colorScheme="almondScheme" size="lg" isDisabled />
+        <Stack direction="row" spacing={5}>
+          {switchLabels && (
+            <Center>
+              <Text fontSize="xs">{immediateUpdate ? "on" : "off"}</Text>
+            </Center>
+          )}
+          <Switch // @ts-ignore
+            isChecked={immediateUpdate}
+            onChange={() =>
+              writeStorage("forceUpdate", immediateUpdate ? false : true)
+            }
+            colorScheme="almondScheme"
+            size="lg"
+          />
+        </Stack>
       </Flex>
       <CheckConnectionOverlay />
     </>

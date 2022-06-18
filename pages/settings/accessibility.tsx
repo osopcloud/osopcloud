@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 
 // First party components
-import { version } from "components/Version";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -31,6 +30,10 @@ import { useState } from "react";
 export default function AdvancedSettings() {
   // Get settings
   const [systemFont] = useLocalStorage("settingsUseSystemFont");
+  const [switchLabels] = useLocalStorage("settingsShowSwitchLabels");
+  const [settingsDisableCOKeyboardShortcuts] = useLocalStorage(
+    "settingsDisableCOKeyboardShortcuts"
+  );
 
   const [applyingCustomFont, setApplyingCustomFont] = useState(false);
 
@@ -58,6 +61,19 @@ export default function AdvancedSettings() {
               <Spinner size="xs" />
             </Center>
           )}
+          {switchLabels && (
+            <Center>
+              <Text fontSize="xs">
+                {applyingCustomFont
+                  ? systemFont
+                    ? "turning on"
+                    : "turning off"
+                  : systemFont
+                  ? "on"
+                  : "off"}
+              </Text>
+            </Center>
+          )}
           <Switch
             // @ts-ignore
             isChecked={systemFont}
@@ -78,9 +94,20 @@ export default function AdvancedSettings() {
         <Spacer />
         <Stack direction="row" spacing={5}>
           <Center>
-            <Text fontSize="xs">off</Text>
+            <Text fontSize="xs">{switchLabels ? "on" : "off"}</Text>
           </Center>
-          <Switch colorScheme="almondScheme" size="lg" isDisabled />
+          <Switch
+            // @ts-ignore
+            isChecked={switchLabels}
+            onChange={() => {
+              writeStorage(
+                "settingsShowSwitchLabels",
+                switchLabels ? false : true
+              );
+            }}
+            colorScheme="almondScheme"
+            size="lg"
+          />
         </Stack>
       </Flex>
       <Flex>
@@ -88,7 +115,27 @@ export default function AdvancedSettings() {
           <Text>Disable Character-Only Keyboard Shortcuts</Text>
         </Center>
         <Spacer />
-        <Switch colorScheme="almondScheme" size="lg" isDisabled />
+        <Stack direction="row" spacing={5}>
+          {switchLabels && (
+            <Center>
+              <Text fontSize="xs">
+                {settingsDisableCOKeyboardShortcuts ? "on" : "off"}
+              </Text>
+            </Center>
+          )}
+          <Switch
+            // @ts-ignore
+            isChecked={settingsDisableCOKeyboardShortcuts}
+            onChange={() => {
+              writeStorage(
+                "settingsDisableCOKeyboardShortcuts",
+                settingsDisableCOKeyboardShortcuts ? false : true
+              );
+            }}
+            colorScheme="almondScheme"
+            size="lg"
+          />
+        </Stack>
       </Flex>
     </>
   );

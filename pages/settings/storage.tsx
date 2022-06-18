@@ -99,6 +99,11 @@ export default function StorageManagement() {
     "settingsDisableDynamicPrinting"
   );
   const [useSystemFont] = useLocalStorage("settingsUseSystemFont");
+  const [switchLabels] = useLocalStorage("settingsShowSwitchLabels");
+  const [settingsDisableCOKeyboardShortcuts] = useLocalStorage(
+    "settingsDisableCOKeyboardShortcuts"
+  );
+  const [immediateUpdate] = useLocalStorage("forceUpdate");
   const [composerName] = useLocalStorage("composerName");
   const [composerDescription] = useLocalStorage("composerDescription");
   const [composerDate] = useLocalStorage("composerDate");
@@ -121,6 +126,12 @@ export default function StorageManagement() {
     : disableDynamicPrinting
     ? false
     : useSystemFont
+    ? false
+    : switchLabels
+    ? false
+    : settingsDisableCOKeyboardShortcuts
+    ? false
+    : immediateUpdate
     ? false
     : composerName
     ? false

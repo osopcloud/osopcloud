@@ -5,7 +5,7 @@ import type { ReactElement } from "react";
 import Head from "next/head";
 
 // Design
-import { Center, Flex, Spacer, Switch, Text } from "@chakra-ui/react";
+import { Center, Flex, Spacer, Stack, Switch, Text } from "@chakra-ui/react";
 
 // First party components
 
@@ -20,6 +20,7 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 export default function GeneralSettings() {
   // Get settings
   const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
+  const [switchLabels] = useLocalStorage("settingsShowSwitchLabels");
 
   return (
     <>
@@ -38,18 +39,25 @@ export default function GeneralSettings() {
           <Text>Show Printing Options in the Sidebar</Text>
         </Center>
         <Spacer />
-        <Switch
-          // @ts-ignore
-          isChecked={showPrintButton}
-          onChange={() =>
-            writeStorage(
-              "settingsShowPrintButton",
-              showPrintButton ? false : true
-            )
-          }
-          colorScheme="almondScheme"
-          size="lg"
-        />
+        <Stack direction="row" spacing={5}>
+          {switchLabels && (
+            <Center>
+              <Text fontSize="xs">{showPrintButton ? "on" : "off"}</Text>
+            </Center>
+          )}
+          <Switch
+            // @ts-ignore
+            isChecked={showPrintButton}
+            onChange={() =>
+              writeStorage(
+                "settingsShowPrintButton",
+                showPrintButton ? false : true
+              )
+            }
+            colorScheme="almondScheme"
+            size="lg"
+          />
+        </Stack>
       </Flex>
     </>
   );

@@ -1,6 +1,3 @@
-// Types
-import type { ReactElement } from "react";
-
 // Design
 import {
   Button,
@@ -25,9 +22,6 @@ import DynamicModal from "components/overlays/DynamicModal";
 // Storage
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 
-// Layouts
-import Layout from "components/layouts/Layout";
-
 import { useRef } from "react";
 
 // Start component
@@ -41,7 +35,9 @@ export default function URLManagementOverlay() {
 
   return (
     <>
-      <Button onClick={onOpen}>Edit Website &amp; Repository</Button>
+      <Button isActive={isOpen} onClick={onOpen}>
+        Edit Website &amp; Repository
+      </Button>
 
       <DynamicModal
         isOpen={isOpen}
@@ -102,10 +98,3 @@ export default function URLManagementOverlay() {
     </>
   );
 }
-URLManagementOverlay.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout showToTopButton={false} showShareButton={false}>
-      {page}
-    </Layout>
-  );
-};

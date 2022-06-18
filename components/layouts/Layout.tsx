@@ -63,12 +63,12 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
       navigator
         .share({
           title: document.title,
-          text: "Discover ULOSINO",
+          text: `Discover ${document.title} on Osopcloud`,
           url: url,
         })
         .then(() => console.log("Shared successfully"))
         .catch((error) =>
-          console.warn("Integrated Application Error: ShareErrorCaught", error)
+          console.warn("Unable to complete sharing (8)", error)
         );
     }
   }

@@ -1,6 +1,3 @@
-// Types
-import type { ReactElement } from "react";
-
 // Routing
 import { useRouter } from "next/router";
 
@@ -20,12 +17,10 @@ import { FiArrowLeft, FiArrowRight, FiShare } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
+import { useKeyboardShortcut } from "hooks/useKeyboardShortcut";
 
 // Storage
 import { useLocalStorage } from "@rehooks/local-storage";
-
-// Layouts
-import Layout from "components/layouts/Layout";
 
 import { useRef, useState } from "react";
 
@@ -54,6 +49,7 @@ export default function ExportComposerDataOverlay() {
   const [authors, setAuthors] = useLocalStorage("composerAuthors", []);
   const [website] = useLocalStorage("composerWebsite");
   const [sourceRepository] = useLocalStorage("composerRepository");
+  const [projectColour] = useLocalStorage("composerProjectColour");
 
   const currentDate = new Date().toISOString();
 
@@ -77,6 +73,7 @@ export default function ExportComposerDataOverlay() {
   "authors": ${JSON.stringify(authors)},
   "website": "${website}",
   "sourceRepository": "${sourceRepository}"
+  "projectColour": "${projectColour}"
 }`;
 
   // Share the file using the Web Share API
@@ -84,11 +81,18 @@ export default function ExportComposerDataOverlay() {
     const blob = new Blob([json], { type: "text/json" });
     const fileName = `${name}.json`.toLowerCase();
     const file = new File([blob], fileName, { type: "text/json" });
-    navigator.share({
-      title: `${name}`,
-      text: "Generated file with Osopcloud Composer",
-      files: [file],
-    });
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `${name}`,
+          text: "Generated file with Osopcloud Composer",
+          files: [file],
+        })
+        .then(() => console.log("Shared successfully"))
+        .catch((error) =>
+          console.warn("Unable to complete sharing (8)", error)
+        );
+    }
   }
 
   const fileName = name
@@ -117,6 +121,11 @@ export default function ExportComposerDataOverlay() {
     );
   }
 
+  // Keyboard shortcuts
+  useKeyboardShortcut("e", () => {
+    DownloadAsFile();
+  });
+
   const [isNavigatingAway, setIsNavigatingAway] = useState(false);
 
   // Show advanced options
@@ -129,11 +138,12 @@ export default function ExportComposerDataOverlay() {
       <Button
         leftIcon={<FiShare />}
         onClick={onOpen}
+        isActive={isOpen}
         isDisabled={
           !name || !description || !tags || !platforms || !basedOn || !website
         }
       >
-        Export and Publish
+        Export &amp; Publish
       </Button>
 
       <DynamicModal
@@ -222,10 +232,3 @@ export default function ExportComposerDataOverlay() {
     </>
   );
 }
-ExportComposerDataOverlay.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout showToTopButton={false} showShareButton={false}>
-      {page}
-    </Layout>
-  );
-};

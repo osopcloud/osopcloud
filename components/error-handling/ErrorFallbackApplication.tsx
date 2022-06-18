@@ -78,7 +78,7 @@ export class ErrorFallbackApplication extends React.Component {
                 </Stack>
                 <Stack direction="column" spacing={0}>
                   {/* Find that error information from React */}
-                  <Text>3102</Text>
+                  <Text>3</Text>
                   <Text>{version}</Text>
                   <Text>{commit ? commit : "Undefined"}</Text>
                 </Stack>

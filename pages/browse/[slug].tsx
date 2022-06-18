@@ -1,7 +1,3 @@
-// This page uses the legacy Node.js Runtime delivery technology
-// Reason: Uses eval() to process MDX
-// https://nextjs.org/docs/api-reference/edge-runtime
-
 // Types
 import type { ReactElement } from "react";
 import { GetStaticProps } from "next";
@@ -33,10 +29,12 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
+import { FiDatabase, FiFileText, FiTrash2 } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
 import { DeleteComposerData } from "components/composer/DeleteComposerDataOverlay";
+import { useKeyboardShortcut } from "hooks/useKeyboardShortcut";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -47,7 +45,6 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 // JSON processing libraries
 import fs from "fs";
 import path from "path";
-import { FiDatabase, FiFileText } from "react-icons/fi";
 
 import { useRef, useState } from "react";
 
@@ -60,9 +57,31 @@ interface OSPageTypes {
 export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
   const router = useRouter();
 
-  const [showDeveloperOptions] = useLocalStorage(
-    "settingsShowDeveloperOptions"
-  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef(null);
+
+  // Write Composer data
+  const [isComposerOccupied] = useLocalStorage("composerName");
+  const [writingToComposer, setWritingToComposer] = useState(false);
+  function CopyToComposer() {
+    setWritingToComposer(true);
+    DeleteComposerData();
+    writeStorage("composerName", source.name);
+    writeStorage("composerDescription", source.description);
+    writeStorage("composerDate", source.date);
+    writeStorage("composerAuthors", source.authors);
+    writeStorage("composerTags", source.tags);
+    writeStorage("composerPlatforms", source.platforms);
+    writeStorage("composerBasedOn", source.basedOn);
+    writeStorage("composerDefaultDesktop", source.desktop);
+    writeStorage("composerDefaultShell", source.shell);
+    writeStorage("composerSoftware", source.software);
+    writeStorage("composerPackageManagement", source.packageManagement);
+    writeStorage("composerStartup", source.startupManagement);
+    writeStorage("composerWebsite", source.website);
+    writeStorage("composerRepository", source.repository);
+    router.push("/composer");
+  }
 
   // Tabs
   function Description() {
@@ -226,31 +245,19 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
     },
   ];
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
-
-  // Write Composer data
-  const [isComposerOccupied] = useLocalStorage("composerName");
-  const [writingToComposer, setWritingToComposer] = useState(false);
-  function CopyToComposer() {
-    setWritingToComposer(true);
-    DeleteComposerData();
-    writeStorage("composerName", source.name);
-    writeStorage("composerDescription", source.description);
-    writeStorage("composerDate", source.date);
-    writeStorage("composerAuthors", source.authors);
-    writeStorage("composerTags", source.tags);
-    writeStorage("composerPlatforms", source.platforms);
-    writeStorage("composerBasedOn", source.basedOn);
-    writeStorage("composerDefaultDesktop", source.desktop);
-    writeStorage("composerDefaultShell", source.shell);
-    writeStorage("composerSoftware", source.software);
-    writeStorage("composerPackageManagement", source.packageManagement);
-    writeStorage("composerStartup", source.startupManagement);
-    writeStorage("composerWebsite", source.website);
-    writeStorage("composerRepository", source.repository);
-    router.push("/composer");
-  }
+  // Keyboard shortcuts
+  useKeyboardShortcut("1", () => {
+    setActiveTab(0);
+  });
+  useKeyboardShortcut("2", () => {
+    setActiveTab(1);
+  });
+  useKeyboardShortcut("w", () => {
+    window.open(source.website, "_blank");
+  });
+  useKeyboardShortcut("r", () => {
+    window.open(source.repository, "_blank");
+  });
 
   return (
     <>
@@ -322,50 +329,40 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
                 <Button as="a">Visit Project Repository</Button>
               </Link>
             </Stack>
-            <Stack direction="column" spacing={2}>
-              <Button
-                size="sm"
-                onClick={isComposerOccupied ? onOpen : CopyToComposer}
-              >
-                Open in Composer
-              </Button>
-              <DynamicModal
-                isOpen={isOpen}
-                onClose={onClose}
-                cancelRef={cancelRef}
-                useAlertDialog={true}
-              >
-                <Stack direction="column" spacing={5}>
-                  <Heading size="md">Open in Composer?</Heading>
-                  <Text>
-                    There is already a project open in the Osopcloud Composer.
-                  </Text>
-                  <Text>
-                    Your work, "{isComposerOccupied}", will be lost if you
-                    continue.
-                  </Text>
-                  <Button
-                    onClick={CopyToComposer}
-                    isLoading={writingToComposer}
-                    loadingText="Preparing Composer"
-                  >
-                    Continue &amp; Reset Composer
-                  </Button>
-                  <Button onClick={onClose} ref={cancelRef}>
-                    Cancel
-                  </Button>
-                </Stack>
-              </DynamicModal>
-              <Suspense fallback={<Loading />}>
-                {showDeveloperOptions && (
-                  <Link href={rawJSONLink} passHref>
-                    <Button size="sm" as="a">
-                      Show Raw <Code ms={2}>JSON</Code>
-                    </Button>
-                  </Link>
-                )}
-              </Suspense>
-            </Stack>
+            <Button
+              size="sm"
+              onClick={isComposerOccupied ? onOpen : CopyToComposer}
+            >
+              Open in Composer
+            </Button>
+            <DynamicModal
+              isOpen={isOpen}
+              onClose={onClose}
+              cancelRef={cancelRef}
+              useAlertDialog={true}
+            >
+              <Stack direction="column" spacing={5}>
+                <Heading size="md">Open in Composer?</Heading>
+                <Text>
+                  There is already a project open in the Osopcloud Composer.
+                </Text>
+                <Text>
+                  Your work, "{isComposerOccupied}", will be lost if you
+                  continue.
+                </Text>
+                <Button
+                  onClick={CopyToComposer}
+                  leftIcon={<FiTrash2 />}
+                  isLoading={writingToComposer}
+                  loadingText="Preparing Composer"
+                >
+                  Continue &amp; Reset Composer
+                </Button>
+                <Button onClick={onClose} ref={cancelRef}>
+                  Cancel
+                </Button>
+              </Stack>
+            </DynamicModal>
           </Stack>
         </Flex>
       </Stack>
@@ -374,11 +371,6 @@ export default function OSPage({ source, rawJSONLink }: OSPageTypes) {
 }
 OSPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout showToTopButton={false}>{page}</Layout>;
-};
-
-// Disable the Edge Runtime
-export const config = {
-  runtime: "nodejs",
 };
 
 interface PathProps {

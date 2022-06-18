@@ -9,8 +9,9 @@ import { GetStaticProps } from "next";
 // SEO
 import Head from "next/head";
 
-// First party components
+// Layouts
 import Layout from "components/layouts/Layout";
+import DocsLayout from "components/layouts/DocsLayout";
 
 // Markdown processing libraries
 import fs from "fs";
@@ -19,7 +20,7 @@ import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 // @ts-expect-error
 import MDXProvider from "lib/MDXProvider";
-import DocsLayout from "components/layouts/DocsLayout";
+import remarkGfm from "remark-gfm";
 
 interface OSPageTypes {
   source: any;
@@ -82,6 +83,11 @@ export const getStaticProps: GetStaticProps = async ({ params }: PathProps) => {
   // @ts-expect-error
   const mdxSource = await serialize(source, {
     parseFrontmatter: true,
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [],
+      format: "mdx",
+    },
   });
 
   return {

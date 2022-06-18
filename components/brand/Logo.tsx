@@ -120,3 +120,62 @@ export function HeaderLogo() {
     </svg>
   );
 }
+
+export function HeaderLogoInverted() {
+  return (
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 180 180"
+    >
+      <rect width="180" height="180" fill="#efe7df" />
+      <circle
+        cx="90"
+        cy="90"
+        r="70"
+        fill="none"
+        stroke="#573d24"
+        strokeMiterlimit="10"
+        strokeWidth="5"
+      />
+      <line
+        x1="48"
+        y1="112"
+        x2="29.08"
+        y2="125.11"
+        fill="none"
+        stroke="#573d24"
+        strokeMiterlimit="10"
+        strokeWidth="5"
+      />
+      <polygon
+        points="159.44 48.39 60.65 114.69 52.63 100.8 159.44 48.39"
+        fill="none"
+        stroke="#573d24"
+        strokeMiterlimit="10"
+        strokeWidth="5"
+      />
+      <line
+        x1="141.59"
+        y1="75.83"
+        x2="45.41"
+        y2="143.17"
+        fill="none"
+        stroke="#573d24"
+        strokeMiterlimit="10"
+        strokeWidth="5"
+      />
+      <line
+        x1="45.5"
+        y1="143.5"
+        x2="135.5"
+        y2="143.5"
+        fill="none"
+        stroke="#573d24"
+        strokeMiterlimit="10"
+        strokeWidth="5"
+      />
+    </svg>
+  );
+}

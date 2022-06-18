@@ -34,6 +34,7 @@ import {
   Text,
   Textarea,
   Tr,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiArrowRight, FiMinus, FiPlus, FiX } from "react-icons/fi";
 
@@ -41,6 +42,7 @@ import { FiArrowRight, FiMinus, FiPlus, FiX } from "react-icons/fi";
 import DeleteComposerDataOverlay from "components/composer/DeleteComposerDataOverlay";
 import ExportComposerDataOverlay from "components/composer/ExportComposerDataOverlay";
 import URLManagementOverlay from "components/composer/URLManagementOverlay";
+import ManageColoursOverlay from "components/composer/ManageColoursOverlay";
 
 // Storage
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
@@ -52,6 +54,8 @@ import { useState } from "react";
 
 // Start page
 export default function Create() {
+  const defaultHeadingColour = useColorModeValue("almond", "sandstone");
+
   // Storage
   const [name] = useLocalStorage("composerName");
   const [description] = useLocalStorage("composerDescription");
@@ -67,6 +71,7 @@ export default function Create() {
   );
   const [startup] = useLocalStorage("composerStartup");
   const [authors, setAuthors] = useLocalStorage("composerAuthors", []);
+  const [projectColour] = useLocalStorage("composerProjectColour");
 
   // Composer greeting
   const openComposerGreeting = () => {
@@ -120,15 +125,15 @@ export default function Create() {
   return (
     <>
       <Head>
-        <title>Create &mdash; Osopcloud</title>
+        <title>Composer &mdash; Osopcloud</title>
         <meta
           name="description"
           content="Create an operating system page ready for publication on Osopcloud."
         />
-        <meta name="og:title" content="Create an Osopcloud Page" />
+        <meta name="og:title" content="Osopcloud Composer" />
         <meta
           name="og:description"
-          content="Create an operating system page."
+          content="Create an OS page for Osopcloud."
         />
       </Head>
 
@@ -147,7 +152,13 @@ export default function Create() {
         <Flex direction={{ base: "column", sm: "row" }}>
           <Suspense fallback={<Loading />}>
             <Stack direction="row" spacing={5}>
-              <Heading>{name}</Heading>
+              <Heading
+                color={
+                  projectColour ? `#${projectColour}` : defaultHeadingColour
+                }
+              >
+                {name}
+              </Heading>
               <Center display={{ base: "none", lg: "flex" }}>
                 <Stack direction="row" spacing={2}>
                   <Badge colorScheme="almondScheme">Composer</Badge>
@@ -179,6 +190,8 @@ export default function Create() {
                     onChange={(e) => {
                       writeStorage("composerName", e.target.value);
                     }}
+                    shadow="inner"
+                    borderRadius="xl"
                   />
                   <Text fontSize="xs">
                     You're about to create{" "}
@@ -725,6 +738,7 @@ export default function Create() {
               </Box>
               <Stack direction="column" spacing={2} ms={{ base: 0, sm: 10 }}>
                 <URLManagementOverlay />
+                <ManageColoursOverlay />
               </Stack>
             </Flex>
           )}

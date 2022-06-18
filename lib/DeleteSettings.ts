@@ -1,6 +1,18 @@
+// Settings
+import { deleteFromStorage } from "@rehooks/local-storage";
+import { DeleteComposerData } from "components/composer/DeleteComposerDataOverlay";
+
 // Start component
 export default function DeleteSettings() {
-  // Wipe localStorage
-  localStorage.clear();
-  console.info("LocalStorage cleared. Using default settings.");
+  // Delete Settings data
+  deleteFromStorage("settingsShowPrintButton");
+  deleteFromStorage("settingsDisableDynamicPrinting");
+  deleteFromStorage("settingsUseSystemFont");
+  deleteFromStorage("settingsShowSwitchLabels");
+  deleteFromStorage("settingsDisableCOKeyboardShortcuts");
+  deleteFromStorage("forceUpdate");
+  // Delete Composer data
+  DeleteComposerData();
+  // Log completion
+  console.info("LocalStorage cleared.");
 }

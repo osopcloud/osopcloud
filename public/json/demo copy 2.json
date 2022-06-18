@@ -1,10 +1,10 @@
 {
-  "name": "Demo",
+  "name": "Demo 3",
   "description": "Test",
   "date": ["2022-06-06"],
-  "tags": ["Advanced", "Utility", "Enterprise"],
+  "tags": ["Utility"],
   "authors": ["@noahlst", "The Team"],
-  "platforms": ["Itanium"],
+  "platforms": ["x86", "arm", "risc"],
   "basedOn": "Ubuntu",
   "desktop": "GNOME",
   "shell": "bash",

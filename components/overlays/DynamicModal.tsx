@@ -35,6 +35,7 @@ interface OverlayProps {
   isOpen: boolean;
   onClose: () => void;
   useAlertDialog: boolean;
+  size?: string;
 }
 
 // Begin component
@@ -44,6 +45,7 @@ export function OverlayModal({
   isOpen,
   onClose,
   useAlertDialog,
+  size,
 }: OverlayProps): ReactElement {
   // Honour system accessibility preferences
   const animationSpeed = usePrefersReducedMotion();
@@ -72,7 +74,7 @@ export function OverlayModal({
           initialFocusRef={cancelRef}
           motionPreset={animationSpeed ? "none" : "scale"}
           scrollBehavior="inside"
-          size="md"
+          size={size}
           isCentered
         >
           <ModalOverlay />
@@ -112,6 +114,7 @@ export default function DynamicModal({
   isOpen,
   onClose,
   useAlertDialog,
+  size,
 }: OverlayProps) {
   const overlayStyle = useBreakpointValue({
     base: (
@@ -125,6 +128,7 @@ export default function DynamicModal({
         isOpen={isOpen}
         onClose={onClose}
         useAlertDialog={useAlertDialog}
+        size={size ? size : "md"}
       >
         {children}
       </OverlayModal>

@@ -19,45 +19,45 @@ import SettingsLayout from "components/layouts/SettingsLayout";
 
 // Settings
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
+import CheckConnectionOverlay from "components/settings/CheckConnectionOverlay";
 
 // Start page
-export default function GeneralSettings() {
+export default function NetworkSettings() {
   // Get settings
-  const [showPrintButton] = useLocalStorage("settingsShowPrintButton");
+  const [immediateUpdate] = useLocalStorage("forceUpdate");
   const [switchLabels] = useLocalStorage("settingsShowSwitchLabels");
 
   return (
     <>
       <Head>
-        <title>Appearance Settings &mdash; Osopcloud</title>
+        <title>Update &amp; Network Settings &mdash; Osopcloud</title>
         <meta
           name="description"
-          content="Customise how Osopcloud looks with Settings."
+          content="Configure how Osopcloud updates and interfaces with the network."
         />
-        <meta name="og:title" content="Appearance Settings" />
-        <meta name="og:description" content="Customise how Osopcloud looks." />
+        <meta name="og:title" content="Osopcloud Networking Settings" />
+        <meta
+          name="og:description"
+          content="Configure Osopcloud updates and networking."
+        />
       </Head>
 
       <Flex>
         <Center>
-          <Text>Show Printing Options in the Sidebar</Text>
+          <Text>Install Updates Immediately</Text>
         </Center>
         <Spacer />
         <Suspense fallback={<Loading />}>
           <Stack direction="row" spacing={5}>
             {switchLabels && (
               <Center>
-                <Text fontSize="xs">{showPrintButton ? "on" : "off"}</Text>
+                <Text fontSize="xs">{immediateUpdate ? "on" : "off"}</Text>
               </Center>
             )}
-            <Switch
-              // @ts-ignore
-              isChecked={showPrintButton}
+            <Switch // @ts-ignore
+              isChecked={immediateUpdate}
               onChange={() =>
-                writeStorage(
-                  "settingsShowPrintButton",
-                  showPrintButton ? false : true
-                )
+                writeStorage("forceUpdate", immediateUpdate ? false : true)
               }
               colorScheme="almondScheme"
               size="lg"
@@ -65,13 +65,14 @@ export default function GeneralSettings() {
           </Stack>
         </Suspense>
       </Flex>
+      <CheckConnectionOverlay />
     </>
   );
 }
-GeneralSettings.getLayout = function getLayout(page: ReactElement) {
+NetworkSettings.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout showToTopButton={false} showShareButton={false}>
-      <SettingsLayout sidebarActiveIndex={0}>{page}</SettingsLayout>
+      <SettingsLayout sidebarActiveIndex={3}>{page}</SettingsLayout>
     </Layout>
   );
 };

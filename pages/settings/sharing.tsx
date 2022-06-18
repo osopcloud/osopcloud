@@ -5,15 +5,7 @@ import type { ReactElement } from "react";
 import Head from "next/head";
 
 // Design
-import {
-  Center,
-  Flex,
-  Heading,
-  Spacer,
-  Stack,
-  Switch,
-  Text,
-} from "@chakra-ui/react";
+import { Center, Flex, Spacer, Stack, Switch, Text } from "@chakra-ui/react";
 
 // First party components
 
@@ -25,7 +17,7 @@ import SettingsLayout from "components/layouts/SettingsLayout";
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 
 // Start page
-export default function ConnectionsSettings() {
+export default function SharingSettings() {
   // Get settings
   const [disableDynamicPrinting] = useLocalStorage(
     "settingsDisableDynamicPrinting"
@@ -34,19 +26,18 @@ export default function ConnectionsSettings() {
   return (
     <>
       <Head>
-        <title>Connections Settings &mdash; Osopcloud</title>
+        <title>Sharing Settings &mdash; Osopcloud</title>
         <meta
           name="description"
           content="Configure how Osopcloud interfaces with other apps and services."
         />
-        <meta name="og:title" content="Connections Settings" />
+        <meta name="og:title" content="Osopcloud Sharing Settings" />
         <meta
           name="og:description"
-          content="Configure how Osopcloud interfaces with other applications."
+          content="Configure how Osopcloud interfaces with other apps."
         />
       </Head>
 
-      <Heading size="md">Apps, Sharing, and Printing Settings</Heading>
       <Flex>
         <Center>
           <Stack direction="column" spacing={0}>
@@ -76,10 +67,10 @@ export default function ConnectionsSettings() {
     </>
   );
 }
-ConnectionsSettings.getLayout = function getLayout(page: ReactElement) {
+SharingSettings.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout showToTopButton={false} showShareButton={false}>
-      <SettingsLayout>{page}</SettingsLayout>
+      <SettingsLayout sidebarActiveIndex={2}>{page}</SettingsLayout>
     </Layout>
   );
 };

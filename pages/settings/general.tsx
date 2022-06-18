@@ -5,7 +5,7 @@ import type { ReactElement } from "react";
 import Head from "next/head";
 
 // Design
-import { Center, Flex, Heading, Spacer, Switch, Text } from "@chakra-ui/react";
+import { Center, Flex, Spacer, Switch, Text } from "@chakra-ui/react";
 
 // First party components
 
@@ -24,7 +24,7 @@ export default function GeneralSettings() {
   return (
     <>
       <Head>
-        <title>Appearance &amp; Layout Settings &mdash; Osopcloud</title>
+        <title>Appearance Settings &mdash; Osopcloud</title>
         <meta
           name="description"
           content="Customise how Osopcloud looks with Settings."
@@ -33,7 +33,6 @@ export default function GeneralSettings() {
         <meta name="og:description" content="Customise how Osopcloud looks." />
       </Head>
 
-      <Heading size="md">Appearance &amp; Layout Settings</Heading>
       <Flex>
         <Center>
           <Text>Show Printing Options in the Sidebar</Text>
@@ -58,7 +57,7 @@ export default function GeneralSettings() {
 GeneralSettings.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout showToTopButton={false} showShareButton={false}>
-      <SettingsLayout>{page}</SettingsLayout>
+      <SettingsLayout sidebarActiveIndex={0}>{page}</SettingsLayout>
     </Layout>
   );
 };

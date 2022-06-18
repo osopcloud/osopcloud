@@ -8,7 +8,6 @@ export default function DeleteSettings() {
   deleteFromStorage("settingsShowPrintButton");
   deleteFromStorage("settingsDisableDynamicPrinting");
   deleteFromStorage("settingsUseSystemFont");
-  deleteFromStorage("settingsShowDeveloperOptions");
   // Delete Composer data
   DeleteComposerData();
   // Log completion

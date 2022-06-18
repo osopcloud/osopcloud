@@ -17,6 +17,7 @@ import { FiArrowLeft, FiArrowRight, FiShare } from "react-icons/fi";
 
 // First party components
 import DynamicModal from "components/overlays/DynamicModal";
+import { useKeyboardShortcut } from "hooks/useKeyboardShortcut";
 
 // Storage
 import { useLocalStorage } from "@rehooks/local-storage";
@@ -119,6 +120,11 @@ export default function ExportComposerDataOverlay() {
       `https://github.com/osopcloud/osopcloud/new/main/public/markdown/browse`
     );
   }
+
+  // Keyboard shortcuts
+  useKeyboardShortcut("e", () => {
+    DownloadAsFile();
+  });
 
   const [isNavigatingAway, setIsNavigatingAway] = useState(false);
 

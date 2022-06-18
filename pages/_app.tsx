@@ -35,14 +35,26 @@ export default function Application({
   const router = useRouter();
 
   // Keyboard shortcuts
-  useKeyboardShortcut("/", () => {
+  useKeyboardShortcut("g then h", () => {
     router.push("/");
-  });
-  useKeyboardShortcut("g then s", () => {
-    router.push("/settings/general");
   });
   useKeyboardShortcut("g then c", () => {
     router.push("/composer");
+  });
+  useKeyboardShortcut(["g then s", ", then 1"], () => {
+    router.push("/settings/general");
+  });
+  useKeyboardShortcut([", then 2"], () => {
+    router.push("/settings/sharing");
+  });
+  useKeyboardShortcut([", then 3"], () => {
+    router.push("/settings/network");
+  });
+  useKeyboardShortcut([", then 4"], () => {
+    router.push("/settings/storage");
+  });
+  useKeyboardShortcut([", then 5"], () => {
+    router.push("/settings/advanced");
   });
 
   // Use the layout defined at the page level, if available

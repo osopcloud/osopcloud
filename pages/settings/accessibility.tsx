@@ -8,7 +8,6 @@ import Head from "next/head";
 import {
   Center,
   Flex,
-  Heading,
   Spacer,
   Spinner,
   Stack,
@@ -17,9 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 // First party components
-import CheckConnectionOverlay from "components/settings/CheckConnectionOverlay";
 import { version } from "components/Version";
-import CheckPWA from "lib/CheckPWA";
 
 // Layouts
 import Layout from "components/layouts/Layout";
@@ -34,28 +31,21 @@ import { useState } from "react";
 export default function AdvancedSettings() {
   // Get settings
   const [systemFont] = useLocalStorage("settingsUseSystemFont");
-  const [showDeveloperOptions] = useLocalStorage(
-    "settingsShowDeveloperOptions"
-  );
 
   const [applyingCustomFont, setApplyingCustomFont] = useState(false);
 
   return (
     <>
       <Head>
-        <title>Advanced Settings &mdash; Osopcloud</title>
+        <title>Accessibility Settings &mdash; Osopcloud</title>
         <meta
           name="description"
-          content="Customise advanced Osopcloud features with Settings."
+          content="Customise Osopcloud to make it more accessible."
         />
-        <meta name="og:title" content="Advanced Settings" />
-        <meta
-          name="og:description"
-          content="Customise advanced Osopcloud features."
-        />
+        <meta name="og:title" content="Osopcloud Accessibility Settings" />
+        <meta name="og:description" content="Make Osopcloud more accessible." />
       </Head>
 
-      <Heading size="md">Advanced Settings</Heading>
       <Flex>
         <Center>
           <Text>Use the System Font</Text>
@@ -83,36 +73,30 @@ export default function AdvancedSettings() {
       </Flex>
       <Flex>
         <Center>
-          <Text>Show Developer Options</Text>
+          <Text>Show Labels on Switches</Text>
         </Center>
         <Spacer />
-        <Switch
-          // @ts-ignore
-          isChecked={showDeveloperOptions}
-          onChange={() => {
-            writeStorage(
-              "settingsShowDeveloperOptions",
-              showDeveloperOptions ? false : true
-            );
-          }}
-          colorScheme="almondScheme"
-          size="lg"
-        />
+        <Stack direction="row" spacing={5}>
+          <Center>
+            <Text fontSize="xs">off</Text>
+          </Center>
+          <Switch colorScheme="almondScheme" size="lg" isDisabled />
+        </Stack>
       </Flex>
-      <CheckConnectionOverlay />
-      <Stack direction="column" spacing={0}>
-        <Text fontSize="xs">Version {version}</Text>
-        <Text fontSize="xs">
-          {CheckPWA() ? "Standalone Application" : "Web Browser Dependent"}
-        </Text>
-      </Stack>
+      <Flex>
+        <Center>
+          <Text>Disable Character-Only Keyboard Shortcuts</Text>
+        </Center>
+        <Spacer />
+        <Switch colorScheme="almondScheme" size="lg" isDisabled />
+      </Flex>
     </>
   );
 }
 AdvancedSettings.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout showToTopButton={false} showShareButton={false}>
-      <SettingsLayout>{page}</SettingsLayout>
+      <SettingsLayout sidebarActiveIndex={1}>{page}</SettingsLayout>
     </Layout>
   );
 };

@@ -6,10 +6,20 @@ import Head from "next/head";
 
 // Design
 import {
+  Box,
   Button,
+  Center,
   createStandaloneToast,
+  Flex,
   Heading,
+  SimpleGrid,
+  Spacer,
   Stack,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Switch,
   Text,
   useClipboard,
 } from "@chakra-ui/react";
@@ -29,8 +39,27 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 import { useState, useEffect } from "react";
 
 // Start page
-export default function DataManagement() {
+export default function StorageManagement() {
   const toast = createStandaloneToast({ theme: theme });
+
+  // Get storage size
+  const [storageSize, setStorageSize] = useState(0);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (navigator.storage) {
+        navigator.storage.estimate().then((estimate) => {
+          // estimate.usage is in bytes
+          // We need to log the full byte value
+          console.log("Full storage size", estimate.usage);
+          // However to show the user, we need to convert to MB and round to one decimal place
+          const storageSizeMB = estimate.usage
+            ? Math.round((estimate.usage / 1024 / 1024) * 10) / 10
+            : 0;
+          setStorageSize(storageSizeMB);
+        });
+      }
+    }
+  });
 
   useEffect(() => {
     writeStorage("version", version);
@@ -70,9 +99,6 @@ export default function DataManagement() {
     "settingsDisableDynamicPrinting"
   );
   const [useSystemFont] = useLocalStorage("settingsUseSystemFont");
-  const [showDeveloperOptions] = useLocalStorage(
-    "settingsShowDeveloperOptions"
-  );
   const [composerName] = useLocalStorage("composerName");
   const [composerDescription] = useLocalStorage("composerDescription");
   const [composerDate] = useLocalStorage("composerDate");
@@ -95,8 +121,6 @@ export default function DataManagement() {
     : disableDynamicPrinting
     ? false
     : useSystemFont
-    ? false
-    : showDeveloperOptions
     ? false
     : composerName
     ? false
@@ -229,56 +253,72 @@ export default function DataManagement() {
   return (
     <>
       <Head>
-        <title>Manage Data &amp; Reset &mdash; Osopcloud</title>
+        <title>Storage Management &mdash; Osopcloud</title>
         <meta
           name="description"
-          content="Import, export, or reset Osopcloud Settings."
+          content="Import, export, or reset Osopcloud storage."
         />
-        <meta name="og:title" content="Manage Data &amp; Reset" />
-        <meta
-          name="og:description"
-          content="Import, export, or reset Osopcloud Settings."
-        />
+        <meta name="og:title" content="Osopcloud Storage Settings" />
+        <meta name="og:description" content="Manage Osopcloud app storage." />
       </Head>
 
-      <Heading size="md">Manage Application Data</Heading>
-      <Stack direction="column" spacing={2}>
-        <Button
-          onClick={ImportSettings}
-          isLoading={importing}
-          loadingText="Importing"
-        >
-          Import Storage from Clipboard
-        </Button>
-        <Text fontSize="xs">
-          Allow Osopcloud to read and analyse your clipboard for compatible
-          Settings and Composer data.
-        </Text>
-      </Stack>
-      <Button onClick={ExportSettings} isDisabled={resetStatus}>
-        Export Storage Data to Clipboard
-      </Button>
-      <Stack direction="column" spacing={2}>
-        <Button
-          onClick={BeginResetWithToast}
-          isDisabled={resetStatus}
-          isLoading={resetting}
-          loadingText="Resetting Osopcloud"
-        >
-          Reset Osopcloud
-        </Button>
-        <Text fontSize="xs">
-          Reset the Composer and apply the default Settings. Your work will be
-          lost.
-        </Text>
-      </Stack>
+      <SimpleGrid minChildWidth="300px" spacing={5}>
+        <Stack direction="column" spacing={5}>
+          <Stack direction="column" spacing={2}>
+            <Button
+              onClick={ImportSettings}
+              isLoading={importing}
+              loadingText="Importing"
+            >
+              Import Storage from Clipboard
+            </Button>
+            <Text fontSize="xs">
+              Allow Osopcloud to read and analyse your clipboard for compatible
+              storage data.
+            </Text>
+          </Stack>
+          <Button onClick={ExportSettings} isDisabled={resetStatus}>
+            Export Storage Data to Clipboard
+          </Button>
+          <Stack direction="column" spacing={2}>
+            <Button
+              onClick={BeginResetWithToast}
+              isDisabled={resetStatus}
+              isLoading={resetting}
+              loadingText="Resetting Osopcloud"
+            >
+              Reset Osopcloud
+            </Button>
+            <Text fontSize="xs">
+              Reset the Composer and apply the default Settings. Your work will
+              be lost.
+            </Text>
+          </Stack>
+        </Stack>
+        {storageSize !== 0 && (
+          <Center>
+            <Stack direction="column" spacing={5} w="50%">
+              <Stat>
+                <StatLabel>Osopcloud is Storing</StatLabel>
+                <StatNumber>{storageSize}mb</StatNumber>
+                <StatHelpText>On this device, for this browser</StatHelpText>
+              </Stat>
+              <Text fontSize="xs">
+                This includes the Offline Experience cache. Use your browser
+                settings to clear the Osopcloud cache.
+              </Text>
+            </Stack>
+          </Center>
+        )}
+      </SimpleGrid>
+      <Text fontSize="xs">Version {version}</Text>
     </>
   );
 }
-DataManagement.getLayout = function getLayout(page: ReactElement) {
+StorageManagement.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout showToTopButton={false} showShareButton={false}>
-      <SettingsLayout>{page}</SettingsLayout>
+      <SettingsLayout sidebarActiveIndex={4}>{page}</SettingsLayout>
     </Layout>
   );
 };

@@ -14,11 +14,12 @@ import { VercelLogo } from "components/brand/VercelPromotion";
 // Layouts
 import Layout from "components/layouts/Layout";
 import {
+  FiHardDrive,
   FiLayout,
   FiLifeBuoy,
-  FiSettings,
   FiShare,
-  FiTrash2,
+  FiUser,
+  FiWifi,
 } from "react-icons/fi";
 
 // Start page
@@ -40,22 +41,27 @@ export default function Settings() {
         <Stack direction="column" spacing={2}>
           <Link href="/settings/general" passHref>
             <Button leftIcon={<FiLayout />} as="a">
-              Appearance &amp; Layout
+              Appearance
             </Button>
           </Link>
-          <Link href="/settings/connections" passHref>
+          <Link href="/settings/accessibility" passHref>
+            <Button leftIcon={<FiUser />} as="a">
+              Accessibility
+            </Button>
+          </Link>
+          <Link href="/settings/sharing" passHref>
             <Button leftIcon={<FiShare />} as="a">
-              Apps, Share, &amp; Print
+              Sharing &amp; Printing
             </Button>
           </Link>
-          <Link href="/settings/advanced" passHref>
-            <Button leftIcon={<FiSettings />} as="a">
-              Advanced Settings
+          <Link href="/settings/network" passHref>
+            <Button leftIcon={<FiWifi />} as="a">
+              Updates &amp; Network
             </Button>
           </Link>
-          <Link href="/settings/manage-data" passHref>
-            <Button leftIcon={<FiTrash2 />} as="a">
-              Manage Data &amp; Reset
+          <Link href="/settings/storage" passHref>
+            <Button leftIcon={<FiHardDrive />} as="a">
+              Application Storage
             </Button>
           </Link>
         </Stack>

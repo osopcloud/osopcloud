@@ -1,17 +1,28 @@
 // Routing
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // Design
-import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
-  FiHardDrive,
-  FiLayout,
-  FiShare,
-  FiSquare,
-  FiTool,
-  FiUser,
-  FiWifi,
-} from "react-icons/fi";
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Spacer,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { FiHardDrive, FiLayout, FiShare, FiUser, FiWifi } from "react-icons/fi";
+
+// Settings Search Bar
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
+
+import { useRef, useState } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,11 +34,93 @@ export default function SettingsLayout({
   children,
   sidebarActiveIndex,
 }: LayoutProps) {
+  const router = useRouter();
+
+  // All settings, with setting name and the url to the page it is on
+  const settingsList = [
+    {
+      name: "Show Printing Options on the Sidebar",
+      url: "/settings/general",
+    },
+    {
+      name: "Use the System Font",
+      url: "/settings/accessibility",
+    },
+    {
+      name: "Show Labels on Switches",
+      url: "/settings/accessibility",
+    },
+    {
+      name: "Disable Character-Only Keyboard Shortcuts",
+      url: "/settings/accessibility",
+    },
+    {
+      name: "Disable Dynamic Printing",
+      url: "/settings/sharing",
+    },
+    {
+      name: "Install Updates Immediately",
+      url: "/settings/network",
+    },
+    {
+      name: "Check Networking",
+      url: "/settings/network",
+    },
+    {
+      name: "Import Storage from Clipboard",
+      url: "/settings/storage",
+    },
+    {
+      name: "Export Storage Data to Clipboard",
+      url: "/settings/storage",
+    },
+    {
+      name: "Reset Osopcloud",
+      url: "/settings/storage",
+    },
+  ];
+
+  const [settingOnSelect, setSettingOnSelect] = useState("");
+
   return (
     <Stack direction="column" spacing={5}>
-      <Heading display={{ base: "none", sm: "flex" }}>
-        Osopcloud Settings
-      </Heading>
+      <Flex w="full">
+        <Heading display={{ base: "none", sm: "flex" }}>
+          Osopcloud Settings
+        </Heading>
+        <Spacer />
+        <Center w="25%">
+          <AutoComplete
+            openOnFocus
+            onSelectOption={() => {
+              router.push(settingOnSelect);
+            }}
+            emptyState={<Text px={5}>No Settings Found</Text>}
+          >
+            <AutoCompleteInput
+              placeholder="Search Settings"
+              shadow="inner"
+              borderRadius="xl"
+              size="sm"
+            />
+            <AutoCompleteList rounded="xl">
+              {settingsList.map((setting) => (
+                <AutoCompleteItem
+                  key={`option-${setting.name}`}
+                  value={setting.name}
+                  // When the user hovers over, or uses the keyboard to hover, setSettingOnSelect to the url
+                  onMouseEnter={() => setSettingOnSelect(setting.url)}
+                  onKeyDown={() => setSettingOnSelect(setting.url)}
+                  // Styles
+                  borderRadius="lg"
+                >
+                  {setting.name}
+                </AutoCompleteItem>
+              ))}
+            </AutoCompleteList>
+          </AutoComplete>
+        </Center>
+      </Flex>
       <Flex flexDirection={{ base: "column", md: "row" }}>
         <Stack
           direction="column"

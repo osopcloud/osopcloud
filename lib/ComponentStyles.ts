@@ -29,6 +29,10 @@ export const Input = {
   defaultProps: {
     focusBorderColor: "almond",
   },
+  baseStyle: {
+    shadow: "inner",
+    borderRadius: "xl",
+  },
 };
 
 export const Select = {

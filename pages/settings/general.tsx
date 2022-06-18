@@ -1,6 +1,10 @@
 // Types
 import type { ReactElement } from "react";
 
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // SEO
 import Head from "next/head";
 
@@ -39,25 +43,27 @@ export default function GeneralSettings() {
           <Text>Show Printing Options in the Sidebar</Text>
         </Center>
         <Spacer />
-        <Stack direction="row" spacing={5}>
-          {switchLabels && (
-            <Center>
-              <Text fontSize="xs">{showPrintButton ? "on" : "off"}</Text>
-            </Center>
-          )}
-          <Switch
-            // @ts-ignore
-            isChecked={showPrintButton}
-            onChange={() =>
-              writeStorage(
-                "settingsShowPrintButton",
-                showPrintButton ? false : true
-              )
-            }
-            colorScheme="almondScheme"
-            size="lg"
-          />
-        </Stack>
+        <Suspense fallback={<Loading />}>
+          <Stack direction="row" spacing={5}>
+            {switchLabels && (
+              <Center>
+                <Text fontSize="xs">{showPrintButton ? "on" : "off"}</Text>
+              </Center>
+            )}
+            <Switch
+              // @ts-ignore
+              isChecked={showPrintButton}
+              onChange={() =>
+                writeStorage(
+                  "settingsShowPrintButton",
+                  showPrintButton ? false : true
+                )
+              }
+              colorScheme="almondScheme"
+              size="lg"
+            />
+          </Stack>
+        </Suspense>
       </Flex>
     </>
   );

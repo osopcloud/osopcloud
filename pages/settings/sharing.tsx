@@ -1,6 +1,10 @@
 // Types
 import type { ReactElement } from "react";
 
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // SEO
 import Head from "next/head";
 
@@ -50,29 +54,31 @@ export default function SharingSettings() {
           </Stack>
         </Center>
         <Spacer />
-        <Center>
-          <Stack direction="row" spacing={5}>
-            {switchLabels && (
-              <Center>
-                <Text fontSize="xs">
-                  {disableDynamicPrinting ? "on" : "off"}
-                </Text>
-              </Center>
-            )}
-            <Switch
-              // @ts-ignore
-              isChecked={disableDynamicPrinting}
-              onChange={() =>
-                writeStorage(
-                  "settingsDisableDynamicPrinting",
-                  disableDynamicPrinting ? false : true
-                )
-              }
-              colorScheme="almondScheme"
-              size="lg"
-            />
-          </Stack>
-        </Center>
+        <Suspense fallback={<Loading />}>
+          <Center>
+            <Stack direction="row" spacing={5}>
+              {switchLabels && (
+                <Center>
+                  <Text fontSize="xs">
+                    {disableDynamicPrinting ? "on" : "off"}
+                  </Text>
+                </Center>
+              )}
+              <Switch
+                // @ts-ignore
+                isChecked={disableDynamicPrinting}
+                onChange={() =>
+                  writeStorage(
+                    "settingsDisableDynamicPrinting",
+                    disableDynamicPrinting ? false : true
+                  )
+                }
+                colorScheme="almondScheme"
+                size="lg"
+              />
+            </Stack>
+          </Center>
+        </Suspense>
       </Flex>
     </>
   );

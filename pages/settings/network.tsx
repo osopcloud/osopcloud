@@ -1,6 +1,10 @@
 // Types
 import type { ReactElement } from "react";
 
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // SEO
 import Head from "next/head";
 
@@ -43,21 +47,23 @@ export default function NetworkSettings() {
           <Text>Install Updates Immediately</Text>
         </Center>
         <Spacer />
-        <Stack direction="row" spacing={5}>
-          {switchLabels && (
-            <Center>
-              <Text fontSize="xs">{immediateUpdate ? "on" : "off"}</Text>
-            </Center>
-          )}
-          <Switch // @ts-ignore
-            isChecked={immediateUpdate}
-            onChange={() =>
-              writeStorage("forceUpdate", immediateUpdate ? false : true)
-            }
-            colorScheme="almondScheme"
-            size="lg"
-          />
-        </Stack>
+        <Suspense fallback={<Loading />}>
+          <Stack direction="row" spacing={5}>
+            {switchLabels && (
+              <Center>
+                <Text fontSize="xs">{immediateUpdate ? "on" : "off"}</Text>
+              </Center>
+            )}
+            <Switch // @ts-ignore
+              isChecked={immediateUpdate}
+              onChange={() =>
+                writeStorage("forceUpdate", immediateUpdate ? false : true)
+              }
+              colorScheme="almondScheme"
+              size="lg"
+            />
+          </Stack>
+        </Suspense>
       </Flex>
       <CheckConnectionOverlay />
     </>

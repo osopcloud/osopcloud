@@ -1,6 +1,10 @@
 // Types
 import type { ReactElement } from "react";
 
+// Suspense
+import { Suspense } from "react";
+import Loading from "components/Loading";
+
 // SEO
 import Head from "next/head";
 
@@ -54,88 +58,97 @@ export default function AdvancedSettings() {
           <Text>Use the System Font</Text>
         </Center>
         <Spacer />
-        <Stack direction="row" spacing={5}>
-          {/* If applying the custom font, show a Spinner */}
-          {applyingCustomFont && (
-            <Center>
-              <Spinner size="xs" />
-            </Center>
-          )}
-          {switchLabels && (
-            <Center>
-              <Text fontSize="xs">
-                {applyingCustomFont
-                  ? systemFont
-                    ? "turning on"
-                    : "turning off"
-                  : systemFont
-                  ? "on"
-                  : "off"}
-              </Text>
-            </Center>
-          )}
-          <Switch
-            // @ts-ignore
-            isChecked={systemFont}
-            onChange={() => {
-              setApplyingCustomFont(true);
-              writeStorage("settingsUseSystemFont", systemFont ? false : true);
-              window.location.reload();
-            }}
-            colorScheme="almondScheme"
-            size="lg"
-          />
-        </Stack>
+        <Suspense fallback={<Loading />}>
+          <Stack direction="row" spacing={5}>
+            {/* If applying the custom font, show a Spinner */}
+            {applyingCustomFont && (
+              <Center>
+                <Spinner size="xs" />
+              </Center>
+            )}
+            {switchLabels && (
+              <Center>
+                <Text fontSize="xs">
+                  {applyingCustomFont
+                    ? systemFont
+                      ? "turning on"
+                      : "turning off"
+                    : systemFont
+                    ? "on"
+                    : "off"}
+                </Text>
+              </Center>
+            )}
+            <Switch
+              // @ts-ignore
+              isChecked={systemFont}
+              onChange={() => {
+                setApplyingCustomFont(true);
+                writeStorage(
+                  "settingsUseSystemFont",
+                  systemFont ? false : true
+                );
+                window.location.reload();
+              }}
+              colorScheme="almondScheme"
+              size="lg"
+            />
+          </Stack>
+        </Suspense>
       </Flex>
       <Flex>
         <Center>
           <Text>Show Labels on Switches</Text>
         </Center>
         <Spacer />
-        <Stack direction="row" spacing={5}>
-          <Center>
-            <Text fontSize="xs">{switchLabels ? "on" : "off"}</Text>
-          </Center>
-          <Switch
-            // @ts-ignore
-            isChecked={switchLabels}
-            onChange={() => {
-              writeStorage(
-                "settingsShowSwitchLabels",
-                switchLabels ? false : true
-              );
-            }}
-            colorScheme="almondScheme"
-            size="lg"
-          />
-        </Stack>
+        <Suspense fallback={<Loading />}>
+          <Stack direction="row" spacing={5}>
+            <Center>
+              <Text fontSize="xs">{switchLabels ? "on" : "off"}</Text>
+            </Center>
+            <Switch
+              // @ts-ignore
+              isChecked={switchLabels}
+              onChange={() => {
+                writeStorage(
+                  "settingsShowSwitchLabels",
+                  switchLabels ? false : true
+                );
+              }}
+              colorScheme="almondScheme"
+              size="lg"
+            />
+          </Stack>
+        </Suspense>
       </Flex>
       <Flex>
         <Center>
           <Text>Disable Character-Only Keyboard Shortcuts</Text>
         </Center>
         <Spacer />
-        <Stack direction="row" spacing={5}>
-          {switchLabels && (
-            <Center>
-              <Text fontSize="xs">
-                {settingsDisableCOKeyboardShortcuts ? "on" : "off"}
-              </Text>
-            </Center>
-          )}
-          <Switch
-            // @ts-ignore
-            isChecked={settingsDisableCOKeyboardShortcuts}
-            onChange={() => {
-              writeStorage(
-                "settingsDisableCOKeyboardShortcuts",
-                settingsDisableCOKeyboardShortcuts ? false : true
-              );
-            }}
-            colorScheme="almondScheme"
-            size="lg"
-          />
-        </Stack>
+        <Suspense fallback={<Loading />}>
+          <Stack direction="row" spacing={5}>
+            {switchLabels && (
+              <Center>
+                <Text fontSize="xs">
+                  {settingsDisableCOKeyboardShortcuts ? "on" : "off"}
+                </Text>
+              </Center>
+            )}
+            <Switch
+              // @ts-ignore
+              isChecked={settingsDisableCOKeyboardShortcuts}
+              onChange={() => {
+                writeStorage(
+                  "settingsDisableCOKeyboardShortcuts",
+                  settingsDisableCOKeyboardShortcuts ? false : true
+                );
+              }}
+              colorScheme="almondScheme"
+              size="lg"
+            />
+          </Stack>
+        </Suspense>
       </Flex>
     </>
   );

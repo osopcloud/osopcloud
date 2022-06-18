@@ -6,20 +6,15 @@ import Head from "next/head";
 
 // Design
 import {
-  Box,
   Button,
   Center,
   createStandaloneToast,
-  Flex,
-  Heading,
   SimpleGrid,
-  Spacer,
   Stack,
   Stat,
   StatHelpText,
   StatLabel,
   StatNumber,
-  Switch,
   Text,
   useClipboard,
 } from "@chakra-ui/react";

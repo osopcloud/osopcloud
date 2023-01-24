@@ -1,19 +1,48 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
-import { Button, Heading, Input, Select, Textarea } from "lib/ComponentStyles";
+import {
+  Badge,
+  Button,
+  Heading,
+  Input,
+  Select,
+  Textarea,
+} from "lib/ComponentStyles";
 
 const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
-export const systemFont =
-  typeof window !== "undefined"
+function isLocalStorageAvailable() {
+  const test = "test";
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+export const systemFont = isLocalStorageAvailable()
+  ? typeof window !== "undefined"
     ? localStorage.getItem("settingsUseSystemFont") === "true"
-    : "";
+    : ""
+  : true;
 
 const theme = extendTheme({
   systemFont,
   config,
+  textStyles: {
+    miniHeading: {
+      fontSize: "sm",
+      fontWeight: 600,
+      lineHeight: "200%",
+      textTransform: "uppercase",
+      as: "h6",
+    },
+  },
   colors: {
+    brand: "#e9e1b0",
     // "hazelnut" is not used
     hazelnut: "#57300A",
     // "sandstone" is our secondary, replaces almond on dark backgrounds
@@ -53,6 +82,7 @@ const theme = extendTheme({
     body: systemFont ? "system-ui" : "Public Sans",
   },
   components: {
+    Badge,
     Button,
     Heading,
     Input,

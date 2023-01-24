@@ -1,6 +1,6 @@
 // Suspense
 import { Suspense } from "react";
-import Loading from "components/Loading";
+import Loading from "components/system/Loading";
 
 // Routing
 import Link from "next/link";
@@ -17,20 +17,19 @@ import {
   DarkMode,
   Spacer,
   Stack,
-  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
-  FiHome,
   FiPlus,
-  FiSettings,
   FiShare,
   FiGithub,
-  FiChevronLeft,
   FiPrinter,
+  FiMoreVertical,
+  FiEdit,
+  FiArrowLeft,
 } from "react-icons/fi";
-import { VercelLogo } from "components/brand/VercelPromotion";
-import { HeaderLogo } from "components/brand/Logo";
+import { AnimatePresence, m } from "framer-motion";
+import { HeaderLogo, LogoNoColour } from "components/brand/Logo";
 
 // First party components
 import CheckPWA from "lib/CheckPWA";
@@ -44,10 +43,15 @@ interface LayoutProps {
   children: React.ReactNode;
   showShareButton?: boolean;
   showToTopButton: boolean;
+  sidebarActiveIndex?: number;
 }
 
 // Start component
-export default function Layout({ children, showShareButton }: LayoutProps) {
+export default function Layout({
+  children,
+  showShareButton,
+  sidebarActiveIndex,
+}: LayoutProps) {
   const router = useRouter();
 
   // Get settings
@@ -111,6 +115,14 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
   const shareCompatibility =
     typeof navigator !== "undefined" ? navigator.share : "";
 
+  function LogoIcon() {
+    return (
+      <Icon w={8} h={8}>
+        <LogoNoColour />
+      </Icon>
+    );
+  }
+
   return (
     // Create a flex container
     <Flex
@@ -130,80 +142,134 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         display={{ base: "none", sm: "flex" }}
         as="aside"
       >
-        {/* @ts-ignore */}
-        <DarkMode>
-          <Flex direction="column" p={5}>
-            <Suspense fallback={<Loading />}>
-              {CheckPWA() && (
-                <IconButton
-                  icon={<FiChevronLeft />}
-                  aria-label="Go Back"
-                  size="lg"
-                  mb={5}
-                  onClick={router.back}
-                />
-              )}
-            </Suspense>
-            <Stack direction="column" spacing={2}>
+        <Flex direction="column" p={5}>
+          <Suspense fallback={<Loading />}>
+            {CheckPWA() && (
+              <>
+                <AnimatePresence exitBeforeEnter>
+                  <m.div
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {/* @ts-ignore */}
+                    <DarkMode>
+                      <Suspense fallback={<Loading />}>
+                        <IconButton
+                          icon={<FiArrowLeft />}
+                          aria-label="Go Back"
+                          size="lg"
+                          mb={5}
+                          onClick={router.back}
+                          isDisabled={router.pathname === "/"}
+                        />
+                      </Suspense>
+                    </DarkMode>
+                  </m.div>
+                </AnimatePresence>
+              </>
+            )}
+          </Suspense>
+          <Stack direction="column" spacing={2}>
+            {/* @ts-ignore */}
+            <DarkMode>
               <Link href="/" passHref>
                 <IconButton
-                  icon={<FiHome />}
+                  icon={<LogoIcon />}
                   aria-label="Go Home"
                   size="lg"
                   as="a"
+                  isActive={sidebarActiveIndex === 0}
                 />
               </Link>
+            </DarkMode>
+            {/* @ts-ignore */}
+            <DarkMode>
               <Link href="/composer" passHref>
                 <IconButton
-                  icon={<FiPlus />}
+                  icon={<FiEdit />}
                   aria-label="Osopcloud Composer"
                   size="lg"
                   as="a"
+                  isActive={sidebarActiveIndex === 1}
                 />
               </Link>
-            </Stack>
-            <Spacer />
-            <Stack direction="column" spacing={2}>
-              <Suspense fallback={<Loading />}>
-                {showShareButton ?? (
-                  <>
+            </DarkMode>
+          </Stack>
+          <Spacer />
+          <Stack direction="column" spacing={2}>
+            <Suspense fallback={<Loading />}>
+              {showShareButton ?? (
+                <>
+                  <Suspense fallback={<Loading />}>
                     {shareCompatibility ? (
-                      <IconButton
-                        icon={<FiShare />}
-                        aria-label="Share"
-                        size="lg"
-                        onClick={Share}
-                      />
+                      <AnimatePresence exitBeforeEnter>
+                        <m.div
+                          initial={{ y: 10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -10, opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                        >
+                          {/* @ts-ignore */}
+                          <DarkMode>
+                            <IconButton
+                              icon={<FiShare />}
+                              size="lg"
+                              aria-label="Share"
+                              onClick={Share}
+                            />
+                          </DarkMode>
+                        </m.div>
+                      </AnimatePresence>
                     ) : null}
+                  </Suspense>
+                  <Suspense fallback={<Loading />}>
                     {showPrintButton && (
-                      <IconButton
-                        icon={<FiPrinter />}
-                        aria-label="Print"
-                        size="lg"
-                        onClick={Print}
-                      />
+                      <AnimatePresence exitBeforeEnter>
+                        <m.div
+                          initial={{ y: 10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -10, opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                        >
+                          {/* @ts-ignore */}
+                          <DarkMode>
+                            <IconButton
+                              icon={<FiPrinter />}
+                              size="lg"
+                              aria-label="Print"
+                              onClick={Print}
+                            />
+                          </DarkMode>
+                        </m.div>
+                      </AnimatePresence>
                     )}
-                  </>
-                )}
-              </Suspense>
-              <Link href="/settings/general" passHref>
+                  </Suspense>
+                </>
+              )}
+            </Suspense>
+            {/* @ts-ignore */}
+            <DarkMode>
+              <Link href="/options" passHref>
                 <IconButton
-                  icon={<FiSettings />}
+                  icon={<FiMoreVertical />}
                   aria-label="Settings"
                   size="lg"
                   as="a"
+                  isActive={sidebarActiveIndex === 2}
                 />
               </Link>
-            </Stack>
-          </Flex>
-        </DarkMode>
+            </DarkMode>
+          </Stack>
+        </Flex>
       </Flex>
 
       {/* Mobile header */}
       <Flex display={{ base: "flex", sm: "none" }} p={5} as="header">
         <Stack direction="row" spacing={5}>
           <IconButton
-            icon={<FiChevronLeft />}
+            icon={<FiArrowLeft />}
             aria-label="Go Back"
             size="lg"
             onClick={router.back}
@@ -223,14 +289,16 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
               icon={<FiPlus />}
               aria-label="Osopcloud Composer"
               size="lg"
+              isActive={sidebarActiveIndex === 1}
             />
           </Link>
-          <Link href="/settings" passHref>
+          <Link href="/options" passHref>
             <IconButton
-              icon={<FiSettings />}
-              aria-label="Settings"
+              icon={<FiMoreVertical />}
+              aria-label="Options"
               size="lg"
               as="a"
+              isActive={sidebarActiveIndex === 2}
             />
           </Link>
         </Stack>
@@ -243,28 +311,25 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
         position="relative"
         overflow="hidden"
         direction="column"
-        ps={{ base: 0, sm: 115 }}
+        ps={{ base: 0, sm: 150 }}
       >
-        <Flex flex={1} p={5} pe={{ base: 5, sm: 10 }} py={10}>
+        <Flex flex={1} ps={5} pe={{ base: 5, sm: 10 }} pt={20} pb={20}>
           <Box w="100%" id="printRegion" as="main">
             {children}
           </Box>
         </Flex>
-        <Flex p={5} pe={{ base: "inherit", sm: 10 }} as="footer">
-          <Stack direction="row" spacing={2}>
+        {/* We need a way for noscript users to access these due to legal requirements */}
+        <noscript>
+          <Stack
+            p={5}
+            pe={{ base: "inherit", sm: 10 }}
+            as="footer"
+            direction="row"
+            spacing={2}
+          >
             <Link href="https://github.com/osopcloud/osopcloud" passHref>
               <Button leftIcon={<FiGithub />} size="sm" as="a">
                 GitHub
-              </Button>
-            </Link>
-            <Link href="/docs/getting-started" passHref>
-              <Button size="sm" as="a" display={{ base: "none", sm: "flex" }}>
-                Documentation
-              </Button>
-            </Link>
-            <Link href="/docs/keyboard-shortcuts" passHref>
-              <Button size="sm" as="a" display={{ base: "none", sm: "flex" }}>
-                Keyboard Shortcuts
               </Button>
             </Link>
             <Link href="/about/privacy" passHref>
@@ -278,19 +343,7 @@ export default function Layout({ children, showShareButton }: LayoutProps) {
               </Button>
             </Link>
           </Stack>
-          <Spacer />
-          <Button
-            colorScheme="black"
-            bg="black"
-            color="white"
-            variant="solid"
-            size="sm"
-            display={{ base: "none", sm: "flex" }}
-          >
-            <Text me={2}>Powered by</Text>
-            <VercelLogo />
-          </Button>
-        </Flex>
+        </noscript>
       </Flex>
     </Flex>
   );

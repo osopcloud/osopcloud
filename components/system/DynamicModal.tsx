@@ -1,6 +1,3 @@
-// This allows us to render a default overlay component
-// This is <Modal> (or <AlertDialog>) on large displays and a Drawer on smaller displays
-
 // Types
 import type { ReactElement } from "react";
 
@@ -29,16 +26,12 @@ interface OverlayPropsDrawerOnly {
   onClose: () => void;
 }
 
-interface OverlayProps {
-  children: ReactElement;
-  cancelRef: any;
-  isOpen: boolean;
-  onClose: () => void;
+interface OverlayProps extends OverlayPropsDrawerOnly {
   useAlertDialog: boolean;
   size?: string;
 }
 
-// Begin component
+// Begin components
 export function OverlayModal({
   children,
   cancelRef,
@@ -57,7 +50,7 @@ export function OverlayModal({
           isOpen={isOpen}
           onClose={onClose}
           leastDestructiveRef={cancelRef}
-          motionPreset={animationSpeed ? "none" : "scale"}
+          motionPreset={animationSpeed ? "none" : "slideInBottom"}
           scrollBehavior="inside"
           size="sm"
           isCentered
@@ -72,7 +65,7 @@ export function OverlayModal({
           isOpen={isOpen}
           onClose={onClose}
           initialFocusRef={cancelRef}
-          motionPreset={animationSpeed ? "none" : "scale"}
+          motionPreset={animationSpeed ? "none" : "slideInBottom"}
           scrollBehavior="inside"
           size={size}
           isCentered
@@ -108,6 +101,42 @@ export function OverlayDrawer({
   );
 }
 
+/**
+ * A modal that is a Chakra UI `<Modal>` on large windows, but a `<Drawer>` on small windows.
+ *
+ * @remarks
+ * From the system collection, replacing Chakra UI `<Modal>`, `<AlertDialog>` and `<Drawer>`.
+ * 
+ * @example
+ * This is a standard dynamic modal setup. If `useAlertDialog` is true, then the modal will be rendered as an `<AlertDialog>` on large windows.
+ * ```js
+ * function Modal() {
+ *   const [isOpen, onOpen, onClose]
+ *   const cancelRef = useRef(null);
+ *   return (
+ *     <>
+ *       <Button
+          onClick={() => {
+            onOpen();
+          }}
+          isActive={isOpen}
+        >
+          Open Modal
+         </Button>
+
+ *       <DynamicModal
+           isOpen={isOpen}
+           onClose={onClose}
+           useAlertDialog={false}
+           cancelRef={cancelRef}
+         >
+ *         ...
+ *       </DynamicModal>
+ *     </>
+ *   )
+ * }
+ * ```
+ */
 export default function DynamicModal({
   children,
   cancelRef,

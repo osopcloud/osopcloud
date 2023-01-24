@@ -1,4 +1,4 @@
-// Forked from sass-ui 1.0.0-rc.2
+// Forked from saas-ui 1.0.0-rc.2
 // https://github.com/saas-js/saas-ui/blob/next/packages/saas-ui-hotkeys/src/use-hotkeys.ts
 
 import { useEffect, useCallback, useMemo, useRef } from "react";

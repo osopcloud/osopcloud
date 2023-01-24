@@ -1,107 +1,85 @@
-// TypeScript is not supported
-// @ts-nocheck
-
 // Design
 import {
   Button,
+  Center,
+  Code,
   Container,
-  Heading,
   Icon,
+  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { FiTool } from "react-icons/fi";
+import { FiAlertTriangle, FiRefreshCw } from "react-icons/fi";
 
 // First party components
-import Logo from "components/brand/Logo";
 import { version } from "components/Version";
 import { commit } from "components/Commit";
-import DeleteSettings from "lib/DeleteSettings";
 
 import React from "react";
 
 // Start component
 export class ErrorFallbackApplication extends React.Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: any) {
     return { hasError: true };
   }
 
   // Get the error details from React and set them in the state so they can be shown to the user
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     console.log(error, errorInfo);
   }
 
-  counter = 0;
+  hasTriedAgain = false;
+
+  // Truncate commit to 7 characters
+  truncateCommit = () => {
+    if (commit) {
+      return commit.substring(0, 7);
+    } else {
+      return "a local environment";
+    }
+  };
 
   render() {
+    // @ts-expect-error: Property 'hasError' does not exist on type 'Readonly<{}>'.ts(2339)
     if (this.state.hasError) {
       return (
-        <Container maxWidth="container.md">
-          <Stack direction="column" spacing={5} mt={20}>
-            <Icon aria-label="Osopcloud Logo" w={20} h={20}>
-              <Logo />
-            </Icon>
-            <Heading>Errors Happen in (the web) Space</Heading>
-            <Text>
-              Unfortunately, an unexpected error has crashed the application.
-            </Text>
-            {this.counter >= 5 ? (
-              <Button leftIcon={<FiTool />} isDisabled>
-                Attempt to Recover Osopcloud
-              </Button>
-            ) : (
+        <Container maxWidth="container.sm" mt="25vh">
+          <SimpleGrid minChildWidth="150px" spacing={10}>
+            <Stack direction="column" spacing={5}>
+              <Text>A serious error has occurred.</Text>
               <Button
-                leftIcon={<FiTool />}
-                onClick={(_) => {
-                  // Reset Settings
-                  DeleteSettings();
-                  // Attempt to recover React state
+                leftIcon={<FiRefreshCw />}
+                onClick={() => {
+                  this.hasTriedAgain = true;
                   this.setState({ hasError: false });
-                  // Add to the counter
-                  this.counter++;
                 }}
+                isDisabled={this.hasTriedAgain}
               >
-                Attempt to Recover Osopcloud
+                Try Again
               </Button>
-            )}
-            <Stack direction="column" spacing={0} fontSize="xs">
-              <Stack direction="row" spacing={5}>
-                <Stack direction="column" spacing={0}>
-                  <Text>Error Reference:</Text>
-                  <Text>Version:</Text>
-                  <Text>Commit:</Text>
-                </Stack>
-                <Stack direction="column" spacing={0}>
-                  {/* Find that error information from React */}
-                  <Text>3</Text>
-                  <Text>{version}</Text>
-                  <Text>{commit ? commit : "Undefined"}</Text>
-                </Stack>
+              <Stack direction="column" spacing={2}>
+                <Text fontSize="xs">Application version {version}</Text>
+                <Text fontSize="xs">Deployed from {this.truncateCommit()}</Text>
+                <Text fontSize="xs">
+                  When reporting this error, reference error code{" "}
+                  <Code fontSize="xs">3</Code>.
+                </Text>
               </Stack>
             </Stack>
-            {/* Render counter */}
-            {this.counter !== 0 && (
-              <>
-                {this.counter >= 5 ? (
-                  <Text fontSize="xs">Too many recovery attempts</Text>
-                ) : (
-                  <Text fontSize="xs">
-                    {this.counter} unsuccessful recovery attempt
-                    {this.counter === 1 ? "" : "s"}
-                  </Text>
-                )}
-              </>
-            )}
-          </Stack>
+            <Center display={{ base: "none", lg: "flex" }}>
+              <Icon as={FiAlertTriangle} w={150} h={150} aria-label="Error" />
+            </Center>
+          </SimpleGrid>
         </Container>
       );
     }
 
+    // @ts-expect-error: Property 'hasError' does not exist on type 'Readonly<{}>'.ts(2339)
     return this.props.children;
   }
 }

@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 // First party components
-import DynamicModal from "components/overlays/DynamicModal";
+import DynamicModal from "components/system/DynamicModal";
 
 // Storage
 import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
@@ -25,18 +25,19 @@ import { useLocalStorage, writeStorage } from "@rehooks/local-storage";
 import { useRef } from "react";
 
 // Start component
-export default function URLManagementOverlay() {
+export default function DonationManagementOverlay() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
 
   // Storage
-  const [website] = useLocalStorage("composerWebsite");
-  const [sourceRepository] = useLocalStorage("composerRepository");
+  const [name] = useLocalStorage("composerName");
+  const [donationServiceName] = useLocalStorage("composerDonationServiceName");
+  const [donationURL] = useLocalStorage("composerDonationURL");
 
   return (
     <>
       <Button isActive={isOpen} onClick={onOpen}>
-        Edit Website &amp; Repository
+        Add a Donation Option
       </Button>
 
       <DynamicModal
@@ -46,21 +47,24 @@ export default function URLManagementOverlay() {
         cancelRef={cancelRef}
       >
         <Stack direction="column" spacing={5}>
-          <Heading size="md">Edit Website and Source Repository</Heading>
+          <Heading size="md">Donation Options</Heading>
           <Table size="sm" variant="simple">
             <Tbody>
               <Tr>
-                <Td>Website</Td>
+                <Td>Donation Service Name</Td>
                 <Td>
                   <Editable
                     // @ts-ignore
-                    value={website || "Click to edit..."}
+                    value={donationServiceName || "Click to Edit..."}
                   >
                     <EditablePreview />
                     <Input
                       as={EditableInput}
                       onChange={(e) => {
-                        writeStorage("composerWebsite", e.target.value);
+                        writeStorage(
+                          "composerDonationServiceName",
+                          e.target.value
+                        );
                       }}
                       size="sm"
                     />
@@ -68,17 +72,17 @@ export default function URLManagementOverlay() {
                 </Td>
               </Tr>
               <Tr>
-                <Td>Source Repository</Td>
+                <Td>Donation URL</Td>
                 <Td>
                   <Editable
                     // @ts-ignore
-                    value={sourceRepository || "Click to edit..."}
+                    value={donationURL || "Click to Edit..."}
                   >
                     <EditablePreview />
                     <Input
                       as={EditableInput}
                       onChange={(e) => {
-                        writeStorage("composerRepository", e.target.value);
+                        writeStorage("composerDonationURL", e.target.value);
                       }}
                       size="sm"
                     />

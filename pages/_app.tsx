@@ -5,9 +5,11 @@ import type { AppProps } from "next/app";
 
 // Application-scope providers
 import { ChakraProvider } from "@chakra-ui/react";
+import { domAnimation, LazyMotion, MotionConfig } from "framer-motion";
 import theme from "lib/Theming";
 import UpdateServices from "lib/UpdateServices";
 import { ErrorFallbackApplication } from "components/error-handling/ErrorFallbackApplication";
+import PersistentStorageFallback from "components/error-handling/PersistentStorageFallback";
 
 // Routing
 import { useRouter } from "next/router";
@@ -18,6 +20,9 @@ import "@fontsource/public-sans/600.css";
 
 // Keyboard shortcuts
 import { useKeyboardShortcut } from "hooks/useKeyboardShortcut";
+
+import { Suspense } from "react";
+import Loading from "components/system/Loading";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -41,21 +46,24 @@ export default function Application({
   useKeyboardShortcut("g then c", () => {
     router.push("/composer");
   });
-  useKeyboardShortcut(["g then s", ", then 1"], () => {
-    router.push("/settings/general");
+  useKeyboardShortcut(["g then o"], () => {
+    router.push("/options");
   });
-  useKeyboardShortcut([", then 2"], () => {
-    router.push("/settings/accessibility");
+  useKeyboardShortcut(["g then s", "g then ,"], () => {
+    router.push("/settings");
   });
-  useKeyboardShortcut([", then 3"], () => {
-    router.push("/settings/sharing");
-  });
-  useKeyboardShortcut([", then 4"], () => {
-    router.push("/settings/network");
-  });
-  useKeyboardShortcut([", then 5"], () => {
-    router.push("/settings/storage");
-  });
+
+  // Check if the user has local storage enabled
+  function isLocalStorageAvailable() {
+    const test = "test";
+    try {
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -63,9 +71,20 @@ export default function Application({
   return (
     <ChakraProvider theme={theme}>
       <ErrorFallbackApplication>
-        <UpdateServices>
-          {getLayout(<Component {...pageProps} />)}
-        </UpdateServices>
+        <Suspense fallback={<Loading />}>
+          {isLocalStorageAvailable() ? (
+            <UpdateServices>
+              <MotionConfig reducedMotion="user">
+                {/* Strict is preferred, however it will break Chakra UI components and always throw */}
+                <LazyMotion features={domAnimation}>
+                  {getLayout(<Component {...pageProps} />)}
+                </LazyMotion>
+              </MotionConfig>
+            </UpdateServices>
+          ) : (
+            <PersistentStorageFallback />
+          )}
+        </Suspense>
       </ErrorFallbackApplication>
     </ChakraProvider>
   );

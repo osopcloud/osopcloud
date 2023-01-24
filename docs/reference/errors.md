@@ -1,11 +1,6 @@
----
-name: "Error Reference"
-date: "2022-06-11"
----
+# Error Reference
 
-## Error Reference
-
-### Application Errors
+## Application Errors
 
 These errors are specific to Osopcloud.
 

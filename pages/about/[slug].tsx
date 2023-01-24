@@ -9,6 +9,9 @@ import { GetStaticProps } from "next";
 // SEO
 import Head from "next/head";
 
+// Design
+import { m } from "framer-motion";
+
 // First party components
 import Layout from "components/layouts/Layout";
 
@@ -31,7 +34,7 @@ export default function About({ source, componentOverrides }: OSPageTypes) {
   return (
     <>
       <Head>
-        <title>{source.frontmatter.name} &mdash; Osopcloud</title>
+        <title>Osopcloud &mdash; {source.frontmatter.name}</title>
         <meta
           name="description"
           content={`${source.frontmatter.name} on Osopcloud.`}
@@ -43,9 +46,16 @@ export default function About({ source, componentOverrides }: OSPageTypes) {
         />
       </Head>
 
-      <MDXProvider>
-        <MDXRemote {...source} components={componentOverrides} />
-      </MDXProvider>
+      <m.div
+        initial={{ x: 10, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: -10, opacity: 0 }}
+        transition={{ duration: 0.175 }}
+      >
+        <MDXProvider>
+          <MDXRemote {...source} components={componentOverrides} />
+        </MDXProvider>
+      </m.div>
     </>
   );
 }

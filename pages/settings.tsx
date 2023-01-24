@@ -44,7 +44,7 @@ import Layout from "components/layouts/Layout";
 
 // Storage handling
 import useLocalStorage, { writeStorage } from "@rehooks/local-storage";
-import { exportCB, importCB, version as versionMXUPS } from "@hikium/mxups";
+import { exportCB, importCB, version as versionMXUPS } from "lib/mxups/src";
 
 // Application configuration
 import { config } from "../platform.config";

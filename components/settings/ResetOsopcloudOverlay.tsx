@@ -15,7 +15,7 @@ import DynamicModal from "components/system/DynamicModal";
 
 // Storage handling
 import useLocalStorage from "@rehooks/local-storage";
-import { clearAllStorage } from "@hikium/mxups";
+import { clearAllStorage } from "lib/mxups/src";
 
 import { useRef, useState } from "react";
 

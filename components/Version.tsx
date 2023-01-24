@@ -5,4 +5,5 @@ import appPackage from "../package.json";
 const version = appPackage.version;
 
 // Make this the default export
+export { version };
 export default version;

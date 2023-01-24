@@ -51,7 +51,7 @@ export class ErrorFallbackApplication extends React.Component {
         <Container maxWidth="container.sm" mt="25vh">
           <SimpleGrid minChildWidth="150px" spacing={10}>
             <Stack direction="column" spacing={5}>
-              <Text>A serious error has occurred.</Text>
+              <Text>An error has occurred.</Text>
               <Button
                 leftIcon={<FiRefreshCw />}
                 onClick={() => {
@@ -66,8 +66,7 @@ export class ErrorFallbackApplication extends React.Component {
                 <Text fontSize="xs">Application version {version}</Text>
                 <Text fontSize="xs">Deployed from {this.truncateCommit()}</Text>
                 <Text fontSize="xs">
-                  When reporting this error, reference error code{" "}
-                  <Code fontSize="xs">3</Code>.
+                  Error code <Code fontSize="xs">3</Code>.
                 </Text>
               </Stack>
             </Stack>

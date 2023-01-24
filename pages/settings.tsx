@@ -37,7 +37,7 @@ import { AnimatePresence, m } from "framer-motion";
 import DynamicModal from "components/system/DynamicModal";
 import Note from "components/system/Note";
 import ResetOsopcloudOverlay from "components/settings/ResetOsopcloudOverlay";
-import { version } from "components/Version";
+import version from "components/Version";
 
 // Layouts
 import Layout from "components/layouts/Layout";

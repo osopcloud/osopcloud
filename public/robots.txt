@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.osopcloud.com
+
+# Sitemaps
+Sitemap: https://www.osopcloud.com/sitemap.xml
